@@ -92,7 +92,9 @@ class DataManager:
 
         if self.cutoff_index is None:
             cutoff_index = int(len(data)*(1-self.holdout_size))
-            holdin_indices = np.random.permutation(cutoff_index)
+            # Latent forecasting (e.g. SINDySHRED) does not support permutation of indices
+            # holdin_indices = np.random.permutation(cutoff_index) 
+            holdin_indices = np.arange(0,cutoff_index)
             self.train_indices = holdin_indices[:int(len(holdin_indices)*self.train_size)]
             self.val_indices = holdin_indices[int(len(holdin_indices)*self.train_size):int(len(holdin_indices)*self.train_size + len(holdin_indices)*self.val_size)]
             self.test_indices = holdin_indices[int(len(holdin_indices)*self.train_size + len(holdin_indices)*self.val_size):]
