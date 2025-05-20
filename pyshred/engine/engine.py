@@ -24,6 +24,7 @@
 # encode_forecast(t, initialization = None) -> latent_space # can get initialization from self.encoder_sensors(...)
 # decode(latent_space)
 
+import warnings
 from ..models.sindy_shred import SINDy_SHRED
 from ..processor.data_manager import DataManager
 import numpy as np
@@ -31,6 +32,7 @@ import torch
 import pandas as pd
 from typing import Union
 from ..processor.utils import *
+from ..latent_forecaster_models.sindy import SINDy_Forecaster
 
 class SHREDEngine:
     # We want forecaster in the init as well... so need to fit in shred_model??
@@ -84,6 +86,29 @@ class SHREDEngine:
         # 6) Return as numpy
         return latents.cpu().numpy()
 
+    def forecast_latent(self, t, init_latents):
+        if self.model.latent_forecaster is None:
+            raise RuntimeError("No `latent_forecaster` available. Please initialize SHRED with a " \
+            "`latent_forecaster` model.")
+        if isinstance(self.model.latent_forecaster, SINDy_Forecaster):
+            dt = self.model.latent_forecaster.dt
+            t_train = np.arange(0, t*dt, dt)
+            if isinstance(init_latents, torch.Tensor):
+                init_latents = init_latents.detach().cpu().numpy()
+            if init_latents.ndim > 2:
+                raise ValueError(
+                    f"Invalid `init_latents`: expected a 1D array (shape (m,)) or a 2D array "
+                    f"(shape (timesteps, m)), but got a {init_latents.ndim}D array with shape {init_latents.shape}."
+                )
+            if init_latents.ndim == 2:
+                warnings.warn(
+                    f"`init_latents` has shape {init_latents.shape}; only its last row "
+                    "will be used as the initial latent state for SINDy.",
+                    UserWarning
+                )
+                init_latents = init_latents[-1]
+            return self.model.latent_forecaster.model.simulate(init_latents, t_train)
+        
 
 # recon_dict_out = manager.postprocess(reconstruction, mode = "reconstruct")
     def decode(self, latents):
@@ -95,36 +120,6 @@ class SHREDEngine:
         self.model.decoder.eval()
         with torch.no_grad():
             output = self.model.decoder(latents)
-        output = output.detach().cpu().numpy()
-        output = self.dm.data_scaler.inverse_transform(output)
-        results = {}
-        start_index = 0
-        for id in self.dm._dataset_ids:
-            length = self.dm._dataset_lengths.get(id)
-            Vt = self.dm._Vt_registry.get(id)
-            preSVD_scaler = self.dm._preSVD_scaler_registry.get(id)
-            spatial_shape = self.dm._dataset_spatial_shape.get(id)
-            dataset = output[:,start_index:start_index+length]
-            if Vt is not None:
-                dataset = dataset @ Vt
-            if preSVD_scaler is not None:
-                dataset = preSVD_scaler.inverse_transform(dataset)
-            original_shape = (dataset.shape[0],) + spatial_shape
-            results[id] = dataset.reshape(original_shape)
-            start_index = length + start_index
-        return results
-
-
-    def decode(self, latents):
-        device = next(self.model.decoder.parameters()).device
-        if isinstance(latents, np.ndarray):
-            latents = torch.from_numpy(latents).to(device).float()
-        else:
-            latents = latents.to(device).float()
-        decoder_input = {"final_hidden_state": latents} # DAVID this only works for SDN type latents not UNET
-        self.model.decoder.eval()
-        with torch.no_grad():
-            output = self.model.decoder(decoder_input)
         output = output.detach().cpu().numpy()
         output = self.dm.data_scaler.inverse_transform(output)
         results = {}

@@ -2,7 +2,6 @@ import torch
 from torch.utils.data import DataLoader
 import numpy as np
 from ..latent_forecaster_models.lstm import LSTMForecaster
-from ..models.sindy_dynamics import SINDyDynamics
 from ..latent_forecaster_models.sindy import SINDy_Forecaster
 import pysindy as ps
 from .sindy import sindy_library_torch, e_sindy_library_torch
@@ -98,11 +97,11 @@ DECODER_MODELS = {
 NUM_REPLICATES = 10
 
 class SINDy_SHRED(torch.nn.Module):
-    def __init__(self, sequence_model = None, decoder_model = None, dynamics = None, layer_norm = False):
+    def __init__(self, sequence_model = None, decoder_model = None, latent_forecaster = None, layer_norm = False):
         super(SINDy_SHRED, self).__init__()
-        self.dynamics = dynamics
+        self.latent_forecaster = latent_forecaster
         if sequence_model is None:
-            if dynamics is not None:
+            if latent_forecaster is not None:
                 self.sequence = GRU()
             else:
                 self.sequence = LSTM()
@@ -130,9 +129,8 @@ class SINDy_SHRED(torch.nn.Module):
         self.num_replicates = NUM_REPLICATES
         self.use_layer_norm = layer_norm
         self.layer_norm_gru = torch.nn.LayerNorm(self.sequence.hidden_size)
-        self.latent_forecaster = None
-        self.dynamics.latent_dim = self.sequence.hidden_size
-        self.dynamics.initialize()
+        if latent_forecaster is not None:
+            self.latent_forecaster.initialize(latent_dim = self.sequence.hidden_size)
 
     def forward(self, x, sindy=False):
         if sindy == True:
@@ -179,12 +177,11 @@ class SINDy_SHRED(torch.nn.Module):
 
     # sindy_regularization previously set to 1.0
     def fit(self, train_dataset, val_dataset,  batch_size=64, num_epochs=200, lr=1e-3, sindy_regularization=0, optimizer="AdamW", verbose=True, threshold=0.5, base_threshold=0.0, patience=20, thres_epoch=100, weight_decay=0.01):
-        if self.dynamics is None and sindy_regularization > 0:
+        if self.latent_forecaster is None and sindy_regularization > 0:
             sindy_regularization = 0
-            warnings.warn("WARNING: No dynamics object provided during initialization: disabling SINDy regularization.",
+            warnings.warn("WARNING: No `latent_forecaster` object provided during initialization: disabling SINDy regularization.",
                 UserWarning
             )
-            # print("WARNING: No dynamics object provided during initialization: disabling SINDy regularization.")
         if sindy_regularization > 0:
             sindy = True
             if not isinstance(self.decoder, SDN):
@@ -196,11 +193,11 @@ class SINDy_SHRED(torch.nn.Module):
             sindy = False
 
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        if self.dynamics is not None:
-            self.dt = self.dynamics.dt
-            self.poly_order = self.dynamics.poly_order
-            self.lib_dim = self.dynamics.lib_dim
-            self.include_sine = self.dynamics.include_sine
+        if self.latent_forecaster is not None:
+            self.dt = self.latent_forecaster.dt
+            self.poly_order = self.latent_forecaster.poly_order
+            self.lib_dim = self.latent_forecaster.lib_dim
+            self.include_sine = self.latent_forecaster.include_sine
             self.e_sindy = E_SINDy(self.num_replicates, self.sequence.hidden_size, self.lib_dim, self.poly_order,
                                 self.include_sine).to(device)
         input_size = train_dataset.X.shape[2] # nsensors + nparams
@@ -277,15 +274,17 @@ class SINDy_SHRED(torch.nn.Module):
             latents = self.gru_outputs(X_all, sindy=False)   # (N_train+N_val, latent_dim)
         # to numpy and hand off to pysindy
         latents_np = latents.cpu().numpy()
-        if isinstance(self.dynamics, SINDyDynamics):
-            self.latent_forecaster = SINDy_Forecaster(
-                latents_np,
-                self.dt,
-                poly_order=self.poly_order,
-                optimizer=ps.STLSQ(threshold=0.0, alpha=0.05),
-                diff_method=ps.differentiation.FiniteDifference()
-            )
-        # if isinstance(self.dynamics, LSTMDynamics):
+        self.latent_forecaster.fit(latents_np)
+        # if isinstance(self.latent_forecaster, SINDy_Forecaster):
+        #     # NEED TO BE forecaster_model instead of self.latent_forecaster
+        #     self.latent_forecaster = SINDy_Forecaster(
+        #         latents_np,
+        #         self.dt,
+        #         poly_order=self.poly_order,
+        #         optimizer=ps.STLSQ(threshold=0.0, alpha=0.05),
+        #         diff_method=ps.differentiation.FiniteDifference()
+        #     )
+        # if isinstance(self.latent_forecaster, LSTMDynamics):
         #     pass
         return torch.tensor(val_error_list).detach().cpu().numpy()
 
