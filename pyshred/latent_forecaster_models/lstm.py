@@ -54,3 +54,6 @@ class LSTMForecaster(nn.Module):
         # 2) decode to sensor space
         sensor_next = self.fc_sensor(z_next)       # (batch, output_dim)
         return sensor_next
+
+    def fit(latents):
+        pass

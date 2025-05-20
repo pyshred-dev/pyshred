@@ -1,9 +1,5 @@
 import torch
 from torch.utils.data import DataLoader
-import numpy as np
-from ..latent_forecaster_models.lstm import LSTMForecaster
-from ..latent_forecaster_models.sindy import SINDy_Forecaster
-import pysindy as ps
 from .sindy import sindy_library_torch, e_sindy_library_torch
 from ..models.sequence_models.abstract_sequence import AbstractSequence
 from ..models.decoder_models.abstract_decoder import AbstractDecoder
@@ -275,53 +271,4 @@ class SINDy_SHRED(torch.nn.Module):
         # to numpy and hand off to pysindy
         latents_np = latents.cpu().numpy()
         self.latent_forecaster.fit(latents_np)
-        # if isinstance(self.latent_forecaster, SINDy_Forecaster):
-        #     # NEED TO BE forecaster_model instead of self.latent_forecaster
-        #     self.latent_forecaster = SINDy_Forecaster(
-        #         latents_np,
-        #         self.dt,
-        #         poly_order=self.poly_order,
-        #         optimizer=ps.STLSQ(threshold=0.0, alpha=0.05),
-        #         diff_method=ps.differentiation.FiniteDifference()
-        #     )
-        # if isinstance(self.latent_forecaster, LSTMDynamics):
-        #     pass
         return torch.tensor(val_error_list).detach().cpu().numpy()
-
-
-    # def evaluate(self, init, test_dataset, inverse_transform=True):
-    #     """
-    #     Prediction and forecast MSE evaluation.
-    #     Prediction: reconstruct test set with test sensor measurements
-    #     Forecast: reconstruct test set without test sensor measurements. Test sensor measurements
-    #               are forecasted using Sindy or rolling forecaster.
-    #     """
-    #     if isinstance(self.latent_forecaster, SINDy_Forecaster):
-    #         self.latent_forecaster.evaluate(init, test_dataset)
-        
-    #     # perform inverse transform
-
-
-    #     # can call an evaluate method inside sindy_forecaster
-
-
-
-def forecast(forecaster, reconstructor, test_dataset):
-    initial_in = test_dataset.X[0:1].clone()
-    vals = [initial_in[0, i, :].detach().cpu().clone().numpy() for i in range(test_dataset.X.shape[1])]
-    for i in range(len(test_dataset.X)):
-        scaled_output1, scaled_output2 = forecaster(initial_in)
-        scaled_output1 = scaled_output1.detach().cpu().numpy()
-        scaled_output2 = scaled_output2.detach().cpu().numpy()
-        vals.append(np.concatenate([scaled_output1.reshape(test_dataset.X.shape[2]//2), scaled_output2.reshape(test_dataset.X.shape[2]//2)]))
-        temp = initial_in.clone()
-        initial_in[0, :-1] = temp[0, 1:]
-        initial_in[0, -1] = torch.tensor(np.concatenate([scaled_output1, scaled_output2]))
-    device = 'cuda' if next(reconstructor.parameters()).is_cuda else 'cpu'
-    forecasted_vals = torch.tensor(np.array(vals), dtype=torch.float32).to(device)
-    reconstructions = []
-    for i in range(len(forecasted_vals) - test_dataset.X.shape[1]):
-        recon = reconstructor(forecasted_vals[i:i + test_dataset.X.shape[1]].reshape(1, test_dataset.X.shape[1], test_dataset.X.shape[2])).detach().cpu().numpy()
-        reconstructions.append(recon)
-    reconstructions = np.array(reconstructions)
-    return forecasted_vals, reconstructions
