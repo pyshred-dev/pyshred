@@ -277,7 +277,6 @@ class SINDy_SHRED(torch.nn.Module):
             latents = self.gru_outputs(X_all, sindy=False)   # (N_train+N_val, latent_dim)
         # to numpy and hand off to pysindy
         latents_np = latents.cpu().numpy()
-        print('type(self.dynamics)',type(self.dynamics))
         if isinstance(self.dynamics, SINDyDynamics):
             self.latent_forecaster = SINDy_Forecaster(
                 latents_np,
