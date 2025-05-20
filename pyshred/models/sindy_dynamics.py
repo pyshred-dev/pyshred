@@ -50,9 +50,9 @@ class SINDyDynamics(nn.Module):
         self.include_sine = include_sine
         self.dt = dt
         # initialize coefficient matrix and mask
-        lib_dim = library_size(latent_dim, poly_order, include_sine)
-        self.coefficients = nn.Parameter(torch.zeros(lib_dim, latent_dim))
-        self.register_buffer('coefficient_mask', torch.zeros(lib_dim, latent_dim))
+        self.lib_dim = library_size(latent_dim, poly_order, include_sine)
+        self.coefficients = nn.Parameter(torch.zeros(self.lib_dim, latent_dim))
+        self.register_buffer('coefficient_mask', torch.zeros(self.lib_dim, latent_dim))
 
     def fit(self,
             z: torch.Tensor,
