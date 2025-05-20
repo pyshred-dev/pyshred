@@ -80,15 +80,81 @@ class SHREDEngine:
         with torch.no_grad():
             # assumes your model.gru_outputs returns shape (T, latent_dim) when sindy=False
             latents = self.model.gru_outputs(X, sindy=False)
-            latents = latents["final_hidden_state"]
             # latents is a torch.Tensor shape (T, latent_dim)
         # 6) Return as numpy
         return latents.cpu().numpy()
-    
-    def evaluate(self, init, test_dataset, inverse_transform=True):
+
+
+# recon_dict_out = manager.postprocess(reconstruction, mode = "reconstruct")
+    def decode(self, latents):
+        device = next(self.model.decoder.parameters()).device
+        if isinstance(latents, np.ndarray):
+            latents = torch.from_numpy(latents).to(device).float()
+        else:
+            latents = latents.to(device).float()
+        self.model.decoder.eval()
+        with torch.no_grad():
+            output = self.model.decoder(latents)
+        output = output.detach().cpu().numpy()
+        output = self.dm.data_scaler.inverse_transform(output)
+        results = {}
+        start_index = 0
+        for id in self.dm._dataset_ids:
+            length = self.dm._dataset_lengths.get(id)
+            Vt = self.dm._Vt_registry.get(id)
+            preSVD_scaler = self.dm._preSVD_scaler_registry.get(id)
+            spatial_shape = self.dm._dataset_spatial_shape.get(id)
+            dataset = output[:,start_index:start_index+length]
+            if Vt is not None:
+                dataset = dataset @ Vt
+            if preSVD_scaler is not None:
+                dataset = preSVD_scaler.inverse_transform(dataset)
+            original_shape = (dataset.shape[0],) + spatial_shape
+            results[id] = dataset.reshape(original_shape)
+            start_index = length + start_index
+        return results
+
+
+    def decode(self, latents):
+        device = next(self.model.decoder.parameters()).device
+        if isinstance(latents, np.ndarray):
+            latents = torch.from_numpy(latents).to(device).float()
+        else:
+            latents = latents.to(device).float()
+        decoder_input = {"final_hidden_state": latents} # DAVID this only works for SDN type latents not UNET
+        self.model.decoder.eval()
+        with torch.no_grad():
+            output = self.model.decoder(decoder_input)
+        output = output.detach().cpu().numpy()
+        output = self.dm.data_scaler.inverse_transform(output)
+        results = {}
+        start_index = 0
+        for id in self.dm._dataset_ids:
+            length = self.dm._dataset_lengths.get(id)
+            Vt = self.dm._Vt_registry.get(id)
+            preSVD_scaler = self.dm._preSVD_scaler_registry.get(id)
+            spatial_shape = self.dm._dataset_spatial_shape.get(id)
+            dataset = output[:,start_index:start_index+length]
+            if Vt is not None:
+                dataset = dataset @ Vt
+            if preSVD_scaler is not None:
+                dataset = preSVD_scaler.inverse_transform(dataset)
+            original_shape = (dataset.shape[0],) + spatial_shape
+            results[id] = dataset.reshape(original_shape)
+            start_index = length + start_index
+        return results
+
+
+    def evaluate_forecast(self, init, test_dataset, inverse_transform=True):
         # returns prediction and forecast MSE on test dataset
         # if inverse transform is True: undos any minmax scaling and compression
         # else: comparable error to train and validation MSE
         pass
 
-    
+
+    def evaluate_forecast(self, init_latents, Y, inverse_transform=True):
+        pass
+
+
+    def evaluate_reconstruction(self, sensor_measurements: Union[np.ndarray, torch.Tensor, pd.DataFrame], Y, inverse_transform=True):
+        latent = self.sensor_to_latent(sensor_measurements)

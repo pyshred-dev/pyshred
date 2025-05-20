@@ -5,7 +5,6 @@ from .utils import *
 from ..objects.dataset import *
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.utils.extmath import randomized_svd
-import warnings
 from itertools import count
 
 DEFAULT_MODES = 50
@@ -47,7 +46,8 @@ class DataManager:
         self.data_scaler = None
 
         self._dataset_ids = []
-        self._dataset_lengths = {}
+        self._dataset_spatial_shape = {}
+        self._dataset_lengths = {} # spatial dim after flattening to a single spatial axis
         self._Vt_registry = {}
         self._preSVD_scaler_registry = {}
         self._sensor_number = count(start=0)
@@ -63,9 +63,11 @@ class DataManager:
                  stationary: Optional[Union[Tuple, List[Tuple]]] = None,
                  mobile: Optional[Union[List[Tuple], List[List[Tuple]]]] = None,
                  measurements: Optional[Union[List[float], List[List[float]]]] = None,
-                 compress: Union[bool, int] = True, scale: bool = True):
+                 compress: Union[bool, int] = True):
         modes = self._parse_compress(compress)
         data = get_data(data)
+        self._dataset_ids.append(id)
+        self._dataset_spatial_shape[self._dataset_ids[-1]] = data.shape[1:] # save spatial dimension to reshape back to original shape after flattening
         if self.train_indices is None:
             self.train_indices = np.arange(0, int(len(data)*self.train_size))
         if self.val_indices is None:
@@ -73,7 +75,6 @@ class DataManager:
                                         int(len(data)*self.train_size + len(data)*self.val_size))
         if self.test_indices is None:
             self.test_indices = np.arange(int(len(data)*self.train_size +len(data)*self.val_size), len(data))
-        self._dataset_ids.append(id)
         sensors_dict = get_sensor_measurements(
                         data = data,
                         id = id,
@@ -102,7 +103,7 @@ class DataManager:
             self.train_sensor_measurements = self.sensor_measurements[self.train_indices]
             self.val_sensor_measurements = self.sensor_measurements[self.val_indices]
             self.test_sensor_measurements = self.sensor_measurements[self.test_indices]
-
+        data = data.reshape(data.shape[0], -1) # flatten to a single spatial dimension
         if modes > 0:
             sc = StandardScaler()
             sc.fit(data[self.train_indices])

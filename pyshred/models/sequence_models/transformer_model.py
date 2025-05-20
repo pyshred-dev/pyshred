@@ -2,20 +2,22 @@ import torch
 import math
 import torch.nn as nn
 from .abstract_sequence import AbstractSequence
+from ..decoder_models.sdn_model import SDN
+from ..decoder_models.unet_model import UNET
 
 class TRANSFORMER(AbstractSequence):
     def __init__(self, d_model: int = 128, nhead: int = 16, dropout: float = 0.2):
         super().__init__()
         self.d_model = d_model
+        self.hidden_size = d_model
         self.dropout = dropout
-        # self.pos_encoder = PositionalEncoding(d_model, sequence_length, dropout)
         self.encoder_layer = nn.TransformerEncoderLayer(d_model, nhead, dim_feedforward=128, dropout=dropout, activation=nn.GELU(), batch_first=True)
         self.transformer_encoder = nn.TransformerEncoder(self.encoder_layer, num_layers=1)
         self.relu = nn.ReLU()
         self.output_size = d_model
-        # self.unet_decoder = UNetDecoder(input_size=d_model, output_size = 50, dropout = dropout)
+        self.decoder = None
 
-    def initialize(self, input_size:int, lags:int, **kwargs):
+    def initialize(self, input_size:int, lags:int, decoder, **kwargs):
         super().initialize(input_size)
         sequence_length = lags
         self.pos_encoder = PositionalEncoding(self.d_model,
@@ -25,25 +27,24 @@ class TRANSFORMER(AbstractSequence):
                                       ,hidden_size=self.d_model,
                                       num_layers=2,
                                       batch_first=True)
-
+        self.decoder = decoder
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         super().forward(x)
         # Apply input embedding
-        # print('in_x', x.shape)
         x, _= self.input_embedding(x)
         # Apply positional encoding
         x = self.pos_encoder(x)
         # Apply transformer encoder
         x = self.transformer_encoder(x, self._generate_square_subsequent_mask(x.size(1), x.device).to(torch.bool))
-        # Apply U-Net decoder
-        # x = self.unet_decoder(x)
-        # return x # [batch_size, sequence_length, d_model]
-        return {
-            "sequence_output": x, # [batch_size, sequence_length, d_model]
-            "final_hidden_state": x[:,-1,:] # last timestep
-        }
-
+        if isinstance(self.decoder, SDN):
+            return x[:,-1,:]
+        elif isinstance(self.decoder, UNET):
+            return x.permute(0, 2, 1)
+        else:
+            raise TypeError(
+                f"Unsupported decoder type: {type(self.decoder).__name__}. "
+            )
 
     def _generate_square_subsequent_mask(self, sequence_length: int, device) -> torch.Tensor:
         mask = torch.triu(torch.ones(sequence_length, sequence_length, device=device), diagonal=1).bool()

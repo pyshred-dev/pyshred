@@ -1,13 +1,19 @@
 import torch
 from torch.utils.data import DataLoader
 import numpy as np
-
 from ..latent_forecaster_models.lstm import LSTMForecaster
 from .sindy_dynamics import SINDyDynamics
 from ..latent_forecaster_models.sindy import SINDy_Forecaster
 import pysindy as ps
 from .sindy import sindy_library_torch, e_sindy_library_torch
-
+from ..models.sequence_models.abstract_sequence import AbstractSequence
+from ..models.decoder_models.abstract_decoder import AbstractDecoder
+from ..models.decoder_models.sdn_model import SDN
+from ..models.decoder_models.unet_model import UNET
+from ..models.sequence_models.gru_model import GRU
+from ..models.sequence_models.lstm_model import LSTM
+from ..models.sequence_models.transformer_model import TRANSFORMER
+import warnings
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -77,8 +83,19 @@ class E_SINDy(torch.nn.Module):
         self.coefficients.data = torch.randn_like(self.coefficients.data) * 0.0
         self.coefficient_mask = torch.ones(self.num_replicates, self.library_dim, self.latent_dim, requires_grad=False).to(device)  
 
-from .decoder_models import *
-from .sequence_models import *
+
+SEQUENCE_MODELS = {
+    "LSTM": LSTM,
+    "TRANSFORMER": TRANSFORMER,
+    "GRU": GRU,
+}
+
+DECODER_MODELS = {
+    "SDN": SDN,
+    "UNET": UNET,
+}
+
+NUM_REPLICATES = 10
 
 class SINDy_SHRED(torch.nn.Module):
     def __init__(self, sequence_model = None, decoder_model = None, dynamics = None, layer_norm = False):
@@ -89,25 +106,40 @@ class SINDy_SHRED(torch.nn.Module):
                 self.sequence = GRU()
             else:
                 self.sequence = LSTM()
+        elif isinstance(sequence_model, AbstractSequence):
+            self.sequence = sequence_model
+        elif isinstance(sequence_model, str):
+            sequence_model = sequence_model.upper()
+            if sequence_model not in SEQUENCE_MODELS:
+                raise ValueError(f"Invalid sequence model: {sequence_model}. Choose from: {list(SEQUENCE_MODELS.keys())}")
+            self.sequence = SEQUENCE_MODELS[sequence_model]()
+        else:
+            raise ValueError("Invalid type for 'sequence_model'. Must be str or an AbstractSequence instance or None.")
+    
         if decoder_model is None:
             self.decoder = SDN()
-        self.num_replicates = 10
-        self.e_sindy = E_SINDy(self.num_replicates, self.sequence.hidden_size, dynamics.lib_dim, dynamics.poly_order,
-                               dynamics.include_sine).to(device)
-        self.dt = dynamics.dt
-        self.poly_order = dynamics.poly_order
+        elif isinstance(decoder_model, AbstractDecoder):
+            self.decoder = decoder_model
+        elif isinstance(decoder_model, str):
+            decoder_model = decoder_model.upper()
+            if decoder_model not in DECODER_MODELS:
+                raise ValueError(f"Invalid decoder model: {decoder_model}. Choose from: {list(DECODER_MODELS.keys())}")
+            self.decoder = DECODER_MODELS[decoder_model]()
+        else:
+            raise ValueError("Invalid type for 'decoder'. Must be str or an AbstractDecoder instance or None.")
+        self.num_replicates = NUM_REPLICATES
         self.use_layer_norm = layer_norm
         self.layer_norm_gru = torch.nn.LayerNorm(self.sequence.hidden_size)
         self.latent_forecaster = None
+        self.dynamics.latent_dim = self.sequence.hidden_size
+        self.dynamics.initialize()
 
     def forward(self, x, sindy=False):
         if sindy == True:
             h_out = self.sequence(x)
-            h_out = h_out["final_hidden_state"]
             if self.use_layer_norm:
                 h_out = self.layer_norm_gru(h_out)
-            decoder_input = {"final_hidden_state": h_out}
-            output = self.decoder(decoder_input)
+            output = self.decoder(h_out)
             with torch.autograd.set_detect_anomaly(True):
                 if sindy:
                     h_t = h_out[:-1, :]
@@ -125,7 +157,6 @@ class SINDy_SHRED(torch.nn.Module):
     def gru_outputs(self, x, sindy=False):
         if sindy == True:
             h_out = self.sequence(x)
-            h_out = h_out["final_hidden_state"]
             if self.use_layer_norm:
                 h_out = self.layer_norm_gru(h_out)
             if sindy:
@@ -145,17 +176,38 @@ class SINDy_SHRED(torch.nn.Module):
     def sindys_add_noise(self, noise):
         self.e_sindy.add_noise(noise)
 
+
     # sindy_regularization previously set to 1.0
     def fit(self, train_dataset, val_dataset,  batch_size=64, num_epochs=200, lr=1e-3, sindy_regularization=0, optimizer="AdamW", verbose=True, threshold=0.5, base_threshold=0.0, patience=20, thres_epoch=100, weight_decay=0.01):
+        if self.dynamics is None and sindy_regularization > 0:
+            sindy_regularization = 0
+            warnings.warn("WARNING: No dynamics object provided during initialization: disabling SINDy regularization.",
+                UserWarning
+            )
+            # print("WARNING: No dynamics object provided during initialization: disabling SINDy regularization.")
         if sindy_regularization > 0:
-            sindy = True # sindy regularization is on
+            sindy = True
+            if not isinstance(self.decoder, SDN):
+                warnings.warn("WARNING: SINDy regularization > 0: switching decoder to SDN for compatibility.",
+                    UserWarning
+                )
+                self.decoder = SDN()
         else:
             sindy = False
+
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        if self.dynamics is not None:
+            self.dt = self.dynamics.dt
+            self.poly_order = self.dynamics.poly_order
+            self.lib_dim = self.dynamics.lib_dim
+            self.include_sine = self.dynamics.include_sine
+            self.e_sindy = E_SINDy(self.num_replicates, self.sequence.hidden_size, self.lib_dim, self.poly_order,
+                                self.include_sine).to(device)
         input_size = train_dataset.X.shape[2] # nsensors + nparams
         output_size = train_dataset.Y.shape[1]
         lags = train_dataset.X.shape[1] # lags
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.sequence.initialize(input_size=input_size, lags=lags)
+
+        self.sequence.initialize(input_size=input_size, lags=lags, decoder=self.decoder)
         self.sequence.to(device)
         self.decoder.initialize(input_size=self.sequence.output_size, output_size=output_size)
         self.decoder.to(device)
@@ -223,7 +275,6 @@ class SINDy_SHRED(torch.nn.Module):
         self.eval()
         with torch.no_grad():
             latents = self.gru_outputs(X_all, sindy=False)   # (N_train+N_val, latent_dim)
-            latents = latents["final_hidden_state"]
         print('X_all.shape',X_all.shape)
         print('latents.shape')
         # to numpy and hand off to pysindy

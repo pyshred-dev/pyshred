@@ -40,19 +40,20 @@ class SINDyDynamics(nn.Module):
     Sparse Identification of Nonlinear Dynamics for latent space.
     """
     def __init__(self,
-                 latent_dim: int,
                  poly_order: int = 3,
                  include_sine: bool = False,
                  dt: float = 1.0):
         super().__init__()
-        self.latent_dim = latent_dim
+        self.latent_dim = None
         self.poly_order = poly_order
         self.include_sine = include_sine
         self.dt = dt
+    
+    def initialize(self):
         # initialize coefficient matrix and mask
-        self.lib_dim = library_size(latent_dim, poly_order, include_sine)
-        self.coefficients = nn.Parameter(torch.zeros(self.lib_dim, latent_dim))
-        self.register_buffer('coefficient_mask', torch.zeros(self.lib_dim, latent_dim))
+        self.lib_dim = library_size(self.latent_dim, self.poly_order, self.include_sine)
+        self.coefficients = nn.Parameter(torch.zeros(self.lib_dim, self.latent_dim))
+        self.register_buffer('coefficient_mask', torch.zeros(self.lib_dim, self.latent_dim))
 
     def fit(self,
             z: torch.Tensor,

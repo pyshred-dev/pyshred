@@ -39,7 +39,6 @@ class SDN(AbstractDecoder):
     Accepts output of sequence model
     """
     def forward(self, x):
-        x = x["final_hidden_state"]
         output = self.linear1(x)
         output = self.dropout(output)
         output = F.relu(output)
