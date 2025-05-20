@@ -2,7 +2,7 @@ import torch
 from torch.utils.data import DataLoader
 import numpy as np
 from ..latent_forecaster_models.lstm import LSTMForecaster
-from .sindy_dynamics import SINDyDynamics
+from ..models.sindy_dynamics import SINDyDynamics
 from ..latent_forecaster_models.sindy import SINDy_Forecaster
 import pysindy as ps
 from .sindy import sindy_library_torch, e_sindy_library_torch
@@ -275,10 +275,9 @@ class SINDy_SHRED(torch.nn.Module):
         self.eval()
         with torch.no_grad():
             latents = self.gru_outputs(X_all, sindy=False)   # (N_train+N_val, latent_dim)
-        print('X_all.shape',X_all.shape)
-        print('latents.shape')
         # to numpy and hand off to pysindy
         latents_np = latents.cpu().numpy()
+        print('type(self.dynamics)',type(self.dynamics))
         if isinstance(self.dynamics, SINDyDynamics):
             self.latent_forecaster = SINDy_Forecaster(
                 latents_np,
