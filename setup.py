@@ -13,7 +13,8 @@ setup(
         "pandas",
         "torch",
         "scikit-learn",
-        "tqdm"
+        "scipy",
+        "pysindy",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

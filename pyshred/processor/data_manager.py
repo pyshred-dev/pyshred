@@ -64,9 +64,11 @@ class DataManager:
                  mobile: Optional[Union[List[Tuple], List[List[Tuple]]]] = None,
                  measurements: Optional[Union[List[float], List[List[float]]]] = None,
                  compress: Union[bool, int] = True):
+        if id in self._dataset_ids:
+            raise ValueError(f"Dataset id {id!r} already exists. Please choose a new id.")
+        self._dataset_ids.append(id)
         modes = self._parse_compress(compress)
         data = get_data(data)
-        self._dataset_ids.append(id)
         self._dataset_spatial_shape[self._dataset_ids[-1]] = data.shape[1:] # save spatial dimension to reshape back to original shape after flattening
         if self.train_indices is None:
             self.train_indices = np.arange(0, int(len(data)*self.train_size))

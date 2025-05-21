@@ -9,6 +9,7 @@ from .sequence_models.gru_model import GRU
 from .sequence_models.lstm_model import LSTM
 from .sequence_models.transformer_model import TRANSFORMER
 import warnings
+from ..objects.dataset import TimeSeriesDataset
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -291,11 +292,12 @@ class SHRED(torch.nn.Module):
             latents = self.gru_outputs(X_all, sindy=False)   # (N_train+N_val, latent_dim)
         # to numpy and hand off to pysindy
         latents_np = latents.cpu().numpy()
-        self.latent_forecaster.fit(latents_np)
+        if self.latent_forecaster:
+            self.latent_forecaster.fit(latents_np)
         return torch.tensor(val_error_list).detach().cpu().numpy()
 
 
-    def evaluate(self, test_dataset, batch_size=64):
+    def evaluate(self, dataset: TimeSeriesDataset, batch_size: int=64):
         """
         Compute mean squared error on a held‐out test dataset.
 
@@ -312,7 +314,7 @@ class SHRED(torch.nn.Module):
             The MSE over all elements in the test set.
         """
         self.eval()
-        loader = DataLoader(test_dataset, shuffle=False, batch_size=batch_size)
+        loader = DataLoader(dataset, shuffle=False, batch_size=batch_size)
         criterion = torch.nn.MSELoss(reduction="sum")
         device = next(self.parameters()).device
         total_loss = 0.0
