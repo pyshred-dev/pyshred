@@ -1,19 +1,20 @@
 import warnings
-from ..models.sindy_shred import SINDy_SHRED
+from ..models.shred import SHRED
 from ..processor.data_manager import DataManager
 import numpy as np
 import torch
 import pandas as pd
-from typing import Union
+from typing import Union, Dict
 from ..processor.utils import *
 from ..latent_forecaster_models.sindy import SINDy_Forecaster
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 class SHREDEngine:
     # We want forecaster in the init as well... so need to fit in shred_model??
-    def __init__(self, data_manager: DataManager, shred_model: SINDy_SHRED):
+    def __init__(self, data_manager: DataManager, shred_model: SHRED):
         """
         data_manager   : DataManager (already .prepare()'d, so sensor_scaler exists)
-        shred_model    : your trained SINDy_SHRED instance
+        shred_model    : your trained SHRED instance
         """
         self.dm    = data_manager
         self.model = shred_model
@@ -114,20 +115,43 @@ class SHREDEngine:
         return results
 
 
-    def evaluate_forecast(self, init, test_dataset, inverse_transform=True):
-        # returns prediction and forecast MSE on test dataset
-        # if inverse transform is True: undos any minmax scaling and compression
-        # else: comparable error to train and validation MSE
-        pass
+    def evaluate(
+        self,
+        sensor_measurements: np.ndarray,
+        Y: Dict[str, np.ndarray]  # raw full‐state, exactly like decode() returns
+    ) -> pd.DataFrame:
+        """
+        Performs end‐to‐end reconstruction error in the *physical* space.
+        
+        Parameters
+        ----------
+        sensor_measurements : (T, n_sensors)
+            The test sensor time series.
+        Y : dict[id] -> array (T, *spatial_shape)
+            The *raw* full‐state ground truth for each dataset id.
+        
+        Returns
+        -------
+        DataFrame indexed by dataset id with columns [MSE, RMSE, MAE, R2].
+        """
+        # 1) Get the model’s reconstruction in raw space
+        latents = self.sensor_to_latent(sensor_measurements)
+        recon_dict = self.decode(latents)   # dict[id] -> (T, *spatial_shape)
+        
+        # 2) Compute stats
+        records = []
+        for id, y_true in Y.items():
+            y_pred = recon_dict[id]
+            y_true_flat = y_true.reshape(y_true.shape[0], -1)
+            y_pred_flat = y_pred.reshape(y_pred.shape[0], -1)
 
+            mse   = mean_squared_error(y_true_flat, y_pred_flat)
+            rmse  = np.sqrt(mse)
+            mae   = mean_absolute_error(y_true_flat, y_pred_flat)
+            r2    = r2_score(y_true_flat, y_pred_flat)
 
-    def evaluate_forecast(self, init_latents, Y, inverse_transform=True):
-        pass
-
-
-    def evaluate_reconstruction(self, sensor_measurements: Union[np.ndarray, torch.Tensor, pd.DataFrame], Y, inverse_transform=True):
-        latent = self.sensor_to_latent(sensor_measurements)
-
-
-    def evaluate_all():
-        pass
+            records.append({
+                "dataset": id, "MSE": mse, "RMSE": rmse,
+                "MAE": mae, "R2": r2
+            })
+        return pd.DataFrame.from_records(records).set_index("dataset")

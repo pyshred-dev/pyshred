@@ -1,13 +1,13 @@
 import torch
 from torch.utils.data import DataLoader
 from .sindy import sindy_library_torch, e_sindy_library_torch
-from ..models.sequence_models.abstract_sequence import AbstractSequence
-from ..models.decoder_models.abstract_decoder import AbstractDecoder
-from ..models.decoder_models.sdn_model import SDN
-from ..models.decoder_models.unet_model import UNET
-from ..models.sequence_models.gru_model import GRU
-from ..models.sequence_models.lstm_model import LSTM
-from ..models.sequence_models.transformer_model import TRANSFORMER
+from .sequence_models.abstract_sequence import AbstractSequence
+from .decoder_models.abstract_decoder import AbstractDecoder
+from .decoder_models.sdn_model import SDN
+from .decoder_models.unet_model import UNET
+from .sequence_models.gru_model import GRU
+from .sequence_models.lstm_model import LSTM
+from .sequence_models.transformer_model import TRANSFORMER
 import warnings
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -92,9 +92,10 @@ DECODER_MODELS = {
 
 NUM_REPLICATES = 10
 
-class SINDy_SHRED(torch.nn.Module):
+class SHRED(torch.nn.Module):
     def __init__(self, sequence_model = None, decoder_model = None, latent_forecaster = None, layer_norm = False):
-        super(SINDy_SHRED, self).__init__()
+        # super(SHRED, self).__init__()
+        super().__init__()  
         self.latent_forecaster = latent_forecaster
         if sequence_model is None:
             if latent_forecaster is not None:
@@ -240,15 +241,35 @@ class SINDy_SHRED(torch.nn.Module):
             if sindy:
                 if epoch % thres_epoch == 0 and epoch != 0:
                     self.e_sindy.thresholding(threshold=threshold, base_threshold=base_threshold)
+            # self.eval()
+            # with torch.no_grad():
+            #     val_outputs = self(val_dataset.X.to(device))
+            #     val_targets = val_dataset.Y.to(device)
+            #     val_error = criterion(val_outputs, val_targets)
+            #     val_error_list.append(val_error)
+            # if verbose:
+            #     print('Training epoch ' + str(epoch))
+            #     print('Error ' + str(val_error_list[-1]))
             self.eval()
+            val_loader = DataLoader(val_dataset, shuffle=False, batch_size=batch_size)
+            val_criterion = torch.nn.MSELoss(reduction="sum")
+            total_val_loss = 0.0
+            total_val_elems = 0
             with torch.no_grad():
-                val_outputs = self(val_dataset.X.to(device))
-                val_targets = val_dataset.Y.to(device)
-                val_error = criterion(val_outputs, val_targets)
-                val_error_list.append(val_error)
+                for X_val, Y_val in val_loader:
+                    X_val, Y_val = X_val.to(device), Y_val.to(device)
+                    preds = self(X_val)
+                    # if you ever forward with sindy=True, unpack the reconstruction
+                    if isinstance(preds, tuple):
+                        preds = preds[0]
+                    batch_loss = val_criterion(preds, Y_val)
+                    total_val_loss += batch_loss.item()
+                    total_val_elems += Y_val.numel()
+            # now compute the true mean‐squared‐error
+            val_error = total_val_loss / total_val_elems
+            val_error_list.append(val_error)
             if verbose:
-                print('Training epoch ' + str(epoch))
-                print('Error ' + str(val_error_list[-1]))
+                print(f"Validation MSE (epoch {epoch}): {val_error:.6f}")
             if val_error < best_val_error:
                 best_val_error = val_error
                 best_params = self.state_dict()
@@ -272,3 +293,41 @@ class SINDy_SHRED(torch.nn.Module):
         latents_np = latents.cpu().numpy()
         self.latent_forecaster.fit(latents_np)
         return torch.tensor(val_error_list).detach().cpu().numpy()
+
+
+    def evaluate(self, test_dataset, batch_size=64):
+        """
+        Compute mean squared error on a held‐out test dataset.
+
+        Parameters
+        ----------
+        test_dataset : torch.utils.data.Dataset
+            Should return (X, Y) pairs just like your train/val datasets.
+        batch_size : int, optional
+            How many samples per batch. Defaults to 64.
+
+        Returns
+        -------
+        float
+            The MSE over all elements in the test set.
+        """
+        self.eval()
+        loader = DataLoader(test_dataset, shuffle=False, batch_size=batch_size)
+        criterion = torch.nn.MSELoss(reduction="sum")
+        device = next(self.parameters()).device
+        total_loss = 0.0
+        total_elements = 0
+        with torch.no_grad():
+            for X, Y in loader:
+                X, Y = X.to(device), Y.to(device)
+                preds = self(X) 
+                # if sindy=True forward returns a tuple,
+                # we only want the reconstruction
+                if isinstance(preds, tuple):
+                    preds = preds[0]
+                loss = criterion(preds, Y)
+                total_loss += loss.item()
+                total_elements += Y.numel()
+        # mean over every scalar element
+        mse = total_loss / total_elements
+        return mse
