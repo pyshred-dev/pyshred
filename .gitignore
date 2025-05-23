@@ -2,3 +2,5 @@
 *.mat
 *.egg-info
 build
+pyshred/sst copy.ipynb
+pyshred/sst_figures.ipynb
