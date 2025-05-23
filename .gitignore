@@ -1,3 +1,4 @@
 *.pyc
 *.mat
 *.egg-info
+build
