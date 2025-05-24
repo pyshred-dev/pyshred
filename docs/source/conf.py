@@ -30,6 +30,7 @@ html_theme_options = {
     ("Examples",   "examples/index"),
     ("API Reference", "pyshred/index"),
   ],
+  "collapse_navigation": False,
 }
 # Tell Sphinx to recognize both .rst and .md files
 source_suffix = {
