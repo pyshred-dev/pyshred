@@ -2,6 +2,9 @@ import pysindy as ps
 import torch
 from ..models.sindy_utils import library_size
 import torch.nn as nn
+import numpy as np
+import warnings
+
 
 class SINDy_Forecaster(nn.Module):
     """
@@ -33,6 +36,22 @@ class SINDy_Forecaster(nn.Module):
             feature_library = ps.PolynomialLibrary(degree=self.poly_order)
         )
 
+    def forecast(self, t, init_latents):
+        dt = self.dt
+        t_train = np.arange(0, t*dt, dt)
+        if init_latents.ndim > 2:
+            raise ValueError(
+                f"Invalid `init_latents`: expected a 1D array (shape (m,)) or a 2D array "
+                f"(shape (timesteps, m)), but got a {init_latents.ndim}D array with shape {init_latents.shape}."
+            )
+        if init_latents.ndim == 2:
+            warnings.warn(
+                f"`init_latents` has shape {init_latents.shape}; only its last row "
+                "will be used as the initial latent state for SINDy.",
+                UserWarning
+            )
+            init_latents = init_latents[-1]
+        return self.model.simulate(init_latents, t_train)
 
     def fit(self, latents):
         self.model.fit(latents, t=self.dt)

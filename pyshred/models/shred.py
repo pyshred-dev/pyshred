@@ -1,15 +1,17 @@
 import torch
 from torch.utils.data import DataLoader
-from .sindy import sindy_library_torch, e_sindy_library_torch
-from .sequence_models.abstract_sequence import AbstractSequence
-from .decoder_models.abstract_decoder import AbstractDecoder
-from .decoder_models.sdn_model import SDN
-from .decoder_models.unet_model import UNET
-from .sequence_models.gru_model import GRU
-from .sequence_models.lstm_model import LSTM
-from .sequence_models.transformer_model import TRANSFORMER
+from ..models.sindy import sindy_library_torch, e_sindy_library_torch
+from ..models.sequence_models.abstract_sequence import AbstractSequence
+from ..models.decoder_models.abstract_decoder import AbstractDecoder
+from ..models.decoder_models.sdn_model import SDN
+from ..models.decoder_models.unet_model import UNET
+from ..models.sequence_models.gru_model import GRU
+from ..models.sequence_models.lstm_model import LSTM
+from ..models.sequence_models.transformer_model import TRANSFORMER
 import warnings
 from ..objects.dataset import TimeSeriesDataset
+from ..latent_forecaster_models.sindy import SINDy_Forecaster
+from ..latent_forecaster_models.lstm import LSTM_Forecaster
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -95,8 +97,7 @@ NUM_REPLICATES = 10
 
 class SHRED(torch.nn.Module):
     def __init__(self, sequence_model = None, decoder_model = None, latent_forecaster = None, layer_norm = False):
-        # super(SHRED, self).__init__()
-        super().__init__()  
+        super().__init__()
         self.latent_forecaster = latent_forecaster
         if sequence_model is None:
             if latent_forecaster is not None:
@@ -174,12 +175,16 @@ class SHRED(torch.nn.Module):
 
 
     # sindy_regularization previously set to 1.0
-    def fit(self, train_dataset, val_dataset,  batch_size=64, num_epochs=200, lr=1e-3, sindy_regularization=0, optimizer="AdamW", verbose=True, threshold=0.5, base_threshold=0.0, patience=20, thres_epoch=100, weight_decay=0.01):
-        if self.latent_forecaster is None and sindy_regularization > 0:
-            sindy_regularization = 0
-            warnings.warn("WARNING: No `latent_forecaster` object provided during initialization: disabling SINDy regularization.",
+    def fit(self, train_dataset, val_dataset,  batch_size=64, num_epochs=200, lr=1e-3, sindy_regularization=0,
+            optimizer="AdamW", verbose=True, threshold=0.5, base_threshold=0.0, patience=20,
+            thres_epoch=100, weight_decay=0.01):
+        if not isinstance(self.latent_forecaster, SINDy_Forecaster) and sindy_regularization > 0:
+            warnings.warn(
+                "`latent_forecaster` is not a SINDy_Forecaster; disabling SINDy regularization.",
                 UserWarning
             )
+            sindy_regularization = 0
+
         if sindy_regularization > 0:
             sindy = True
             if not isinstance(self.decoder, SDN):
@@ -191,7 +196,7 @@ class SHRED(torch.nn.Module):
             sindy = False
 
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        if self.latent_forecaster is not None:
+        if isinstance(self.latent_forecaster, SINDy_Forecaster):
             self.dt = self.latent_forecaster.dt
             self.poly_order = self.latent_forecaster.poly_order
             self.lib_dim = self.latent_forecaster.lib_dim
@@ -242,15 +247,6 @@ class SHRED(torch.nn.Module):
             if sindy:
                 if epoch % thres_epoch == 0 and epoch != 0:
                     self.e_sindy.thresholding(threshold=threshold, base_threshold=base_threshold)
-            # self.eval()
-            # with torch.no_grad():
-            #     val_outputs = self(val_dataset.X.to(device))
-            #     val_targets = val_dataset.Y.to(device)
-            #     val_error = criterion(val_outputs, val_targets)
-            #     val_error_list.append(val_error)
-            # if verbose:
-            #     print('Training epoch ' + str(epoch))
-            #     print('Error ' + str(val_error_list[-1]))
             self.eval()
             val_loader = DataLoader(val_dataset, shuffle=False, batch_size=batch_size)
             val_criterion = torch.nn.MSELoss(reduction="sum")
@@ -292,8 +288,10 @@ class SHRED(torch.nn.Module):
             latents = self.gru_outputs(X_all, sindy=False)   # (N_train+N_val, latent_dim)
         # to numpy and hand off to pysindy
         latents_np = latents.cpu().numpy()
-        if self.latent_forecaster:
+        if isinstance(self.latent_forecaster, SINDy_Forecaster):
             self.latent_forecaster.fit(latents_np)
+        elif isinstance(self.latent_forecaster, LSTM_Forecaster):
+            self.latent_forecaster.fit(latents=latents_np, num_epochs=num_epochs, batch_size=batch_size, lr=lr)
         return torch.tensor(val_error_list).detach().cpu().numpy()
 
 

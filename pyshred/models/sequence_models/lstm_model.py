@@ -7,7 +7,7 @@ from ..decoder_models.unet_model import UNET
 class LSTM(AbstractSequence):
 
 
-    def __init__(self, hidden_size:int =3, num_layers:int =2):
+    def __init__(self, hidden_size:int =64, num_layers:int =2):
         super().__init__()
         self.hidden_size = hidden_size
         self.num_layers = num_layers
