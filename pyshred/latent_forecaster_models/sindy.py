@@ -4,7 +4,11 @@ from ..models.sindy_utils import library_size
 import torch.nn as nn
 import numpy as np
 import warnings
-
+try: 
+    from pysindy.optimizers import SINDyPI
+    sindy_pi_flag = True
+except ImportError:
+    sindy_pi_flag = False
 
 class SINDy_Forecaster(nn.Module):
     """
@@ -55,3 +59,25 @@ class SINDy_Forecaster(nn.Module):
 
     def fit(self, latents):
         self.model.fit(latents, t=self.dt)
+
+    def __str__(self, lhs=None, precision=3):
+        eqns = self.model.equations(precision=precision)
+        if sindy_pi_flag and isinstance(self.model.optimizer, SINDyPI):
+            feature_names = self.model.get_feature_names()
+        else:
+            feature_names = self.model.feature_names
+        lines = []
+        for i, eqn in enumerate(eqns):
+            if self.model.discrete_time:
+                name = f"({feature_names[i]})"
+                lines.append(f"{name}[k+1] = {eqn}")
+            elif lhs is None:
+                if not sindy_pi_flag or not isinstance(self.model.optimizer, SINDyPI):
+                    name = f"({feature_names[i]})"
+                    lines.append(f"{name}' = {eqn}")
+                else:
+                    lines.append(f"{feature_names[i]} = {eqn}")
+            else:
+                lines.append(f"{lhs[i]} = {eqn}")
+
+        return "\n".join(lines)
