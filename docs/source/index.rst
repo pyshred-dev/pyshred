@@ -12,18 +12,31 @@ documentation for details.
 
 
 .. toctree::
-   :maxdepth: 2
-   :glob:
-   :caption: USER GUIDE
+   :maxdepth: 1
+   :caption: Getting Started:
 
-   Examples <examples/index>
-   API Documentation <pyshred>
+   getting_started/index
 
 
 .. toctree::
-   :maxdepth: 2
-   :glob:
-   :caption: OTHER
+   :maxdepth: 1
+   :caption: User Guide:
 
-   Examples <examples/index>
-   API Documentation <pyshred>
+   user_guide/index
+
+
+.. toctree::
+   :maxdepth: 1
+   :glob:
+   :caption: Examples
+
+   examples/index
+
+
+.. toctree::
+   :maxdepth: 1
+   :caption: API Reference:
+
+   pyshred/index
+
+

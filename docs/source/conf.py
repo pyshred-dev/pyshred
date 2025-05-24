@@ -23,7 +23,14 @@ extensions = [
 ]
 html_theme = "sphinx_rtd_theme"
 
-
+html_theme_options = {
+  "navbar_links": [
+    ("Getting Started", "getting_started/index"),
+    ("User Guide", "user_guide/index"),
+    ("Examples",   "examples/index"),
+    ("API Reference", "pyshred/index"),
+  ],
+}
 # Tell Sphinx to recognize both .rst and .md files
 source_suffix = {
     ".rst": "restructuredtext",

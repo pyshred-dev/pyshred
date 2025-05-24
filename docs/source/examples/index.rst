@@ -5,5 +5,5 @@ Examples
    :maxdepth: 1
    :glob:
 
-   getting_started
-   rom_shred
+   basic_shred_sst
+   sindy_shred_sst
