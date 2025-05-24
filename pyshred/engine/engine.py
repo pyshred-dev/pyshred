@@ -46,7 +46,7 @@ class SHREDEngine:
             raise TypeError(f"Unsupported type {type(sensor_measurements)} for sensor_measurements")
         # 2) Scale using the DataManager's fitted scaler (shape -> (T, n_sensors))
         scaled_sensor_measurements = self.dm.sensor_scaler.transform(sensor_measurements)  
-        # 3) Build lagged windows (shape -> (T, lags+1, n_sensors))
+        # 3) Build lagged windows (shape -> (T, lags, n_sensors))
         lags = self.dm.lags
         lagged = generate_lagged_sensor_measurements(scaled_sensor_measurements, lags)
         # 4) To torch on same device as model:

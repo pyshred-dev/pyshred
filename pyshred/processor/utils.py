@@ -182,7 +182,7 @@ def generate_lagged_sensor_measurements(sensor_measurements, lags):
     num_sensors = sensor_measurements.shape[1]
     # concatenate zeros padding at beginning of sensor data along axis 0
     sensor_measurements = np.concatenate((np.zeros((lags, num_sensors)), sensor_measurements), axis = 0)
-    lagged_sequences = np.empty((num_timesteps, lags + 1, num_sensors))
+    lagged_sequences = np.empty((num_timesteps, lags, num_sensors))
     for i in range(lagged_sequences.shape[0]):
-        lagged_sequences[i] = sensor_measurements[i:i+lags+1, :]
+        lagged_sequences[i] = sensor_measurements[i:i+lags, :]
     return lagged_sequences
