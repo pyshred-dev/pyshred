@@ -1,4 +1,4 @@
-# SINDy-SHRED Tutorial on Sea Surface Temperature (SHRED V1)
+# SINDy-SHRED Tutorial on Sea Surface Temperature
 
 
 ```python

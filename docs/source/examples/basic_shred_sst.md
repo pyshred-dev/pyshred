@@ -1,4 +1,4 @@
-# Basic SHRED Tutorial on Sea Surface Temperature (SHRED V1)
+# Basic SHRED Tutorial on Sea Surface Temperature
 
 
 ```python
