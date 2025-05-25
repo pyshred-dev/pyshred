@@ -19,10 +19,8 @@ extensions = [
     "sphinx.ext.napoleon",     # understand Google & NumPy styles
     "sphinx.ext.viewcode",     # link to your source on each docs page
     "myst_parser",
-    "sphinx_rtd_theme",
     "sphinx.ext.githubpages",
 ]
-html_theme = "sphinx_rtd_theme"
 
 html_theme_options = {
   "collapse_navigation": False,
