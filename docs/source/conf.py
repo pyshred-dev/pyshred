@@ -20,16 +20,11 @@ extensions = [
     "sphinx.ext.viewcode",     # link to your source on each docs page
     "myst_parser",
     "sphinx_rtd_theme",
+    "sphinx.ext.githubpages",
 ]
 html_theme = "sphinx_rtd_theme"
 
 html_theme_options = {
-  "navbar_links": [
-    ("Getting Started", "getting_started/index"),
-    ("User Guide", "user_guide/index"),
-    ("Examples",   "examples/index"),
-    ("API Reference", "pyshred/index"),
-  ],
   "collapse_navigation": False,
 }
 # Tell Sphinx to recognize both .rst and .md files
