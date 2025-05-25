@@ -17,7 +17,8 @@ jobs:
         python-version: '3.11'
     - name: Install dependencies
       run: |
-        pip install sphinx myst-parser pydata-sphinx-theme
+        python -m pip install --upgrade pip
+        pip install -r docs/requirements-docs.txt
     - name: Build HTML
       uses: ammaraskar/sphinx-action@master
     - name: Upload artifacts
