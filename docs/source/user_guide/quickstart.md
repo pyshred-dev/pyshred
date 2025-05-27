@@ -812,7 +812,7 @@ latent_forecaster = LSTM_Forecaster(lags=latent_lags)
 
 
 ```python
-shred = SHRED(sequence_model="LSTM", decoder_model="SDN", latent_forecaster=latent_forecaster)
+shred = SHRED(sequence_model="LSTM", decoder_model="MLP", latent_forecaster=latent_forecaster)
 ```
 
 #### Fit SHRED

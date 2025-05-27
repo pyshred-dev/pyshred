@@ -1,7 +1,7 @@
 import torch.nn as nn
 import torch
 from .abstract_sequence import AbstractSequence
-from ..decoder_models.sdn_model import SDN
+from ..decoder_models.mlp_model import MLP
 from ..decoder_models.unet_model import UNET
 
 class LSTM(AbstractSequence):
@@ -36,7 +36,7 @@ class LSTM(AbstractSequence):
         h_0 = torch.zeros((self.num_layers, x.size(0), self.hidden_size), device=device)
         c_0 = torch.zeros((self.num_layers, x.size(0), self.hidden_size), device=device)
         out, (h_out, c_out) = self.lstm(x, (h_0, c_0))
-        if isinstance(self.decoder, SDN):
+        if isinstance(self.decoder, MLP):
             return h_out[-1].view(-1, self.hidden_size)
         elif isinstance(self.decoder, UNET):
             return out.permute(0, 2, 1)

@@ -2,7 +2,7 @@ import torch
 import math
 import torch.nn as nn
 from .abstract_sequence import AbstractSequence
-from ..decoder_models.sdn_model import SDN
+from ..decoder_models.mlp_model import MLP
 from ..decoder_models.unet_model import UNET
 
 class TRANSFORMER(AbstractSequence):
@@ -37,7 +37,7 @@ class TRANSFORMER(AbstractSequence):
         x = self.pos_encoder(x)
         # Apply transformer encoder
         x = self.transformer_encoder(x, self._generate_square_subsequent_mask(x.size(1), x.device).to(torch.bool))
-        if isinstance(self.decoder, SDN):
+        if isinstance(self.decoder, MLP):
             return x[:,-1,:]
         elif isinstance(self.decoder, UNET):
             return x.permute(0, 2, 1)

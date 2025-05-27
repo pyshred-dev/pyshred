@@ -809,7 +809,7 @@ latent_forecaster = SINDy_Forecaster(poly_order=1, include_sine=True, dt=1/5)
 
 
 ```python
-shred = SHRED(sequence_model="GRU", decoder_model="SDN", latent_forecaster=latent_forecaster)
+shred = SHRED(sequence_model="GRU", decoder_model="MLP", latent_forecaster=latent_forecaster)
 ```
 
 #### Fit SHRED

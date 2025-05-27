@@ -2,9 +2,9 @@ from .abstract_decoder import AbstractDecoder
 import torch.nn as nn
 import torch.nn.functional as F
 
-class SDN(AbstractDecoder):
+class MLP(AbstractDecoder):
     """
-    Shallow Decoder Network (SDN) implementation.
+    Shallow Decoder Network (MLP) implementation.
 
     A fully connected decoder that maps a low-dimensional latent space
     back to a high-dimensional state.
@@ -20,7 +20,7 @@ class SDN(AbstractDecoder):
 
     def initialize(self, input_size, output_size):
         """
-        Initialize the SDNDecoder with input and output sizes.
+        Initialize the MLP with input and output sizes.
 
         Parameters:
         -----------
@@ -50,4 +50,4 @@ class SDN(AbstractDecoder):
     
     @property
     def model_name(self):
-        return "SDN"
+        return "MLP"

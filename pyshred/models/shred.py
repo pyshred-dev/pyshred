@@ -4,7 +4,7 @@ from ..models.sindy import sindy_library_torch, e_sindy_library_torch
 from ..models.sequence_models.abstract_sequence import AbstractSequence
 from ..models.decoder_models.abstract_decoder import AbstractDecoder
 from ..latent_forecaster_models.abstract_latent_forecaster import AbstractLatentForecaster
-from ..models.decoder_models.sdn_model import SDN
+from ..models.decoder_models.mlp_model import MLP
 from ..models.decoder_models.unet_model import UNET
 from ..models.sequence_models.gru_model import GRU
 from ..models.sequence_models.lstm_model import LSTM
@@ -90,7 +90,7 @@ SEQUENCE_MODELS = {
 }
 
 DECODER_MODELS = {
-    "SDN": SDN,
+    "MLP": MLP,
     "UNET": UNET,
 }
 
@@ -120,28 +120,28 @@ class SHRED(torch.nn.Module):
             raise ValueError("Invalid type for 'sequence_model'. Must be str or an AbstractSequence instance or None.")
 
         if decoder_model is None:
-            self.decoder = SDN()
+            self.decoder = MLP()
         elif isinstance(decoder_model, AbstractDecoder):
-            if latent_forecaster is not None and not isinstance(decoder_model, SDN):
+            if latent_forecaster is not None and not isinstance(decoder_model, MLP):
                 warnings.warn(
-                    "`latent_forecaster` is not None, but `decoder_model` is not an instance of `SDN`. "
-                    "The decoder is being overridden with `SDN()` for compatibility with the `latent_forecaster`.",
+                    "`latent_forecaster` is not None, but `decoder_model` is not an instance of `MLP`. "
+                    "The decoder is being overridden with `MLP()` for compatibility with the `latent_forecaster`.",
                     UserWarning
                 )
-                self.decoder = SDN()
+                self.decoder = MLP()
             else:
                 self.decoder = decoder_model
         elif isinstance(decoder_model, str):
             decoder_model = decoder_model.upper()
             if decoder_model not in DECODER_MODELS:
                 raise ValueError(f"Invalid decoder model: {decoder_model}. Choose from: {list(DECODER_MODELS.keys())}")
-            if latent_forecaster is not None and decoder_model!="SDN":
+            if latent_forecaster is not None and decoder_model!="MLP":
                 warnings.warn(
-                    "`latent_forecaster` is not None, but `decoder_model` is not set to \"SDN\". "
-                    "The decoder is being overridden with `SDN()` for compatibility with the `latent_forecaster`.",
+                    "`latent_forecaster` is not None, but `decoder_model` is not set to \"MLP\". "
+                    "The decoder is being overridden with `MLP()` for compatibility with the `latent_forecaster`.",
                     UserWarning
                 )
-                self.decoder = SDN()
+                self.decoder = MLP()
             else:
                 self.decoder = DECODER_MODELS[decoder_model]()
         else:
@@ -217,11 +217,11 @@ class SHRED(torch.nn.Module):
 
         if sindy_regularization > 0:
             sindy = True
-            if not isinstance(self.decoder, SDN):
-                warnings.warn("WARNING: SINDy regularization > 0: switching decoder to SDN for compatibility.",
+            if not isinstance(self.decoder, MLP):
+                warnings.warn("WARNING: SINDy regularization > 0: switching decoder to MLP for compatibility.",
                     UserWarning
                 )
-                self.decoder = SDN()
+                self.decoder = MLP()
         else:
             sindy = False
 

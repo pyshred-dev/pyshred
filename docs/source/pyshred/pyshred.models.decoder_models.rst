@@ -12,10 +12,10 @@ pyshred.models.decoder\_models.abstract\_decoder module
    :undoc-members:
    :show-inheritance:
 
-pyshred.models.decoder\_models.sdn\_model module
+pyshred.models.decoder\_models.mlp\_model module
 ------------------------------------------------
 
-.. automodule:: pyshred.models.decoder_models.sdn_model
+.. automodule:: pyshred.models.decoder_models.mlp_model
    :members:
    :undoc-members:
    :show-inheritance:

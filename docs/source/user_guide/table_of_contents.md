@@ -20,7 +20,7 @@
         - LSTM
         - Transformers
     - Decoder Model
-        - SDN
+        - MLP
         - UNET
     - Latent Forecaster Model
         - SINDy
