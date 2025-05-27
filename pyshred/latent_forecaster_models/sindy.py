@@ -9,8 +9,10 @@ try:
     sindy_pi_flag = True
 except ImportError:
     sindy_pi_flag = False
+from .abstract_latent_forecaster import AbstractLatentForecaster
 
-class SINDy_Forecaster(nn.Module):
+
+class SINDy_Forecaster(AbstractLatentForecaster):
     """
     Sparse Identification of Nonlinear Dynamics for latent space.
     """

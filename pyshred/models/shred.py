@@ -3,6 +3,7 @@ from torch.utils.data import DataLoader
 from ..models.sindy import sindy_library_torch, e_sindy_library_torch
 from ..models.sequence_models.abstract_sequence import AbstractSequence
 from ..models.decoder_models.abstract_decoder import AbstractDecoder
+from ..latent_forecaster_models.abstract_latent_forecaster import AbstractLatentForecaster
 from ..models.decoder_models.sdn_model import SDN
 from ..models.decoder_models.unet_model import UNET
 from ..models.sequence_models.gru_model import GRU
@@ -93,12 +94,16 @@ DECODER_MODELS = {
     "UNET": UNET,
 }
 
+LATENT_FORECASTER_MODELS = {
+    "SINDY_FORECASTER": SINDy_Forecaster,
+    "LSTM_FORECASTER": LSTM_Forecaster
+}
+
 NUM_REPLICATES = 10
 
 class SHRED(torch.nn.Module):
     def __init__(self, sequence_model = None, decoder_model = None, latent_forecaster = None, layer_norm = False):
         super().__init__()
-        self.latent_forecaster = latent_forecaster
         if sequence_model is None:
             if latent_forecaster is not None:
                 self.sequence = GRU()
@@ -145,6 +150,15 @@ class SHRED(torch.nn.Module):
         self.use_layer_norm = layer_norm
         self.layer_norm_gru = torch.nn.LayerNorm(self.sequence.hidden_size)
         if latent_forecaster is not None:
+            if isinstance(latent_forecaster, AbstractLatentForecaster):
+                self.latent_forecaster = latent_forecaster
+            elif isinstance(latent_forecaster, str):
+                latent_forecaster = latent_forecaster.upper()
+                if latent_forecaster not in LATENT_FORECASTER_MODELS:
+                    raise ValueError(f"Invalid sequence model: {latent_forecaster}. Choose from: {list(LATENT_FORECASTER_MODELS.keys())}")
+                self.latent_forecaster = LATENT_FORECASTER_MODELS[latent_forecaster]()
+            else:
+                raise TypeError("Invalid type for 'latent_forecaster'. Must be str or an AbstractLatentForecaster instance or None.")
             self.latent_forecaster.initialize(latent_dim = self.sequence.hidden_size)
 
     def forward(self, x, sindy=False):

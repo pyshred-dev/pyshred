@@ -2,13 +2,14 @@ import warnings
 import torch
 import torch.nn as nn
 import numpy as np
+from .abstract_latent_forecaster import AbstractLatentForecaster
 
-class LSTM_Forecaster(nn.Module):
+class LSTM_Forecaster(AbstractLatentForecaster):
     """
     LSTM for latent space forecasting.
     """
 
-    def __init__(self, hidden_size=64, num_layers=1, lags=10):
+    def __init__(self, hidden_size=64, num_layers=1, lags=20):
         super().__init__()
         self.lags = lags
         self.hidden_size = hidden_size
