@@ -5,7 +5,7 @@ import torch.nn as nn
 
 
 class UNET(AbstractDecoder):
-    def __init__(self, dropout: float = 0.1, conv1: int = 256, conv2: int = 1024):
+    def __init__(self, conv1: int = 256, conv2: int = 1024):
         super().__init__()
         self.c1 = conv1
         self.c2 = conv2
