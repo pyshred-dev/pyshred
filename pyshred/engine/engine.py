@@ -54,8 +54,8 @@ class SHREDEngine:
         X = torch.tensor(lagged, dtype=torch.float32, device=device)
         # 5) Run through sequence to get latent:
         with torch.no_grad():
-            # assumes your model.gru_outputs returns shape (T, latent_dim) when sindy=False
-            latents = self.model.gru_outputs(X, sindy=False)
+            # assumes your model.seq_model_outputs returns shape (T, latent_dim) when sindy=False
+            latents = self.model.seq_model_outputs(X, sindy=False)
             # latents is a torch.Tensor shape (T, latent_dim)
         # 6) Return as numpy
         return latents.cpu().numpy()

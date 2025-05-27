@@ -113,16 +113,32 @@ class SHRED(torch.nn.Module):
             self.sequence = SEQUENCE_MODELS[sequence_model]()
         else:
             raise ValueError("Invalid type for 'sequence_model'. Must be str or an AbstractSequence instance or None.")
-    
+
         if decoder_model is None:
             self.decoder = SDN()
         elif isinstance(decoder_model, AbstractDecoder):
-            self.decoder = decoder_model
+            if latent_forecaster is not None and not isinstance(decoder_model, SDN):
+                warnings.warn(
+                    "`latent_forecaster` is not None, but `decoder_model` is not an instance of `SDN`. "
+                    "The decoder is being overridden with `SDN()` for compatibility with the `latent_forecaster`.",
+                    UserWarning
+                )
+                self.decoder = SDN()
+            else:
+                self.decoder = decoder_model
         elif isinstance(decoder_model, str):
             decoder_model = decoder_model.upper()
             if decoder_model not in DECODER_MODELS:
                 raise ValueError(f"Invalid decoder model: {decoder_model}. Choose from: {list(DECODER_MODELS.keys())}")
-            self.decoder = DECODER_MODELS[decoder_model]()
+            if latent_forecaster is not None and decoder_model!="SDN":
+                warnings.warn(
+                    "`latent_forecaster` is not None, but `decoder_model` is not set to \"SDN\". "
+                    "The decoder is being overridden with `SDN()` for compatibility with the `latent_forecaster`.",
+                    UserWarning
+                )
+                self.decoder = SDN()
+            else:
+                self.decoder = DECODER_MODELS[decoder_model]()
         else:
             raise ValueError("Invalid type for 'decoder'. Must be str or an AbstractDecoder instance or None.")
         self.num_replicates = NUM_REPLICATES
@@ -151,7 +167,7 @@ class SHRED(torch.nn.Module):
         return output
 
     
-    def gru_outputs(self, x, sindy=False):
+    def seq_model_outputs(self, x, sindy=False):
         if sindy == True:
             h_out = self.sequence(x)
             if self.use_layer_norm:
@@ -285,7 +301,7 @@ class SHRED(torch.nn.Module):
         # run through encoder to get latents
         self.eval()
         with torch.no_grad():
-            latents = self.gru_outputs(X_all, sindy=False)   # (N_train+N_val, latent_dim)
+            latents = self.seq_model_outputs(X_all, sindy=False)   # (N_train+N_val, latent_dim)
         # to numpy and hand off to pysindy
         latents_np = latents.cpu().numpy()
         if isinstance(self.latent_forecaster, SINDy_Forecaster):
