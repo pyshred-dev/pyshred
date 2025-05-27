@@ -33,10 +33,12 @@ class DataManager:
         test_size : float
             The fraction of the dataset to allocate for testing reconstruction performance.
         """
-        self.lags = lags
+        if not abs(train_size + val_size + test_size - 1.0) < 1e-8:
+            raise ValueError("train_size, val_size, and test_size must sum to 1.0")
         self.train_size = train_size
         self.val_size = val_size
         self.test_size = test_size
+        self.lags = lags
 
         self.sensor_summary_df = None
         self.sensor_measurements_df = None
@@ -62,8 +64,8 @@ class DataManager:
     def add_data(self, data: DataInput, id: str, random: Optional[int] = None,
                  stationary: Optional[Union[Tuple, List[Tuple]]] = None,
                  mobile: Optional[Union[List[Tuple], List[List[Tuple]]]] = None,
-                 measurements: Optional[Union[List[float], List[List[float]]]] = None,
-                 compress: Union[bool, int] = True):
+                 measurements: Optional[np.ndarray] = None,
+                 compress: Union[None, bool, int] = True):
         if id in self._dataset_ids:
             raise ValueError(f"Dataset id {id!r} already exists. Please choose a new id.")
         modes = self._parse_compress(compress)
@@ -155,10 +157,25 @@ class DataManager:
         return train_dataset, val_dataset, test_dataset
 
 
-    def _parse_compress(self, compress: Union[bool, int]) -> int:
-        """Normalize the compress argument into an integer number of modes."""
-        if isinstance(compress, bool):
-            return DEFAULT_MODES if compress else 0
+    def _parse_compress(self, compress: Union[None, bool, int]) -> int:
+        """Normalize the compress argument into an integer number of modes.
+
+        Parameters
+        ----------
+        compress : None, bool, or int
+            - None or False → 0 (no compression)
+            - True → DEFAULT_MODES
+            - int → use that many modes
+
+        Returns
+        -------
+        int
+            The number of SVD modes to use.
+        """
+        if compress is None or compress is False:
+            return 0
+        if compress is True:
+            return DEFAULT_MODES
         if isinstance(compress, int):
             return compress
-        raise TypeError(f"`compress` must be bool or int, got {type(compress).__name__!r}")
+        raise TypeError(f"`compress` must be None, bool, or int, got {type(compress).__name__!r}")
