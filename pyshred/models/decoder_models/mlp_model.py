@@ -4,19 +4,26 @@ import torch.nn.functional as F
 
 class MLP(AbstractDecoder):
     """
-    Shallow Decoder Network (MLP) implementation.
+    Flexible Multilayer Perceptron (MLP) implementation.
 
     A fully connected decoder that maps a low-dimensional latent space
-    back to a high-dimensional state.
+    back to a high-dimensional state with user-defined hidden layers.
     """
 
-
-    def __init__(self, l1 = 350, l2 = 400, dropout = 0.1):
+    def __init__(self, hidden_sizes=[350, 400], dropout=0.1):
+        """
+        Parameters:
+        -----------
+        hidden_sizes : list of int
+            Sizes of each hidden layer in sequence. e.g. [256, 512]
+        dropout : float
+            Dropout probability applied after each hidden layer.
+        """
         super().__init__()
-        self.l1 = l1
-        self.l2 = l2
+        self.hidden_sizes = hidden_sizes
         self.dropout_prob = dropout
-    
+        self.layers = None
+        self.dropout = nn.Dropout(self.dropout_prob)
 
     def initialize(self, input_size, output_size):
         """
@@ -30,24 +37,28 @@ class MLP(AbstractDecoder):
             Size of the output features.
         """
         super().initialize(input_size)
-        self.linear1 = nn.Linear(input_size, self.l1)
-        self.linear2 = nn.Linear(self.l1, self.l2)
-        self.linear3 = nn.Linear(self.l2, output_size)
-        self.dropout = nn.Dropout(self.dropout_prob)
 
-    """
-    Accepts output of sequence model
-    """
+        # Build sequence of linear layers: input->hidden...->output
+        sizes = [input_size] + self.hidden_sizes + [output_size]
+        self.layers = nn.ModuleList([
+            nn.Linear(sizes[i], sizes[i+1])
+            for i in range(len(sizes) - 1)
+        ])
+
     def forward(self, x):
-        output = self.linear1(x)
-        output = self.dropout(output)
-        output = F.relu(output)
-        output = self.linear2(output)
-        output = self.dropout(output)
-        output = F.relu(output)
-        output = self.linear3(output)
-        return output
-    
+        """
+        Forward pass through MLP.
+
+        Applies ReLU + dropout after each hidden layer; no activation on output.
+        """
+        for i, layer in enumerate(self.layers):
+            x = layer(x)
+            # Apply activation & dropout for all but the final layer
+            if i < len(self.layers) - 1:
+                x = F.relu(x)
+                x = self.dropout(x)
+        return x
+
     @property
     def model_name(self):
         return "MLP"
