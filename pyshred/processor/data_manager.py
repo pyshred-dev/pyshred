@@ -66,17 +66,13 @@ class DataManager:
                  compress: Union[bool, int] = True):
         if id in self._dataset_ids:
             raise ValueError(f"Dataset id {id!r} already exists. Please choose a new id.")
-        self._dataset_ids.append(id)
         modes = self._parse_compress(compress)
         data = get_data(data)
-        self._dataset_spatial_shape[self._dataset_ids[-1]] = data.shape[1:] # save spatial dimension to reshape back to original shape after flattening
-        if self.train_indices is None:
-            self.train_indices = np.arange(0, int(len(data)*self.train_size))
-        if self.val_indices is None:
-            self.val_indices = np.arange(int(len(data)*self.train_size),
-                                        int(len(data)*self.train_size + len(data)*self.val_size))
-        if self.test_indices is None:
-            self.test_indices = np.arange(int(len(data)*self.train_size +len(data)*self.val_size), len(data))
+        dataset_spatial_shape = data.shape[1:]
+        train_indices = self.train_indices or np.arange(0, int(len(data)*self.train_size))
+        val_indices = self.val_indices or np.arange(int(len(data)*self.train_size),
+                                                    int(len(data)*self.train_size + len(data)*self.val_size))
+        test_indices = self.test_indices or np.arange(int(len(data)*self.train_size +len(data)*self.val_size), len(data))
         sensors_dict = get_sensor_measurements(
                         data = data,
                         id = id,
@@ -89,6 +85,19 @@ class DataManager:
         new_sensor_measurements_df = sensors_dict['sensor_measurements_df']
         new_sensor_summary_df = sensors_dict['sensor_summary']
         new_sensor_measurements = sensors_dict['sensor_measurements']
+        data = data.reshape(data.shape[0], -1) # flatten to a single spatial dimension
+        if modes > 0:
+            sc = StandardScaler()
+            sc.fit(data[train_indices])
+            data = sc.transform(data)
+            U, S, Vt = randomized_svd(data[train_indices], n_components=modes, n_iter='auto')
+            data = data @ Vt.T
+        # commit to self
+        self._dataset_ids.append(id)
+        self._dataset_spatial_shape[self._dataset_ids[-1]] = dataset_spatial_shape
+        self.train_indices = train_indices
+        self.val_indices = val_indices
+        self.test_indices = test_indices
         if self.sensor_measurements_df is None:
             self.sensor_measurements_df = new_sensor_measurements_df
         else:
@@ -102,25 +111,17 @@ class DataManager:
                 self.sensor_measurements = new_sensor_measurements
             else:
                 self.sensor_measurements = np.hstack((self.sensor_measurements, new_sensor_measurements))
-            self.train_sensor_measurements = self.sensor_measurements[self.train_indices]
-            self.val_sensor_measurements = self.sensor_measurements[self.val_indices]
-            self.test_sensor_measurements = self.sensor_measurements[self.test_indices]
-        data = data.reshape(data.shape[0], -1) # flatten to a single spatial dimension
+            self.train_sensor_measurements = self.sensor_measurements[train_indices]
+            self.val_sensor_measurements = self.sensor_measurements[val_indices]
+            self.test_sensor_measurements = self.sensor_measurements[test_indices]
         if modes > 0:
-            sc = StandardScaler()
-            sc.fit(data[self.train_indices])
-            self._preSVD_scaler_registry[self._dataset_ids[-1]] = sc # save scaler to registery
-            data = sc.transform(data)
-            U, S, Vt = randomized_svd(data[self.train_indices], n_components=modes, n_iter='auto')
-            data = data @ Vt.T
-            self._Vt_registry[self._dataset_ids[-1]] = Vt # save V transpose to registry
+            self._preSVD_scaler_registry[self._dataset_ids[-1]] = sc
+            self._Vt_registry[self._dataset_ids[-1]] = Vt
         self._dataset_lengths[self._dataset_ids[-1]] = data.shape[1] # save spatial dim to registry
-
         if self.data is None:
             self.data = data
         else:
             self.data = np.hstack((self.data, data))
-
 
     def prepare(self):
         sc = MinMaxScaler()
