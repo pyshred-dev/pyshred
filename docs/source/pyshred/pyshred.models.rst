@@ -21,22 +21,6 @@ pyshred.models.shred module
    :undoc-members:
    :show-inheritance:
 
-pyshred.models.sindy module
----------------------------
-
-.. automodule:: pyshred.models.sindy
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pyshred.models.sindy\_utils module
-----------------------------------
-
-.. automodule:: pyshred.models.sindy_utils
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Module contents
 ---------------
 

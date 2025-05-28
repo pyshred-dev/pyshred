@@ -4,6 +4,14 @@ pyshred.latent\_forecaster\_models package
 Submodules
 ----------
 
+pyshred.latent\_forecaster\_models.abstract\_latent\_forecaster module
+----------------------------------------------------------------------
+
+.. automodule:: pyshred.latent_forecaster_models.abstract_latent_forecaster
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pyshred.latent\_forecaster\_models.lstm module
 ----------------------------------------------
 

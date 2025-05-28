@@ -12,6 +12,14 @@ pyshred.objects.dataset module
    :undoc-members:
    :show-inheritance:
 
+pyshred.objects.sindy module
+----------------------------
+
+.. automodule:: pyshred.objects.sindy
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 
