@@ -6,7 +6,7 @@ from ..decoder_models.mlp_model import MLP
 from ..decoder_models.unet_model import UNET
 
 class TRANSFORMER(AbstractSequence):
-    def __init__(self, d_model: int = 128, nhead: int = 16, dropout: float = 0.2):
+    def __init__(self, d_model: int = 128, nhead: int = 16, dropout: float = 0.2, layer_norm: bool = False):
         super().__init__()
         self.d_model = d_model
         self.hidden_size = d_model
@@ -16,6 +16,9 @@ class TRANSFORMER(AbstractSequence):
         self.relu = nn.ReLU()
         self.output_size = d_model
         self.decoder = None
+        self.use_layer_norm = layer_norm
+        if self.use_layer_norm:
+            self.layer_norm = nn.LayerNorm(self.hidden_size)
 
     def initialize(self, input_size:int, lags:int, decoder, **kwargs):
         super().initialize(input_size)
@@ -37,6 +40,11 @@ class TRANSFORMER(AbstractSequence):
         x = self.pos_encoder(x)
         # Apply transformer encoder
         x = self.transformer_encoder(x, self._generate_square_subsequent_mask(x.size(1), x.device).to(torch.bool))
+
+        # Apply layer normalization if enabled
+        if self.use_layer_norm:
+            x = self.layer_norm(x)
+
         if isinstance(self.decoder, MLP):
             return x[:,-1,:]
         elif isinstance(self.decoder, UNET):

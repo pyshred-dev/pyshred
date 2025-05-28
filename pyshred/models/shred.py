@@ -1,6 +1,6 @@
 import torch
 from torch.utils.data import DataLoader
-from ..models.sindy import sindy_library_torch, e_sindy_library_torch
+from ..objects.sindy import E_SINDy
 from ..models.sequence_models.abstract_sequence import AbstractSequence
 from ..models.decoder_models.abstract_decoder import AbstractDecoder
 from ..latent_forecaster_models.abstract_latent_forecaster import AbstractLatentForecaster
@@ -15,73 +15,6 @@ from ..latent_forecaster_models.sindy import SINDy_Forecaster
 from ..latent_forecaster_models.lstm import LSTM_Forecaster
 
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-class SINDy(torch.nn.Module):
-    def __init__(self, latent_dim, library_dim, poly_order, include_sine):
-        super().__init__()
-        self.latent_dim = latent_dim
-        self.poly_order = poly_order
-        self.include_sine = include_sine
-        self.library_dim = library_dim
-        self.coefficients = torch.ones(library_dim, latent_dim, requires_grad=True)
-        torch.nn.init.normal_(self.coefficients, mean=0.0, std=0.001)
-        self.coefficient_mask = torch.ones(library_dim, latent_dim, requires_grad=False).to(device)
-        self.coefficients = torch.nn.Parameter(self.coefficients)
-
-    def forward(self, h, dt):
-        library_Theta = sindy_library_torch(h, self.latent_dim, self.poly_order, self.include_sine)
-        h = h + library_Theta @ (self.coefficients * self.coefficient_mask) * dt
-        return h
-    
-    def thresholding(self, threshold):
-        self.coefficient_mask = torch.abs(self.coefficients) > threshold
-        self.coefficients.data = self.coefficient_mask * self.coefficients.data
-        
-    def add_noise(self, noise=0.1):
-        self.coefficients.data += torch.randn_like(self.coefficients.data) * noise
-        self.coefficient_mask = torch.ones(self.library_dim, self.latent_dim, requires_grad=False).to(device)
-        
-    def recenter(self):
-        self.coefficients.data = torch.randn_like(self.coefficients.data) * 0.0
-        self.coefficient_mask = torch.ones(self.library_dim, self.latent_dim, requires_grad=False).to(device)   
-
-class E_SINDy(torch.nn.Module):
-    def __init__(self, num_replicates, latent_dim, library_dim, poly_order, include_sine):
-        super().__init__()
-        self.num_replicates = num_replicates
-        self.latent_dim = latent_dim
-        self.poly_order = poly_order
-        self.include_sine = include_sine
-        self.library_dim = library_dim
-        self.coefficients = torch.ones(num_replicates, library_dim, latent_dim, requires_grad=True)
-        torch.nn.init.normal_(self.coefficients, mean=0.0, std=0.001)
-        self.coefficient_mask = torch.ones(num_replicates, library_dim, latent_dim, requires_grad=False).to(device)
-        self.coefficients = torch.nn.Parameter(self.coefficients)
-
-    def forward(self, h_replicates, dt):
-        num_data, num_replicates, latent_dim = h_replicates.shape
-        h_replicates = h_replicates.reshape(num_data * num_replicates, latent_dim)
-        library_Thetas = e_sindy_library_torch(h_replicates, self.latent_dim, self.poly_order, self.include_sine)
-        library_Thetas = library_Thetas.reshape(num_data, num_replicates, self.library_dim)
-        h_replicates = h_replicates.reshape(num_data, num_replicates, latent_dim)
-        h_replicates = h_replicates + torch.einsum('ijk,jkl->ijl', library_Thetas, (self.coefficients * self.coefficient_mask)) * dt
-        return h_replicates
-    
-    def thresholding(self, threshold, base_threshold=0):
-        threshold_tensor = torch.full_like(self.coefficients, threshold)
-        for i in range(self.num_replicates):
-            threshold_tensor[i] = threshold_tensor[i] * 10**(0.2 * i - 1) + base_threshold
-        self.coefficient_mask = torch.abs(self.coefficients) > threshold_tensor
-        self.coefficients.data = self.coefficient_mask * self.coefficients.data
-        
-    def add_noise(self, noise=0.1):
-        self.coefficients.data += torch.randn_like(self.coefficients.data) * noise
-        self.coefficient_mask = torch.ones(self.num_replicates, self.library_dim, self.latent_dim, requires_grad=False).to(device)   
-        
-    def recenter(self):
-        self.coefficients.data = torch.randn_like(self.coefficients.data) * 0.0
-        self.coefficient_mask = torch.ones(self.num_replicates, self.library_dim, self.latent_dim, requires_grad=False).to(device)  
 
 
 SEQUENCE_MODELS = {
@@ -103,10 +36,70 @@ LATENT_FORECASTER_MODELS = {
 NUM_REPLICATES = 10
 
 class SHRED(torch.nn.Module):
-    def __init__(self, sequence_model = None, decoder_model = None, latent_forecaster = None, layer_norm = False):
+    """
+    SHallow REcurrent Decoder (SHRED) neural network architecture.
+
+    SHRED leverages a sequence model to learn a latent representation of the temporal dynamics of sensor measurements, a 
+    latent forecaster model to forecast the latent space into the future, and a decoder model to learn a mapping between 
+    the latent space and the high-dimensional full-state space. The SHRED architecture enables accurate full-state 
+    reconstructions and forecasts from limited sensors.
+
+    Parameters
+    ----------
+    sequence_model : AbstractSequence or str, optional
+        Sequence model instance (GRU, LSTM, Transformer) or its name.
+        Default None → LSTM if not using SINDy_Forecaster, otherwise GRU.
+    decoder_model : AbstractDecoder or str, optional
+        Decoder model instance (MLP, UNET) or its name.
+        Default None → MLP.
+    latent_forecaster : AbstractLatentForecaster or str, optional
+        Latent forecaster instance (SINDy_Forecaster, LSTM_Forecaster) or its name.
+        Default None → no latent forecaster.
+
+    Attributes
+    ----------
+    sequence : AbstractSequence
+        The sequence model that encodes the temporal dynamics of sensor measurements in the latent space.
+    decoder : AbstractDecoder
+        The decoder model that maps the latent space back to the full‐state space.
+    latent_forecaster : AbstractLatentForecaster or None
+        The latent forecaster that forecasts future latent space states.
+        If None, no latent forecaster is used.
+
+    Examples
+    --------
+    >>> # basic SHRED
+    >>> model = SHRED(sequence_model='LSTM', decoder_model='MLP', latent_forecaster='LSTM_Forecaster')
+    >>> # SINDy SHRED
+    >>> model = SHRED(sequence_model='GRU', decoder_model='MLP', latent_forecaster='SINDy_Forecaster')
+    """
+    def __init__(self, sequence_model: AbstractSequence = None, decoder_model: AbstractDecoder = None,
+                 latent_forecaster: AbstractLatentForecaster = None):
+        """
+        Initialize a SHallow REcurrent Decoder (SHRED) model.
+
+        Parameters
+        ----------
+        sequence_model : AbstractSequence or str, optional
+            Sequence model instance (GRU, LSTM, Transformer) or its name.
+            Default None → LSTM if not using SINDy_Forecaster, otherwise GRU.
+        decoder_model : AbstractDecoder or str, optional
+            Decoder model instance (MLP, UNET) or its name.
+            Default None → MLP.
+        latent_forecaster : AbstractLatentForecaster or str, optional
+            Latent forecaster instance (SINDy_Forecaster, LSTM_Forecaster) or its name.
+            Default None → no latent forecaster.
+
+        Raises
+        ------
+        ValueError
+            If a string name is given but not found in the corresponding model mapping.
+        TypeError
+            If an object of the wrong type is passed in for any of the three arguments.
+        """
         super().__init__()
         if sequence_model is None:
-            if latent_forecaster is not None:
+            if isinstance(latent_forecaster, SINDy_Forecaster):
                 self.sequence = GRU()
             else:
                 self.sequence = LSTM()
@@ -118,7 +111,7 @@ class SHRED(torch.nn.Module):
                 raise ValueError(f"Invalid sequence model: {sequence_model}. Choose from: {list(SEQUENCE_MODELS.keys())}")
             self.sequence = SEQUENCE_MODELS[sequence_model]()
         else:
-            raise ValueError("Invalid type for 'sequence_model'. Must be str or an AbstractSequence instance or None.")
+            raise TypeError("Invalid type for 'sequence_model'. Must be str or an AbstractSequence instance or None.")
 
         if decoder_model is None:
             self.decoder = MLP()
@@ -146,10 +139,8 @@ class SHRED(torch.nn.Module):
             else:
                 self.decoder = DECODER_MODELS[decoder_model]()
         else:
-            raise ValueError("Invalid type for 'decoder'. Must be str or an AbstractDecoder instance or None.")
+            raise TypeError("Invalid type for 'decoder'. Must be str or an AbstractDecoder instance or None.")
         self.num_replicates = NUM_REPLICATES
-        self.use_layer_norm = layer_norm
-        self.layer_norm_gru = torch.nn.LayerNorm(self.sequence.hidden_size)
         self.latent_forecaster = None
         if latent_forecaster is not None:
             if isinstance(latent_forecaster, AbstractLatentForecaster):
@@ -166,8 +157,6 @@ class SHRED(torch.nn.Module):
     def forward(self, x, sindy=False):
         if sindy == True:
             h_out = self.sequence(x)
-            if self.use_layer_norm:
-                h_out = self.layer_norm_gru(h_out)
             output = self.decoder(h_out)
             with torch.autograd.set_detect_anomaly(True):
                 if sindy:
@@ -183,11 +172,9 @@ class SHRED(torch.nn.Module):
         return output
 
     
-    def seq_model_outputs(self, x, sindy=False):
+    def _seq_model_outputs(self, x, sindy=False):
         if sindy == True:
             h_out = self.sequence(x)
-            if self.use_layer_norm:
-                h_out = self.layer_norm_gru(h_out)
             if sindy:
                 h_t = h_out[:-1, :]
                 ht_replicates = h_t.unsqueeze(1).repeat(1, self.num_replicates, 1)
@@ -199,10 +186,10 @@ class SHRED(torch.nn.Module):
             h_outs = self.sequence(x)
         return h_outs
 
-    def sindys_threshold(self, threshold):
+    def _sindys_threshold(self, threshold):
         self.e_sindy.thresholding(threshold)
 
-    def sindys_add_noise(self, noise):
+    def _sindys_add_noise(self, noise):
         self.e_sindy.add_noise(noise)
 
 
@@ -314,7 +301,7 @@ class SHRED(torch.nn.Module):
         # run through encoder to get latents
         self.eval()
         with torch.no_grad():
-            latents = self.seq_model_outputs(X_all, sindy=False)   # (N_train+N_val, latent_dim)
+            latents = self._seq_model_outputs(X_all, sindy=False)   # (N_train+N_val, latent_dim)
         # to numpy and hand off to pysindy
         latents_np = latents.cpu().numpy()
         if isinstance(self.latent_forecaster, SINDy_Forecaster):
