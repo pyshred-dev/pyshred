@@ -1,4 +1,4 @@
-from ..models.sindy import sindy_library_torch, e_sindy_library_torch
+from ..models._sindy import sindy_library_torch, e_sindy_library_torch
 import torch
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
