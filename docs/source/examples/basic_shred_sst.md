@@ -817,7 +817,7 @@ shred = SHRED(sequence_model="LSTM", decoder_model="MLP", latent_forecaster=late
 
 
 ```python
-val_errors = shred.fit(train_dataset=train_dataset, val_dataset=val_dataset, num_epochs=10, thres_epoch=20, sindy_regularization=0)
+val_errors = shred.fit(train_dataset=train_dataset, val_dataset=val_dataset, num_epochs=10, sindy_thres_epoch=20, sindy_regularization=0)
 print('val_errors:', val_errors)
 ```
 

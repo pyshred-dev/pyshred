@@ -816,7 +816,7 @@ shred = SHRED(sequence_model="GRU", decoder_model="MLP", latent_forecaster=laten
 
 
 ```python
-val_errors = shred.fit(train_dataset=train_dataset, val_dataset=val_dataset, num_epochs=10, thres_epoch=20, sindy_regularization=1)
+val_errors = shred.fit(train_dataset=train_dataset, val_dataset=val_dataset, num_epochs=10, sindy_thres_epoch=20, sindy_regularization=1)
 print('val_errors:', val_errors)
 ```
 
