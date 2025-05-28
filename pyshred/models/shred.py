@@ -14,6 +14,7 @@ from ..objects.dataset import TimeSeriesDataset
 from ..latent_forecaster_models.sindy import SINDy_Forecaster
 from ..latent_forecaster_models.lstm import LSTM_Forecaster
 
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 class SINDy(torch.nn.Module):
@@ -149,6 +150,7 @@ class SHRED(torch.nn.Module):
         self.num_replicates = NUM_REPLICATES
         self.use_layer_norm = layer_norm
         self.layer_norm_gru = torch.nn.LayerNorm(self.sequence.hidden_size)
+        self.latent_forecaster = None
         if latent_forecaster is not None:
             if isinstance(latent_forecaster, AbstractLatentForecaster):
                 self.latent_forecaster = latent_forecaster
@@ -207,7 +209,7 @@ class SHRED(torch.nn.Module):
     # sindy_regularization previously set to 1.0
     def fit(self, train_dataset, val_dataset,  batch_size=64, num_epochs=200, lr=1e-3, sindy_regularization=0,
             optimizer="AdamW", verbose=True, threshold=0.5, base_threshold=0.0, patience=20,
-            thres_epoch=100, weight_decay=0.01):
+            sindy_thres_epoch=20, weight_decay=0.01):
         if not isinstance(self.latent_forecaster, SINDy_Forecaster) and sindy_regularization > 0:
             warnings.warn(
                 "`latent_forecaster` is not a SINDy_Forecaster; disabling SINDy regularization.",
@@ -245,10 +247,7 @@ class SHRED(torch.nn.Module):
         # shuffle is False (used to be True)
         train_loader = DataLoader(train_dataset, shuffle=False, batch_size=batch_size)
         criterion = torch.nn.MSELoss()
-        if optimizer == "AdamW":
-            optimizer = torch.optim.AdamW(self.parameters(), lr=lr, weight_decay=weight_decay)
-        elif optimizer == "Adam":
-            optimizer = torch.optim.Adam(self.parameters(), lr=lr, weight_decay=weight_decay)
+        optimizer = SHRED._get_optimizer(params=self.parameters(), optimizer=optimizer, lr=lr, weight_decay=weight_decay)
         val_error_list = []
         patience_counter = 0
         best_params = self.state_dict()
@@ -275,7 +274,7 @@ class SHRED(torch.nn.Module):
             if verbose:
                 print(f"Epoch {epoch}: Average training loss = {running_loss / len(train_loader):.6f}")
             if sindy:
-                if epoch % thres_epoch == 0 and epoch != 0:
+                if epoch % sindy_thres_epoch == 0 and epoch != 0:
                     self.e_sindy.thresholding(threshold=threshold, base_threshold=base_threshold)
             self.eval()
             val_loader = DataLoader(val_dataset, shuffle=False, batch_size=batch_size)
@@ -361,3 +360,22 @@ class SHRED(torch.nn.Module):
         # mean over every scalar element
         mse = total_loss / total_elements
         return mse
+
+
+    @staticmethod
+    def _get_optimizer(params, optimizer: str, lr: float, weight_decay: float):
+        if optimizer == "AdamW":
+            return torch.optim.AdamW(params, lr=lr, weight_decay=weight_decay)
+        elif optimizer == "Adam":
+            return torch.optim.Adam(params, lr=lr, weight_decay=weight_decay)
+        elif optimizer == "SGD":
+            return torch.optim.SGD(params, lr=lr, weight_decay=weight_decay, momentum=0.9)
+        elif optimizer == "RMSprop":
+            return torch.optim.RMSprop(params, lr=lr, weight_decay=weight_decay)
+        elif optimizer == "Adagrad":
+            return torch.optim.Adagrad(params, lr=lr, weight_decay=weight_decay)
+        else:
+            raise ValueError(
+                f"Unsupported optimizer {optimizer!r}. Choose from: "
+                "'Adam', 'AdamW', 'SGD', 'RMSprop', or 'Adagrad'."
+            )
