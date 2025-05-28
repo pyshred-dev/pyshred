@@ -34,6 +34,7 @@ source_suffix = {
 templates_path = ['_templates']
 exclude_patterns = []
 napoleon_numpy_docstring = True
+napoleon_use_ivar = True
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
