@@ -133,9 +133,9 @@ def get_sensor_measurements(data, id, sensor_number, random, stationary, mobile,
 
     # transpose sensor_measurements so time up on axis 0, number of sensors on axis 1
     if len(sensor_summary) == 0:
-        sensor_summary = pd.DataFrame(columns=["data id", "number", "type", "loc/traj"])
+        sensor_summary = pd.DataFrame(columns=["data id", "sensor_number", "type", "loc/traj"])
     else:
-        sensor_summary = pd.DataFrame(sensor_summary, columns=["data id", "number", "type", "loc/traj"])
+        sensor_summary = pd.DataFrame(sensor_summary, columns=["data id", "sensor_number", "type", "loc/traj"])
 
     if len(sensor_measurements) == 0:
         sensor_measurements = None
@@ -145,8 +145,9 @@ def get_sensor_measurements(data, id, sensor_number, random, stationary, mobile,
         labels = (
             sensor_summary['data id']
             .astype(str)
-            .str.cat(sensor_summary['number'].astype(str), sep='-')
+            .str.cat(sensor_summary['sensor_number'].astype(str), sep='-')
         )
+        labels.name = None
         sensor_measurements_df = pd.DataFrame(sensor_measurements, columns = labels)
     return {
         "sensor_measurements": sensor_measurements,
