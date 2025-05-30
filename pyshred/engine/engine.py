@@ -60,7 +60,7 @@ class SHREDEngine:
         # 6) Return as numpy
         return latents.cpu().numpy()
 
-    def forecast_latent(self, t, init_latents):
+    def forecast_latent(self, h, init_latents):
 
         ### move all model specific logic into the model itself
         ### pass in exactly t and init_latents to each model
@@ -71,7 +71,7 @@ class SHREDEngine:
         if isinstance(init_latents, torch.Tensor):
             init_latents = init_latents.detach().cpu().numpy()
         # if isinstance(self.model.latent_forecaster, SINDy_Forecaster):
-        return self.model.latent_forecaster.forecast(t, init_latents)
+        return self.model.latent_forecaster.forecast(h, init_latents)
             # dt = self.model.latent_forecaster.dt
             # t_train = np.arange(0, t*dt, dt)
             # if init_latents.ndim > 2:

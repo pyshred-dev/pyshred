@@ -64,10 +64,10 @@ class LSTM_Forecaster(AbstractLatentForecaster):
                 optimizer.step()
 
     @torch.no_grad()
-    def forecast(self, t, init_latents):
+    def forecast(self, h, init_latents):
         """
         init_latents: torch.Tensor of shape (>=lags, D)
-        returns: Tensor of shape (t, D)
+        returns: Tensor of shape (h, D)
         """
         self.eval()
         if init_latents.ndim != 2:
@@ -90,10 +90,10 @@ class LSTM_Forecaster(AbstractLatentForecaster):
         seed = torch.tensor(init_latents[-self.lags :], dtype=torch.float32, device=device)
         window = seed .clone().unsqueeze(0)  # (1, lags, D)
         preds = []
-        for _ in range(t):
+        for _ in range(h):
             p = self(window)                 # (1, D)
             preds.append(p.squeeze(0))
             # roll the window: drop oldest, append p
             window = torch.cat([window[:,1:,:], p.unsqueeze(1)], dim=1)
-        result = torch.stack(preds)                    # (t, D) tensor on device
-        return result.cpu().numpy()                   # (t, D) ndarray on CPU
+        result = torch.stack(preds)                    # (h, D) tensor on device
+        return result.cpu().numpy()                   # (h, D) ndarray on CPU

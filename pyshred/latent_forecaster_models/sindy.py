@@ -42,9 +42,9 @@ class SINDy_Forecaster(AbstractLatentForecaster):
             feature_library = ps.PolynomialLibrary(degree=self.poly_order)
         )
 
-    def forecast(self, t, init_latents):
+    def forecast(self, h, init_latents):
         dt = self.dt
-        t_train = np.arange(0, t*dt, dt)
+        t_train = np.arange(0, h*dt, dt)
         if init_latents.ndim > 2:
             raise ValueError(
                 f"Invalid `init_latents`: expected a 1D array (shape (m,)) or a 2D array "

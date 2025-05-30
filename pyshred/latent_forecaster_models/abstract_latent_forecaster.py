@@ -29,11 +29,11 @@ class AbstractLatentForecaster(nn.Module, ABC):
         pass
 
     @abstractmethod
-    def forecast(self, t, init_latents):
+    def forecast(self, h, init_latents):
         """
-        Forecast the next `t` latent steps based on initial latents.
+        Forecast the next `h` latent steps based on initial latents.
         Args:
-            t (int): Number of steps to forecast.
+            h (int): Number of steps to forecast.
             init_latents: Tensor or array of shape (>=lags, D) or (D,)
         Returns:
             Forecasted latent states.
