@@ -1,5 +1,7 @@
 # Tutorial: Bunny Hill
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1NhgosukPjCr9STTY1M_KiRib2gqRtZAi)
+
 This iPython notebook gives an absolute-beginners tutorial on using PySHRED. The dataset we consider is weekly mean sea-surface temperature as given by the [NOAA Optimum Interpolation SST V2 dataset](https://psl.noaa.gov/data/gridded/data.noaa.oisst.v2.html).
 
 ### 🌊 Loading sea surface temperature (SST) data
@@ -140,21 +142,21 @@ manager.sensor_summary_df
       <td>SST</td>
       <td>0</td>
       <td>stationary (random)</td>
-      <td>(43, 123)</td>
+      <td>(102, 22)</td>
     </tr>
     <tr>
       <th>1</th>
       <td>SST</td>
       <td>1</td>
       <td>stationary (random)</td>
-      <td>(116, 122)</td>
+      <td>(129, 78)</td>
     </tr>
     <tr>
       <th>2</th>
       <td>SST</td>
       <td>2</td>
       <td>stationary (random)</td>
-      <td>(23, 286)</td>
+      <td>(99, 281)</td>
     </tr>
   </tbody>
 </table>
@@ -197,32 +199,32 @@ manager.sensor_measurements_df
     <tr>
       <th>0</th>
       <td>0.0</td>
-      <td>0.0</td>
-      <td>-1.79</td>
+      <td>14.700000</td>
+      <td>20.650000</td>
     </tr>
     <tr>
       <th>1</th>
       <td>0.0</td>
-      <td>0.0</td>
-      <td>-1.79</td>
+      <td>14.809999</td>
+      <td>21.049999</td>
     </tr>
     <tr>
       <th>2</th>
       <td>0.0</td>
-      <td>0.0</td>
-      <td>-1.80</td>
+      <td>14.469999</td>
+      <td>21.410000</td>
     </tr>
     <tr>
       <th>3</th>
       <td>0.0</td>
-      <td>0.0</td>
-      <td>-1.80</td>
+      <td>15.750000</td>
+      <td>20.820000</td>
     </tr>
     <tr>
       <th>4</th>
       <td>0.0</td>
-      <td>0.0</td>
-      <td>-1.80</td>
+      <td>16.299999</td>
+      <td>20.859999</td>
     </tr>
     <tr>
       <th>...</th>
@@ -233,32 +235,32 @@ manager.sensor_measurements_df
     <tr>
       <th>1722</th>
       <td>0.0</td>
-      <td>0.0</td>
-      <td>-1.70</td>
+      <td>15.549999</td>
+      <td>20.480000</td>
     </tr>
     <tr>
       <th>1723</th>
       <td>0.0</td>
-      <td>0.0</td>
-      <td>-1.66</td>
+      <td>15.950000</td>
+      <td>20.559999</td>
     </tr>
     <tr>
       <th>1724</th>
       <td>0.0</td>
-      <td>0.0</td>
-      <td>-1.64</td>
+      <td>17.170000</td>
+      <td>21.139999</td>
     </tr>
     <tr>
       <th>1725</th>
       <td>0.0</td>
-      <td>0.0</td>
-      <td>-1.61</td>
+      <td>17.379999</td>
+      <td>21.590000</td>
     </tr>
     <tr>
       <th>1726</th>
       <td>0.0</td>
-      <td>0.0</td>
-      <td>-1.61</td>
+      <td>18.879999</td>
+      <td>21.900000</td>
     </tr>
   </tbody>
 </table>
@@ -315,7 +317,7 @@ print('val_errors:', val_errors)
 ```
 
     Fitting SHRED...
-    val_errors: [0.04352486 0.03571592]
+    val_errors: [0.04347949 0.03559002]
     
 
 ### Evaluate SHRED
@@ -439,17 +441,17 @@ print(test_error)
     ---------- TRAIN ----------
                   MSE      RMSE       MAE        R2
     dataset                                        
-    SST      2.568013  1.602502  0.940815 -0.012431
+    SST      2.571972  1.603737  0.940529 -0.010622
     
     ---------- VALIDATION ----------
-                  MSE      RMSE      MAE            R2
-    dataset                                           
-    SST      2.852892  1.689051  0.97926 -5.126887e+06
+                  MSE      RMSE       MAE            R2
+    dataset                                            
+    SST      2.856155  1.690016  0.978884 -5.246062e+06
     
     ---------- TEST ----------
-                 MSE   RMSE       MAE            R2
-    dataset                                        
-    SST      2.69288  1.641  0.949031 -3.747422e+07
+                  MSE      RMSE       MAE            R2
+    dataset                                            
+    SST      2.696861  1.642212  0.948656 -3.597258e+07
     
 
 ### Visualize Results
