@@ -1,3 +1,4 @@
-sphinx>=6
+sphinx>=8.0
 pydata-sphinx-theme
 myst-parser
+sphinx-design
