@@ -24,7 +24,7 @@ manager = DataManager(
 
 ## Add Data
 The `add_data` method takes in:
-- `data`: takes in a file path (.npy or .npz), a numpy array, or a torch.Tensor. The data should be array-like with time on the first axis (axis 0) followed by the spatial axes.
+- `data`: takes in a file path (.npy or .npz), a numpy array, or a torch.Tensor. The data should be array-like with **time on the first axis (axis 0)** followed by the spatial axes.
 - `id`: a str to identify the dataset by. Each dataset must have a unique `id`.
 - `random (optional)`: number of randomly placed sensors
 - `stationary (optional)`: a list of stationary sensor locations. Each stationary sensor location should be a tuple representing its spatial coordinates.

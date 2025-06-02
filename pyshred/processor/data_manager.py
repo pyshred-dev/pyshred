@@ -25,7 +25,7 @@ class DataManager:
     def __init__(self, lags: int = 20, train_size: float = 0.8, val_size: float = 0.1, test_size: float = 0.1):
         """
         lags : int
-            The number of time steps to look back when building sensor sequences.
+            The number of past time steps (lags) included in each sensor input sequence
         train_size : float
             The fraction of the dataset to allocate for training.
         val_size : float

@@ -9,10 +9,12 @@
 project = 'PySHRED'
 copyright = '2025, David Ye'
 author = 'David Ye'
-release = '1.0.0'
+version = '1.0.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
+
+html_show_sourcelink = False
 
 extensions = [
     "sphinx.ext.autodoc",      # pull in docstrings
@@ -20,6 +22,7 @@ extensions = [
     "sphinx.ext.viewcode",     # link to your source on each docs page
     "myst_parser",
     "sphinx.ext.githubpages",
+    "sphinx_design",
 ]
 
 html_theme_options = {
@@ -41,3 +44,4 @@ napoleon_use_ivar = True
 
 html_theme = "pydata_sphinx_theme"
 html_static_path = ['_static']
+html_title = "PySHRED"
