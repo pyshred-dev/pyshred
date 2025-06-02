@@ -11,6 +11,7 @@ class LSTM_Forecaster(AbstractLatentForecaster):
 
     def __init__(self, hidden_size=64, num_layers=1, lags=20):
         super().__init__()
+        self.seed_length = lags  # number of latent space timesteps required to seed forecaster
         self.lags = lags
         self.hidden_size = hidden_size
         self.num_layers = num_layers

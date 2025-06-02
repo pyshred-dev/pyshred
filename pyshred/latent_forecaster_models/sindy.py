@@ -23,6 +23,7 @@ class SINDy_Forecaster(AbstractLatentForecaster):
                  optimizer = ps.STLSQ(threshold=0.0, alpha=0.05),
                  diff_method = ps.differentiation.FiniteDifference()):
         super().__init__()
+        self.seed_length = 1 # number of latent space timesteps required to seed forecaster
         self.latent_dim = None
         self.poly_order = poly_order
         self.include_sine = include_sine
