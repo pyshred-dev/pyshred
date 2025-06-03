@@ -6,7 +6,51 @@ from ..decoder_models.mlp_model import MLP
 from ..decoder_models.unet_model import UNET
 
 class TRANSFORMER(AbstractSequence):
+    """
+    Transformer-based sequence model for encoding temporal sensor dynamics.
+    
+    Uses self-attention mechanisms to capture long-range dependencies in
+    sensor measurement sequences. Includes positional encoding and supports
+    optional layer normalization.
+
+    Parameters
+    ----------
+    d_model : int, optional
+        Dimensionality of the model (embedding size). Defaults to 128.
+    nhead : int, optional
+        Number of attention heads. Defaults to 16.
+    dropout : float, optional
+        Dropout probability. Defaults to 0.2.
+    layer_norm : bool, optional
+        Whether to apply layer normalization. Defaults to False.
+
+    Attributes
+    ----------
+    d_model : int
+        Model dimensionality.
+    hidden_size : int
+        Hidden size (same as d_model).
+    output_size : int
+        Output size (same as d_model).
+    use_layer_norm : bool
+        Whether layer normalization is applied.
+    """
+    
     def __init__(self, d_model: int = 128, nhead: int = 16, dropout: float = 0.2, layer_norm: bool = False):
+        """
+        Initialize the Transformer sequence model.
+
+        Parameters
+        ----------
+        d_model : int, optional
+            Dimensionality of the model (embedding size). Defaults to 128.
+        nhead : int, optional
+            Number of attention heads. Defaults to 16.
+        dropout : float, optional
+            Dropout probability. Defaults to 0.2.
+        layer_norm : bool, optional
+            Whether to apply layer normalization. Defaults to False.
+        """
         super().__init__()
         self.d_model = d_model
         self.hidden_size = d_model
@@ -21,6 +65,20 @@ class TRANSFORMER(AbstractSequence):
             self.layer_norm = nn.LayerNorm(self.hidden_size)
 
     def initialize(self, input_size:int, lags:int, decoder, **kwargs):
+        """
+        Initialize the Transformer with input size, sequence length, and decoder.
+
+        Parameters
+        ----------
+        input_size : int
+            Number of input features (sensor measurements).
+        lags : int
+            Length of input sequences.
+        decoder : AbstractDecoder
+            Decoder model instance for determining output format.
+        **kwargs
+            Additional keyword arguments.
+        """
         super().initialize(input_size)
         sequence_length = lags
         self.pos_encoder = PositionalEncoding(self.d_model,
@@ -33,6 +91,26 @@ class TRANSFORMER(AbstractSequence):
         self.decoder = decoder
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """
+        Forward pass through the Transformer model.
+
+        Parameters
+        ----------
+        x : torch.Tensor
+            Input tensor of shape (batch_size, sequence_length, input_size).
+
+        Returns
+        -------
+        torch.Tensor
+            Output tensor with latent representations. Shape depends on decoder type:
+            - MLP decoder: (batch_size, d_model)
+            - UNET decoder: (batch_size, d_model, sequence_length)
+
+        Raises
+        ------
+        TypeError
+            If decoder type is not supported.
+        """
         super().forward(x)
         # Apply input embedding
         x, _= self.input_embedding(x)
@@ -55,16 +133,71 @@ class TRANSFORMER(AbstractSequence):
             )
 
     def _generate_square_subsequent_mask(self, sequence_length: int, device) -> torch.Tensor:
+        """
+        Generate a causal mask for the transformer attention.
+
+        Parameters
+        ----------
+        sequence_length : int
+            Length of the sequence.
+        device : torch.device
+            Device to create the mask on.
+
+        Returns
+        -------
+        torch.Tensor
+            Boolean mask tensor of shape (sequence_length, sequence_length).
+        """
         mask = torch.triu(torch.ones(sequence_length, sequence_length, device=device), diagonal=1).bool()
         return mask
 
-
     @property
     def model_name(self):
+        """
+        Name of the sequence model.
+
+        Returns
+        -------
+        str
+            Returns "Transformer".
+        """
         return "Transformer"
 
 class PositionalEncoding(nn.Module):
+    """
+    Sinusoidal positional encoding for Transformer models.
+    
+    Adds learnable positional information to input embeddings to help
+    the model understand sequence order.
+
+    Parameters
+    ----------
+    d_model : int
+        Dimensionality of the model embeddings.
+    max_sequence_length : int, optional
+        Maximum sequence length to precompute encodings for. Defaults to 5000.
+    dropout : float, optional
+        Dropout probability. Defaults to 0.1.
+
+    Attributes
+    ----------
+    pe : torch.Tensor
+        Precomputed positional encoding tensor.
+    """
+    
     def __init__(self, d_model, max_sequence_length=5000, dropout=0.1):
+        """
+        Initialize positional encoding.
+
+        Parameters
+        ----------
+        d_model : int
+            Dimensionality of the model embeddings.
+        max_sequence_length : int, optional
+            Maximum sequence length to precompute encodings for. Defaults to 5000.
+        dropout : float, optional
+            Dropout probability. Defaults to 0.1.
+        """
         super(PositionalEncoding, self).__init__()
         self.dropout = nn.Dropout(p=dropout)
 
@@ -79,6 +212,19 @@ class PositionalEncoding(nn.Module):
         self.register_buffer('pe', pos_encoding)
 
     def forward(self, x):
+        """
+        Add positional encoding to input embeddings.
+
+        Parameters
+        ----------
+        x : torch.Tensor
+            Input tensor of shape (batch_size, seq_len, d_model).
+
+        Returns
+        -------
+        torch.Tensor
+            Input with positional encoding added, same shape as input.
+        """
         # x.shape: (batch_size, seq_len, d_model)
         seq_len = x.size(1)
         pe = self.pe[:, :seq_len, :]  # Adjust to the sequence length of the input

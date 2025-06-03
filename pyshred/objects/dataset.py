@@ -1,17 +1,66 @@
 import torch
 
 class TimeSeriesDataset(torch.utils.data.Dataset):
-    '''Takes input sequence of sensor measurements with shape (batch size, lags, num_sensors)
-    and corresponding measurments of high-dimensional state, return Torch dataset'''
+    """
+    PyTorch Dataset for time series sensor data and corresponding full-state measurements.
+
+    Parameters
+    ----------
+    X : torch.Tensor
+        Input sensor sequences of shape (batch_size, lags, num_sensors).
+    Y : torch.Tensor
+        Target full-state measurements of shape (batch_size, state_dim).
+
+    Attributes
+    ----------
+    X : torch.Tensor
+        Sensor measurement sequences.
+    Y : torch.Tensor
+        Full-state target measurements.
+    len : int
+        Number of samples in the dataset.
+    """
+    
     def __init__(self, X, Y):
+        """
+        Initialize the TimeSeriesDataset.
+
+        Parameters
+        ----------
+        X : torch.Tensor
+            Input sensor sequences of shape (batch_size, lags, num_sensors).
+        Y : torch.Tensor
+            Target full-state measurements of shape (batch_size, state_dim).
+        """
         self.X = X
         self.Y = Y
         self.len = X.shape[0]
 
     def __getitem__(self, index):
+        """
+        Get a single sample from the dataset.
+
+        Parameters
+        ----------
+        index : int
+            Index of the sample to retrieve.
+
+        Returns
+        -------
+        tuple
+            (sensor_sequence, target_state) pair.
+        """
         return self.X[index], self.Y[index]
 
     def __len__(self):
+        """
+        Get the number of samples in the dataset.
+
+        Returns
+        -------
+        int
+            Number of samples.
+        """
         return self.len
 
 

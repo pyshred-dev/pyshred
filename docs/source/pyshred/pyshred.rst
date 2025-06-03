@@ -8,7 +8,6 @@ Subpackages
    :maxdepth: 4
 
    pyshred.engine
-   pyshred.latent_forecaster_models
    pyshred.models
    pyshred.objects
    pyshred.processor

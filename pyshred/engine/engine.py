@@ -5,21 +5,44 @@ import torch
 import pandas as pd
 from typing import Union, Dict
 from ..processor.utils import *
-from ..latent_forecaster_models.sindy import SINDy_Forecaster
+from ..models.latent_forecaster_models.sindy import SINDy_Forecaster
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 class SHREDEngine:
+    """
+    High-level interface for SHRED model inference and evaluation.
+
+    Parameters
+    ----------
+    data_manager : DataManager
+        Prepared data manager with fitted scalers.
+    shred_model : SHRED
+        Trained SHRED model instance.
+
+    Attributes
+    ----------
+    dm : DataManager
+        The data manager for preprocessing and postprocessing.
+    model : SHRED
+        The trained SHRED model.
+    """
+    
     # We want forecaster in the init as well... so need to fit in shred_model??
     def __init__(self, data_manager: DataManager, shred_model: SHRED):
         """
-        data_manager   : DataManager (already .prepare()'d, so sensor_scaler exists)
-        shred_model    : your trained SHRED instance
+        Initialize the SHRED inference engine.
+
+        Parameters
+        ----------
+        data_manager : DataManager
+            Already prepared DataManager with fitted scalers.
+        shred_model : SHRED
+            Trained SHRED model instance.
         """
         self.dm    = data_manager
         self.model = shred_model
         # ensure model is in eval mode
         self.model.eval()
-
 
     def sensor_to_latent(self, sensor_measurements: Union[np.ndarray, torch.Tensor, pd.DataFrame]) -> np.ndarray:
         """
@@ -61,7 +84,26 @@ class SHREDEngine:
         return latents.cpu().numpy()
 
     def forecast_latent(self, h, init_latents):
+        """
+        Forecast future latent states using the latent forecaster.
 
+        Parameters
+        ----------
+        h : int
+            Number of future timesteps to forecast.
+        init_latents : np.ndarray or torch.Tensor
+            Initial latent states for seeding the forecast.
+
+        Returns
+        -------
+        np.ndarray
+            Forecasted latent states.
+
+        Raises
+        ------
+        RuntimeError
+            If no latent forecaster is available.
+        """
         ### move all model specific logic into the model itself
         ### pass in exactly t and init_latents to each model
         ### this wrapper should only help decide what model to go with
@@ -91,6 +133,19 @@ class SHREDEngine:
 
 # recon_dict_out = manager.postprocess(reconstruction, mode = "reconstruct")
     def decode(self, latents):
+        """
+        Decode latent states back to full physical state space.
+
+        Parameters
+        ----------
+        latents : np.ndarray or torch.Tensor
+            Latent representations to decode.
+
+        Returns
+        -------
+        dict
+            Dictionary mapping dataset IDs to reconstructed physical states.
+        """
         device = next(self.model.decoder.parameters()).device
         if isinstance(latents, np.ndarray):
             latents = torch.from_numpy(latents).to(device).float()
@@ -138,7 +193,7 @@ class SHREDEngine:
         -------
         DataFrame indexed by dataset id with columns [MSE, RMSE, MAE, R2].
         """
-        # 1) Get the model’s reconstruction in raw space
+        # 1) Get the model's reconstruction in raw space
         latents = self.sensor_to_latent(sensor_measurements)
         recon_dict = self.decode(latents)   # dict[id] -> (T, *spatial_shape)
         

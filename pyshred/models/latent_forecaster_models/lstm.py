@@ -6,7 +6,23 @@ from .abstract_latent_forecaster import AbstractLatentForecaster
 
 class LSTM_Forecaster(AbstractLatentForecaster):
     """
-    LSTM for latent space forecasting.
+    LSTM-based forecaster for latent space dynamics.
+
+    Parameters
+    ----------
+    hidden_size : int, optional
+        Size of LSTM hidden state. Defaults to 64.
+    num_layers : int, optional
+        Number of LSTM layers. Defaults to 1.
+    lags : int, optional
+        Number of time lags to use for forecasting. Defaults to 20.
+
+    Attributes
+    ----------
+    seed_length : int
+        Number of latent space timesteps required to seed forecaster.
+    latent_dim : int
+        Dimension of the latent space.
     """
 
     def __init__(self, hidden_size=64, num_layers=1, lags=20):
@@ -18,6 +34,14 @@ class LSTM_Forecaster(AbstractLatentForecaster):
 
     # input_size = latent_dim
     def initialize(self, latent_dim):
+        """
+        Initialize the LSTM with the given latent dimension.
+
+        Parameters
+        ----------
+        latent_dim : int
+            Dimension of the latent space.
+        """
         self.latent_dim = latent_dim
         self.lstm = nn.LSTM(latent_dim, self.hidden_size, self.num_layers,
                     batch_first=True)
@@ -25,6 +49,19 @@ class LSTM_Forecaster(AbstractLatentForecaster):
 
 
     def forward(self, x):
+        """
+        Forward pass through the LSTM forecaster.
+
+        Parameters
+        ----------
+        x : torch.Tensor
+            Input tensor of shape (batch, lags, latent_dim).
+
+        Returns
+        -------
+        torch.Tensor
+            Forecasted latent state of shape (batch, latent_dim).
+        """
         # x: (batch, lags, latent_dim)
         out, _ = self.lstm(x)        # out: (batch, lags, hidden_size)
         last = out[:, -1, :]         # (batch, hidden_size)

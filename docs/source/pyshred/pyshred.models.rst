@@ -8,6 +8,7 @@ Subpackages
    :maxdepth: 4
 
    pyshred.models.decoder_models
+   pyshred.models.latent_forecaster_models
    pyshred.models.sequence_models
 
 Submodules

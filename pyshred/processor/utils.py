@@ -36,6 +36,24 @@ def get_data(data: DataInput) -> np.ndarray:
 
 
 def get_data_npz(file_path: str) -> np.ndarray:
+    """
+    Load data from a .npz file.
+
+    Parameters
+    ----------
+    file_path : str
+        Path to the .npz file.
+
+    Returns
+    -------
+    np.ndarray
+        The data array from the .npz file.
+
+    Raises
+    ------
+    ValueError
+        If the file is empty or contains multiple arrays.
+    """
     data = np.load(file_path)
     if len(data.files) == 0:
         raise ValueError(f"The .npz file '{file_path}' is empty.")
@@ -45,27 +63,50 @@ def get_data_npz(file_path: str) -> np.ndarray:
 
 
 def get_data_npy(file_path: str) -> np.ndarray:
+    """
+    Load data from a .npy file.
+
+    Parameters
+    ----------
+    file_path : str
+        Path to the .npy file.
+
+    Returns
+    -------
+    np.ndarray
+        The data array from the .npy file.
+    """
     return np.load(file_path)
 
 
 def get_sensor_measurements(data, id, sensor_number, random, stationary, mobile, measurements):
     """
-    - full_state_data: a nd numpy array with time on the first axis (axis 0)
-    - random: number of randomly placed stationary sensors (integer)
-    - stationary: coordinates of stationary sensors. Each sensor coordinate is a tuple.
-                        If multiple stationary sensors, put tuples in a list (tuple or list of tuples).
-    - mobile: coordinates (tuple) of a mobile sensor in a list (length of list should match number of timesteps in dataset).
-                        if multiple mobile, use a nested list. (list of tuples, or nested list of tuples)
-    - measurements: a NumPy array with time on axis 0 and sensors on axis 1
-    Out:
-    dict:
-    {
-        "sensor_measurements": sensor_measurements,
-        "sensor_summary": sensor_summary,
-        "sensor_measurements_df": sensor_measurements_df,
-    }
-    where sensor_measurements is a 2D numpy array with time on axis 0
-    and sensor_summary is a pandas dataframe
+    Extract sensor measurements from data using various sensor configurations.
+
+    Parameters
+    ----------
+    data : np.ndarray
+        Full-state data with time on the first axis (axis 0).
+    id : str
+        Dataset identifier.
+    sensor_number : iterator
+        Iterator for assigning unique sensor numbers.
+    random : int or None
+        Number of randomly placed stationary sensors.
+    stationary : tuple, list of tuples, or None
+        Coordinates of stationary sensors.
+    mobile : list of tuples, list of list of tuples, or None
+        Coordinates of mobile sensors.
+    measurements : np.ndarray or None
+        Pre-computed sensor measurements with time on axis 0 and sensors on axis 1.
+
+    Returns
+    -------
+    dict
+        Dictionary containing:
+        - "sensor_measurements": 2D numpy array with time on axis 0
+        - "sensor_summary": pandas DataFrame with sensor metadata
+        - "sensor_measurements_df": pandas DataFrame of sensor measurements
     """
     sensor_summary = []
     sensor_measurements = []
@@ -157,8 +198,19 @@ def get_sensor_measurements(data, id, sensor_number, random, stationary, mobile,
 
 def generate_random_sensor_locations(data, num_sensors):
     """
-    Generates a list of sensor locations given the number of sensors and
-    a data numpy array where the first axis is time, followed by spatial axes.
+    Generate random sensor locations for the given data shape.
+
+    Parameters
+    ----------
+    data : np.ndarray
+        Data array where first axis is time, followed by spatial axes.
+    num_sensors : int
+        Number of random sensor locations to generate.
+
+    Returns
+    -------
+    list
+        List of tuples representing sensor coordinates.
     """
     spatial_shape = data.shape[1:] # first dimension is number of timesteps, rest is spatial dimentions
     spatial_points = np.prod(spatial_shape)
@@ -175,9 +227,19 @@ def generate_random_sensor_locations(data, num_sensors):
 
 def generate_lagged_sensor_measurements(sensor_measurements, lags):
     """
-    Generates lagged sequences from sensor_measurments.
-    Expects self.transformed_sensor_measurements to be a 2D numpy array with time is axis 0.
-    Returns 3D numpy array of lagged sequences with timesteps along axis 0, lags along axis 1, sensors along axis 2.
+    Generate lagged sequences from sensor measurements.
+
+    Parameters
+    ----------
+    sensor_measurements : np.ndarray
+        2D array with time on axis 0 and sensors on axis 1.
+    lags : int
+        Number of time lags to include in each sequence.
+
+    Returns
+    -------
+    np.ndarray
+        3D array of lagged sequences with shape (timesteps, lags, sensors).
     """
     num_timesteps = sensor_measurements.shape[0]
     num_sensors = sensor_measurements.shape[1]

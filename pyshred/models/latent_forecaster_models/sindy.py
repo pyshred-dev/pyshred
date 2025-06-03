@@ -1,6 +1,6 @@
 import pysindy as ps
 import torch
-from ..models._sindy_utils import library_size
+from .._sindy_utils import library_size
 import torch.nn as nn
 import numpy as np
 import warnings

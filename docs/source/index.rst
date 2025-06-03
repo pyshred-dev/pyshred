@@ -67,7 +67,7 @@ PySHRED is an open-source software implementing the SHallow REcurrent Decoder (S
 
         +++
 
-        .. button-ref:: pyshred/index
+        .. button-ref:: pyshred/modules
             :expand:
             :color: secondary
             :click-parent:

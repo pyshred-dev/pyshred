@@ -1,5 +1,5 @@
-API Reference
-========
+pyshred
+=======
 
 .. toctree::
    :maxdepth: 4

@@ -66,6 +66,26 @@ class DataManager:
                  mobile: Optional[Union[List[Tuple], List[List[Tuple]]]] = None,
                  measurements: Optional[np.ndarray] = None,
                  compress: Union[None, bool, int] = True):
+        """
+        Add a dataset with sensor measurements to the data manager.
+
+        Parameters
+        ----------
+        data : DataInput
+            Input data as file path (.npy/.npz), numpy array, or torch tensor.
+        id : str
+            Unique identifier for this dataset.
+        random : int, optional
+            Number of randomly placed stationary sensors.
+        stationary : tuple or list of tuples, optional
+            Coordinates of stationary sensors.
+        mobile : list of tuples or list of list of tuples, optional
+            Coordinates of mobile sensors for each timestep.
+        measurements : np.ndarray, optional
+            Pre-computed sensor measurements with time on axis 0.
+        compress : None, bool, or int, optional
+            Data compression settings. True uses default modes, int specifies number of modes.
+        """
         if id in self._dataset_ids:
             raise ValueError(f"Dataset id {id!r} already exists. Please choose a new id.")
         modes = self._parse_compress(compress)
@@ -126,6 +146,19 @@ class DataManager:
             self.data = np.hstack((self.data, data))
 
     def prepare(self):
+        """
+        Prepare the data for training by scaling and creating lagged sequences.
+
+        Returns
+        -------
+        tuple
+            (train_dataset, val_dataset, test_dataset) - PyTorch datasets ready for training.
+
+        Raises
+        ------
+        ValueError
+            If no sensor measurements are available.
+        """
         sc = MinMaxScaler()
         sc.fit(self.data[self.train_indices])
         self.data_scaler = sc
@@ -155,7 +188,6 @@ class DataManager:
         val_dataset     = TimeSeriesDataset(X_val, Y_val)
         test_dataset    = TimeSeriesDataset(X_test, Y_test)
         return train_dataset, val_dataset, test_dataset
-
 
     def _parse_compress(self, compress: Union[None, bool, int]) -> int:
         """Normalize the compress argument into an integer number of modes.

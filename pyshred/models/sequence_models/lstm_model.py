@@ -5,9 +5,41 @@ from ..decoder_models.mlp_model import MLP
 from ..decoder_models.unet_model import UNET
 
 class LSTM(AbstractSequence):
+    """
+    LSTM sequence model for encoding temporal sensor dynamics.
 
+    Parameters
+    ----------
+    hidden_size : int, optional
+        Size of the hidden state. Defaults to 64.
+    num_layers : int, optional
+        Number of LSTM layers. Defaults to 2.
+    layer_norm : bool, optional
+        Whether to apply layer normalization. Defaults to False.
+
+    Attributes
+    ----------
+    hidden_size : int
+        Size of the hidden state.
+    num_layers : int
+        Number of LSTM layers.
+    use_layer_norm : bool
+        Whether layer normalization is applied.
+    """
 
     def __init__(self, hidden_size:int =64, num_layers:int =2, layer_norm: bool = False):
+        """
+        Initialize the LSTM model.
+
+        Parameters
+        ----------
+        hidden_size : int, optional
+            Size of the hidden state. Defaults to 64.
+        num_layers : int, optional
+            Number of LSTM layers. Defaults to 2.
+        layer_norm : bool, optional
+            Whether to apply layer normalization. Defaults to False.
+        """
         super().__init__()
         self.hidden_size = hidden_size
         self.num_layers = num_layers
@@ -19,6 +51,18 @@ class LSTM(AbstractSequence):
             self.layer_norm = nn.LayerNorm(self.hidden_size)
 
     def initialize(self, input_size:int, decoder, **kwargs):
+        """
+        Initialize the LSTM with input size and decoder.
+
+        Parameters
+        ----------
+        input_size : int
+            Number of input features.
+        decoder : AbstractDecoder
+            Decoder model instance.
+        **kwargs
+            Additional keyword arguments.
+        """
         super().initialize(input_size)
         self.lstm = nn.LSTM(
             input_size=self.input_size,
@@ -31,6 +75,16 @@ class LSTM(AbstractSequence):
     def forward(self, x):
         """
         Forward pass through the LSTM model.
+
+        Parameters
+        ----------
+        x : torch.Tensor
+            Input tensor of shape (batch_size, sequence_length, input_size).
+
+        Returns
+        -------
+        torch.Tensor
+            Output tensor with latent representations.
         """
         super().forward(x)
         device = next(self.parameters()).device
@@ -56,7 +110,14 @@ class LSTM(AbstractSequence):
                 f"Unsupported decoder type: {type(self.decoder).__name__}."
             )
 
-
     @property
     def model_name(self):
+        """
+        Name of the sequence model.
+
+        Returns
+        -------
+        str
+            Returns "LSTM".
+        """
         return "LSTM"

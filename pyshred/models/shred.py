@@ -3,7 +3,7 @@ from torch.utils.data import DataLoader
 from ..objects.sindy import E_SINDy
 from ..models.sequence_models.abstract_sequence import AbstractSequence
 from ..models.decoder_models.abstract_decoder import AbstractDecoder
-from ..latent_forecaster_models.abstract_latent_forecaster import AbstractLatentForecaster
+from ..models.latent_forecaster_models.abstract_latent_forecaster import AbstractLatentForecaster
 from ..models.decoder_models.mlp_model import MLP
 from ..models.decoder_models.unet_model import UNET
 from ..models.sequence_models.gru_model import GRU
@@ -11,8 +11,8 @@ from ..models.sequence_models.lstm_model import LSTM
 from ..models.sequence_models.transformer_model import TRANSFORMER
 import warnings
 from ..objects.dataset import TimeSeriesDataset
-from ..latent_forecaster_models.sindy import SINDy_Forecaster
-from ..latent_forecaster_models.lstm import LSTM_Forecaster
+from ..models.latent_forecaster_models.sindy import SINDy_Forecaster
+from ..models.latent_forecaster_models.lstm import LSTM_Forecaster
 
 
 
@@ -155,6 +155,22 @@ class SHRED(torch.nn.Module):
             self.latent_forecaster.initialize(latent_dim = self.sequence.hidden_size)
 
     def forward(self, x, sindy=False):
+        """
+        Forward pass through the SHRED model.
+
+        Parameters
+        ----------
+        x : torch.Tensor
+            Input sensor sequences of shape (batch_size, lags, n_sensors).
+        sindy : bool, optional
+            Whether to compute SINDy regularization terms. Defaults to False.
+
+        Returns
+        -------
+        torch.Tensor or tuple
+            If sindy=False: Reconstructed full-state tensor.
+            If sindy=True: Tuple of (reconstruction, target_latents, predicted_latents).
+        """
         if sindy == True:
             h_out = self.sequence(x)
             output = self.decoder(h_out)
@@ -173,6 +189,21 @@ class SHRED(torch.nn.Module):
 
     
     def _seq_model_outputs(self, x, sindy=False):
+        """
+        Get sequence model outputs with optional SINDy ensemble computation.
+
+        Parameters
+        ----------
+        x : torch.Tensor
+            Input sensor sequences.
+        sindy : bool, optional
+            Whether to compute SINDy ensemble outputs. Defaults to False.
+
+        Returns
+        -------
+        torch.Tensor or tuple
+            Sequence model outputs.
+        """
         if sindy == True:
             h_out = self.sequence(x)
             if sindy:
@@ -187,9 +218,25 @@ class SHRED(torch.nn.Module):
         return h_outs
 
     def _sindys_threshold(self, threshold):
+        """
+        Apply thresholding to SINDy coefficients.
+
+        Parameters
+        ----------
+        threshold : float
+            Threshold value for coefficient pruning.
+        """
         self.e_sindy.thresholding(threshold)
 
     def _sindys_add_noise(self, noise):
+        """
+        Add noise to SINDy coefficients.
+
+        Parameters
+        ----------
+        noise : float
+            Noise level to add.
+        """
         self.e_sindy.add_noise(noise)
 
 
@@ -197,6 +244,43 @@ class SHRED(torch.nn.Module):
     def fit(self, train_dataset, val_dataset,  batch_size=64, num_epochs=200, lr=1e-3, sindy_regularization=0,
             optimizer="AdamW", verbose=True, threshold=0.5, base_threshold=0.0, patience=20,
             sindy_thres_epoch=20, weight_decay=0.01):
+        """
+        Train the SHRED model on the provided datasets.
+
+        Parameters
+        ----------
+        train_dataset : TimeSeriesDataset
+            Training dataset containing sensor sequences and target reconstructions.
+        val_dataset : TimeSeriesDataset
+            Validation dataset for monitoring training progress.
+        batch_size : int, optional
+            Batch size for training. Defaults to 64.
+        num_epochs : int, optional
+            Maximum number of training epochs. Defaults to 200.
+        lr : float, optional
+            Learning rate. Defaults to 1e-3.
+        sindy_regularization : float, optional
+            Weight for SINDy regularization term. Defaults to 0.
+        optimizer : str, optional
+            Optimizer type. Defaults to "AdamW".
+        verbose : bool, optional
+            Whether to print training progress. Defaults to True.
+        threshold : float, optional
+            SINDy thresholding value. Defaults to 0.5.
+        base_threshold : float, optional
+            Base threshold for SINDy. Defaults to 0.0.
+        patience : int, optional
+            Early stopping patience. Defaults to 20.
+        sindy_thres_epoch : int, optional
+            Frequency of SINDy thresholding. Defaults to 20.
+        weight_decay : float, optional
+            Weight decay for optimizer. Defaults to 0.01.
+
+        Returns
+        -------
+        np.ndarray
+            Array of validation errors for each epoch.
+        """
         if not isinstance(self.latent_forecaster, SINDy_Forecaster) and sindy_regularization > 0:
             warnings.warn(
                 "`latent_forecaster` is not a SINDy_Forecaster; disabling SINDy regularization.",

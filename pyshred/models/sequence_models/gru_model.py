@@ -5,8 +5,47 @@ from ..decoder_models.mlp_model import MLP
 from ..decoder_models.unet_model import UNET
 
 class GRU(AbstractSequence):
+    """
+    GRU (Gated Recurrent Unit) sequence model for encoding temporal sensor dynamics.
+    
+    A recurrent neural network that processes sensor measurement sequences
+    to learn latent representations of the underlying dynamics. Supports
+    optional layer normalization for improved training stability.
+
+    Parameters
+    ----------
+    hidden_size : int, optional
+        Size of the GRU hidden state. Defaults to 3.
+    num_layers : int, optional
+        Number of GRU layers. Defaults to 1.
+    layer_norm : bool, optional
+        Whether to apply layer normalization. Defaults to False.
+
+    Attributes
+    ----------
+    hidden_size : int
+        Size of the GRU hidden state.
+    num_layers : int
+        Number of GRU layers.
+    use_layer_norm : bool
+        Whether layer normalization is applied.
+    output_size : int
+        Size of the output (equals hidden_size).
+    """
 
     def __init__(self, hidden_size: int = 3, num_layers: int = 1, layer_norm: bool = False):
+        """
+        Initialize the GRU sequence model.
+
+        Parameters
+        ----------
+        hidden_size : int, optional
+            Size of the GRU hidden state. Defaults to 3.
+        num_layers : int, optional
+            Number of GRU layers. Defaults to 1.
+        layer_norm : bool, optional
+            Whether to apply layer normalization. Defaults to False.
+        """
         super().__init__()
         self.hidden_size = hidden_size
         self.num_layers = num_layers
@@ -18,6 +57,18 @@ class GRU(AbstractSequence):
             self.layer_norm = nn.LayerNorm(self.hidden_size)
 
     def initialize(self, input_size: int, decoder, **kwargs):
+        """
+        Initialize the GRU with input size and decoder.
+
+        Parameters
+        ----------
+        input_size : int
+            Number of input features (sensor measurements).
+        decoder : AbstractDecoder
+            Decoder model instance for determining output format.
+        **kwargs
+            Additional keyword arguments.
+        """
         super().initialize(input_size)
         self.gru = nn.GRU(
             input_size=self.input_size,
@@ -30,6 +81,23 @@ class GRU(AbstractSequence):
     def forward(self, x):
         """
         Forward pass through the GRU model.
+
+        Parameters
+        ----------
+        x : torch.Tensor
+            Input tensor of shape (batch_size, sequence_length, input_size).
+
+        Returns
+        -------
+        torch.Tensor
+            Output tensor with latent representations. Shape depends on decoder type:
+            - MLP decoder: (batch_size, hidden_size)
+            - UNET decoder: (batch_size, hidden_size, sequence_length)
+
+        Raises
+        ------
+        TypeError
+            If decoder type is not supported.
         """
         super().forward(x)
         device = next(self.parameters()).device
@@ -57,4 +125,12 @@ class GRU(AbstractSequence):
 
     @property
     def model_name(self):
+        """
+        Name of the sequence model.
+
+        Returns
+        -------
+        str
+            Returns "GRU".
+        """
         return "GRU"
