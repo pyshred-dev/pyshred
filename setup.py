@@ -14,7 +14,7 @@ setup(
     packages=find_packages(),
     license = "BSD-3-Clause",
     install_requires=[
-        "numpy",
+        "numpy>=1.21,<2.0",
         "pandas",
         "torch",
         "scikit-learn",
