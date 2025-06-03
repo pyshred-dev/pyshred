@@ -21,6 +21,9 @@
   ```
 
 ## Example Notebooks:
+
+- [Tutorial: Bunny Hill](https://pyshred-dev.github.io/pyshred/examples/tutorial_bunny_hill.html)
+
 - [Basic SHRED](https://pyshred-dev.github.io/pyshred/examples/basic_shred_sst.html)
 
 - [SINDy-SHRED](https://pyshred-dev.github.io/pyshred/examples/sindy_shred_sst.html)
