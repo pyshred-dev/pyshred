@@ -1,6 +1,7 @@
 *.pyc
 *.mat
 *.egg-info
+*.npy
 build
 pyshred/sst copy.ipynb
 pyshred/sst_figures.ipynb
