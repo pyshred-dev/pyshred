@@ -1,8 +1,9 @@
-Examples
+Example Gallery
 ========
 
 .. toctree::
    :maxdepth: 1
+   :caption: Example Gallery
    :glob:
 
    tutorial_bunny_hill

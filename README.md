@@ -1,14 +1,22 @@
 # PySHRED
 
-## A Python package implementing the SHallow REcurrent Decoder (SHRED) architecture for sensing applications.
+PySHRED is a Python library that implements the **SH**allow **RE**current **D**ecoder (SHRED) architecture, providing a high-level interface for accurate sensor-based reconstruction and forecasting of spatiotemporal systems.
+
+## Documentation:
+
+Online documentation is available at [pyshred-dev.github.io/pyshred/](https://pyshred-dev.github.io/pyshred/).
+
+The docs include a [tutorial](https://pyshred-dev.github.io/pyshred/user_guide/tutorial_bunny_hill.html), [user guide](https://pyshred-dev.github.io/pyshred/user_guide/index.html), [example gallery](https://pyshred-dev.github.io/pyshred/examples/index.html), [API reference](https://pyshred-dev.github.io/pyshred/pyshred/modules.html), and other useful information.
 
 ## Installation
 
 - **Installing from PyPI**
 
-  PySHRED can be installed via pip from PyPI.
+  The latest stable release (and required dependencies) can be installed from PyPI:
 
-  `pip install pyshred`
+  ```
+  pip install pyshred
+  ```
 
 - **Installing from source**
 
@@ -20,13 +28,12 @@
   pip install .
   ```
 
-## Example Notebooks:
+## Citing
 
-- [Tutorial: Bunny Hill](https://pyshred-dev.github.io/pyshred/examples/tutorial_bunny_hill.html)
+_Citation instructions coming soon._
 
-- [Basic SHRED](https://pyshred-dev.github.io/pyshred/examples/basic_shred_sst.html)
+## Resources
 
-- [SINDy-SHRED](https://pyshred-dev.github.io/pyshred/examples/sindy_shred_sst.html)
-
-## Documentation:
-[PySHRED Docs](https://pyshred-dev.github.io/pyshred/index.html)
+- Docs: [https://pyshred-dev.github.io/pyshred/](https://pyshred-dev.github.io/pyshred/)
+- Issue Tracking: [https://github.com/pyshred-dev/pyshred/issues](https://github.com/pyshred-dev/pyshred/issues)
+- Source code: [https://github.com/pyshred-dev/pyshred](https://github.com/pyshred-dev/pyshred)

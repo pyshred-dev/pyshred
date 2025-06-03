@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="pyshred",
-    version="0.1.0",
+    version="1.0.0",
     author="Kutz Research Group",
     author_email="pyshred1@gmail.com",
     description="PySHRED: A Python Package for SHallow REcurrent Decoders (SHRED) for Spatial-Temporal Systems",

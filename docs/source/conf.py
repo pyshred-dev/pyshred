@@ -7,8 +7,8 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'PySHRED'
-copyright = '2025, David Ye'
-author = 'David Ye'
+copyright = '2025, Kutz Research Group'
+author = 'Kutz Research Group'
 version = '1.0.0'
 
 # -- General configuration ---------------------------------------------------

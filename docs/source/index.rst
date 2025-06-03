@@ -29,7 +29,7 @@ PySHRED is an open-source software implementing the SHallow REcurrent Decoder (S
 
         +++
 
-        .. button-ref:: user_guide/tutorial_bunny_hill
+        .. button-ref:: user_guide/introduction
             :expand:
             :color: secondary
             :click-parent:
@@ -77,7 +77,7 @@ PySHRED is an open-source software implementing the SHallow REcurrent Decoder (S
     .. grid-item-card::
         :text-align: center
 
-        Examples
+        Example Gallery
         ^^^
 
         Explore real-world applications of PySHRED in Google Colab or Jupyter Notebook.
@@ -95,5 +95,5 @@ PySHRED is an open-source software implementing the SHallow REcurrent Decoder (S
    :hidden:
 
    User Guide <user_guide/index>
-   Examples <examples/index>
-   API reference <pyshred/index>
+   Example Gallery <examples/index>
+   API reference <pyshred/modules>
