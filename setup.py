@@ -5,7 +5,7 @@ long_description = Path("README.md").read_text(encoding="utf-8")
 
 setup(
     name="pyshred",
-    version="1.0.3",
+    version="1.0.4",
     author="Kutz Research Group",
     author_email="pyshred1@gmail.com",
     description="PySHRED: A Python Package for SHallow REcurrent Decoders (SHRED) for Spatial-Temporal Systems",
@@ -15,6 +15,7 @@ setup(
     license = "BSD-3-Clause",
     install_requires=[
         "numpy>=1.21,<2.0",
+        "scipy<1.13",
         "pandas",
         "torch",
         "scikit-learn",
