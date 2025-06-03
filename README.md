@@ -21,8 +21,9 @@
   ```
 
 ## Example Notebooks:
-- [Basic SHRED](https://github.com/pyshred-dev/pyshred/blob/main/pyshred/basic_shred_sst.ipynb)
-- [SINDy-SHRED](https://github.com/pyshred-dev/pyshred/blob/main/pyshred/sindy_shred_sst.ipynb)
+- [Basic SHRED](https://pyshred-dev.github.io/pyshred/examples/basic_shred_sst.html)
+
+- [SINDy-SHRED](https://pyshred-dev.github.io/pyshred/examples/sindy_shred_sst.html)
 
 ## Documentation:
 [PySHRED Docs](https://pyshred-dev.github.io/pyshred/index.html)
