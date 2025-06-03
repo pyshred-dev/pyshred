@@ -64,7 +64,7 @@ class TRANSFORMER(AbstractSequence):
         if self.use_layer_norm:
             self.layer_norm = nn.LayerNorm(self.hidden_size)
 
-    def initialize(self, input_size:int, lags:int, decoder, **kwargs):
+    def initialize(self, input_size:int, lags:int, decoder_type, **kwargs):
         """
         Initialize the Transformer with input size, sequence length, and decoder.
 
@@ -74,8 +74,8 @@ class TRANSFORMER(AbstractSequence):
             Number of input features (sensor measurements).
         lags : int
             Length of input sequences.
-        decoder : AbstractDecoder
-            Decoder model instance for determining output format.
+        decoder_type : str
+            Decoder model type.
         **kwargs
             Additional keyword arguments.
         """
@@ -88,7 +88,7 @@ class TRANSFORMER(AbstractSequence):
                                       ,hidden_size=self.d_model,
                                       num_layers=2,
                                       batch_first=True)
-        self.decoder = decoder
+        self.decoder_type = decoder_type
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
@@ -123,13 +123,13 @@ class TRANSFORMER(AbstractSequence):
         if self.use_layer_norm:
             x = self.layer_norm(x)
 
-        if isinstance(self.decoder, MLP):
+        if self.decoder_type == "MLP":
             return x[:,-1,:]
-        elif isinstance(self.decoder, UNET):
+        elif self.decoder_type == "UNET":
             return x.permute(0, 2, 1)
         else:
             raise TypeError(
-                f"Unsupported decoder type: {type(self.decoder).__name__}. "
+                f"Unsupported decoder type: {self.decoder_type}. "
             )
 
     def _generate_square_subsequent_mask(self, sequence_length: int, device) -> torch.Tensor:

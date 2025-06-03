@@ -44,13 +44,13 @@ class LSTM(AbstractSequence):
         self.hidden_size = hidden_size
         self.num_layers = num_layers
         self.lstm = None
-        self.decoder = None
+        self.decoder_type = None
         self.output_size = hidden_size
         self.use_layer_norm = layer_norm
         if self.use_layer_norm:
             self.layer_norm = nn.LayerNorm(self.hidden_size)
 
-    def initialize(self, input_size:int, decoder, **kwargs):
+    def initialize(self, input_size:int, decoder_type, **kwargs):
         """
         Initialize the LSTM with input size and decoder.
 
@@ -58,8 +58,8 @@ class LSTM(AbstractSequence):
         ----------
         input_size : int
             Number of input features.
-        decoder : AbstractDecoder
-            Decoder model instance.
+        decoder_type : str
+            Decoder model type.
         **kwargs
             Additional keyword arguments.
         """
@@ -70,7 +70,7 @@ class LSTM(AbstractSequence):
             num_layers=self.num_layers,
             batch_first=True
         )
-        self.decoder = decoder
+        self.decoder_type = decoder_type
 
     def forward(self, x):
         """
@@ -101,13 +101,13 @@ class LSTM(AbstractSequence):
         else:
             h_last = h_out[-1]
         # Decode
-        if isinstance(self.decoder, MLP):
+        if self.decoder_type == "MLP":
             return h_last.view(-1, self.hidden_size)
-        elif isinstance(self.decoder, UNET):
+        elif self.decoder_type == "UNET":
             return out.permute(0, 2, 1)
         else:
             raise TypeError(
-                f"Unsupported decoder type: {type(self.decoder).__name__}."
+                f"Unsupported decoder type: {self.decoder_type}."
             )
 
     @property

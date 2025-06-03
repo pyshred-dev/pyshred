@@ -310,7 +310,7 @@ class SHRED(torch.nn.Module):
         output_size = train_dataset.Y.shape[1]
         lags = train_dataset.X.shape[1] # lags
 
-        self.sequence.initialize(input_size=input_size, lags=lags, decoder=self.decoder)
+        self.sequence.initialize(input_size=input_size, lags=lags, decoder_type=type(self.decoder).__name__)
         self.sequence.to(device)
         self.decoder.initialize(input_size=self.sequence.output_size, output_size=output_size)
         self.decoder.to(device)
