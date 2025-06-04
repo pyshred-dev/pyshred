@@ -34,7 +34,7 @@ PySHRED is an open-source software implementing the SHallow REcurrent Decoder (S
             :color: secondary
             :click-parent:
 
-            To the absolute beginner's guide
+            Start shredding
 
     .. grid-item-card::
         :text-align: center

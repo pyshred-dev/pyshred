@@ -1,4 +1,4 @@
-Start Shredding
+Start shredding
 ===============
 
 .. toctree::
