@@ -9,6 +9,7 @@ from .models.sequence_models.gru_model import GRU
 from .models.shred import SHRED
 from .processor.data_manager import DataManager
 from .processor.parametric_data_manager import ParametricDataManager
+from .engine.parametric_engine import ParametricSHREDEngine
 
 __all__ = [
     "SHREDEngine",
@@ -21,5 +22,6 @@ __all__ = [
     "GRU",
     "SHRED",
     "DataManager",
-    "ParametricDataManager"
+    "ParametricDataManager",
+    "ParametricSHREDEngine"
 ]
