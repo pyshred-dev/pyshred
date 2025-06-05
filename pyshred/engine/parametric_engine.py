@@ -57,32 +57,44 @@ class ParametricSHREDEngine:
         latents : np.ndarray of shape (T, latent_dim)
             The GRU/LSTM final-hidden-state at each time index.
         """
-        # # 1) Pull out raw numpy array
-        # if isinstance(sensor_measurements, pd.DataFrame):
-        #     sensor_measurements = sensor_measurements.values
-        # elif torch.is_tensor(sensor_measurements):
-        #     sensor_measurements = sensor_measurements.detach().cpu().numpy()
-        # elif isinstance(sensor_measurements, np.ndarray):
-        #     sensor_measurements = sensor_measurements
-        # else:
-        #     raise TypeError(f"Unsupported type {type(sensor_measurements)} for sensor_measurements")
-        # # 2) Scale using the DataManager's fitted scaler (shape -> (T, n_sensors))
-        # scaled_sensor_measurements = self.dm.sensor_scaler.transform(sensor_measurements)  
-        # # 3) Build lagged windows (shape -> (T, lags, n_sensors))
-        # lags = self.dm.lags
-        # lagged = generate_lagged_sensor_measurements(scaled_sensor_measurements, lags)
-        # # 4) To torch on same device as model:
-        # device = next(self.model.parameters()).device
-        # X = torch.tensor(lagged, dtype=torch.float32, device=device)
-        # # 5) Run through sequence to get latent:
-        # with torch.no_grad():
-        #     # assumes your model._seq_model_outputs returns shape (T, latent_dim) when sindy=False
-        #     latents = self.model._seq_model_outputs(X, sindy=False)
-        #     # latents is a torch.Tensor shape (T, latent_dim)
-        # # 6) Return as numpy
-        # return latents.cpu().numpy()
-        print('TODO: Implement Parametric Sensor to Latent')
-        return None
+        # 1) Pull out raw numpy array
+        if isinstance(sensor_measurements, pd.DataFrame):
+            sensor_measurements = sensor_measurements.values
+        elif torch.is_tensor(sensor_measurements):
+            sensor_measurements = sensor_measurements.detach().cpu().numpy()
+        elif isinstance(sensor_measurements, np.ndarray):
+            sensor_measurements = sensor_measurements
+        else:
+            raise TypeError(f"Unsupported type {type(sensor_measurements)} for sensor_measurements")
+        # 2) Handle different input shapes
+        if len(sensor_measurements.shape) == 2:
+            # Single trajectory (T, n_sensors) - add trajectory dimension
+            sensor_measurements = sensor_measurements[np.newaxis, :]
+        # Expected shape: (n_trajectories, T, n_sensors)
+        if len(sensor_measurements.shape) != 3:
+            raise ValueError(f"Expected input shape (T, n_sensors) or (n_trajectories, T, n_sensors), "
+                             f"got {sensor_measurements.shape}")
+        # 3) Scale using the DataManager's fitted scaler
+        # Flatten to (n_trajectories * T, n_sensors) for scaling, then reshape back
+        flattened_measurements = sensor_measurements.reshape(-1, sensor_measurements.shape[-1])
+        scaled_flattened = self.dm.sensor_scaler.transform(flattened_measurements)
+        scaled_measurements = scaled_flattened.reshape(sensor_measurements.shape)
+
+        # 4) Generate lagged sequences for each trajectory
+        lagged = generate_lagged_sensor_measurements_rom(scaled_measurements, self.dm.lags)
+        
+        # 5) To torch on same device as model:
+        device = next(self.model.parameters()).device
+        X = torch.tensor(lagged, dtype=torch.float32, device=device)
+        
+        # 6) Run through sequence to get latent:
+        with torch.no_grad():
+            # assumes your model._seq_model_outputs returns shape (T, latent_dim) when sindy=False
+            latents = self.model._seq_model_outputs(X, sindy=False)
+            # latents is a torch.Tensor shape (T, latent_dim)
+
+        # 7) Return as numpy
+        return latents.cpu().numpy()
 
 
     def decode(self, latents):
@@ -99,34 +111,33 @@ class ParametricSHREDEngine:
         dict
             Dictionary mapping dataset IDs to reconstructed physical states.
         """
-        # device = next(self.model.decoder.parameters()).device
-        # if isinstance(latents, np.ndarray):
-        #     latents = torch.from_numpy(latents).to(device).float()
-        # else:
-        #     latents = latents.to(device).float()
-        # self.model.decoder.eval()
-        # with torch.no_grad():
-        #     output = self.model.decoder(latents)
-        # output = output.detach().cpu().numpy()
-        # output = self.dm.data_scaler.inverse_transform(output)
-        # results = {}
-        # start_index = 0
-        # for id in self.dm._dataset_ids:
-        #     length = self.dm._dataset_lengths.get(id)
-        #     Vt = self.dm._Vt_registry.get(id)
-        #     preSVD_scaler = self.dm._preSVD_scaler_registry.get(id)
-        #     spatial_shape = self.dm._dataset_spatial_shape.get(id)
-        #     dataset = output[:,start_index:start_index+length]
-        #     if Vt is not None:
-        #         dataset = dataset @ Vt
-        #     if preSVD_scaler is not None:
-        #         dataset = preSVD_scaler.inverse_transform(dataset)
-        #     original_shape = (dataset.shape[0],) + spatial_shape
-        #     results[id] = dataset.reshape(original_shape)
-        #     start_index = length + start_index
-        # return results
-        print('TODO: Implement Parametric Decode')
-        return None
+        device = next(self.model.decoder.parameters()).device
+        if isinstance(latents, np.ndarray):
+            latents = torch.from_numpy(latents).to(device).float()
+        else:
+            latents = latents.to(device).float()
+        self.model.decoder.eval()
+        with torch.no_grad():
+            output = self.model.decoder(latents)
+        output = output.detach().cpu().numpy()
+        output = self.dm.data_scaler.inverse_transform(output)
+        results = {}
+        start_index = 0
+        for id in self.dm._dataset_ids:
+            length = self.dm._dataset_lengths.get(id)
+            Vt = self.dm._Vt_registry.get(id)
+            preSVD_scaler = self.dm._preSVD_scaler_registry.get(id)
+            spatial_shape = self.dm._dataset_spatial_shape.get(id)
+            dataset = output[:,start_index:start_index+length]
+            if Vt is not None:
+                dataset = dataset @ Vt
+            if preSVD_scaler is not None:
+                dataset = preSVD_scaler.inverse_transform(dataset)
+            original_shape = (dataset.shape[0],) + spatial_shape
+            results[id] = dataset.reshape(original_shape)
+            start_index = length + start_index
+        return results
+
 
     def evaluate(
         self,
@@ -149,7 +160,7 @@ class ParametricSHREDEngine:
         """
         # 1) Get the model's reconstruction in raw space
         latents = self.sensor_to_latent(sensor_measurements)
-        recon_dict = self.decode(latents)   # dict[id] -> (T, *spatial_shape)
+        recon_dict = self.decode(latents)   # dict[id] -> (ntrajectories*T, *spatial_shape)
         
         # 2) Compute stats
         records = []

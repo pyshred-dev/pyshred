@@ -93,7 +93,7 @@ class ParametricDataManager:
         """
         if id in self._dataset_ids:
             raise ValueError(f"Dataset id {id!r} already exists. Please choose a new id.")
-        modes = self._parse_compress(compress)
+        modes = parse_compress(compress)
         data = get_data(data)
 
         dataset_spatial_shape = data.shape[2:]
@@ -188,7 +188,10 @@ class ParametricDataManager:
             if self.sensor_measurements is None:
                 self.sensor_measurements = new_sensor_measurements_all_trajectories
             else:
-                self.sensor_measurements = np.hstack((self.sensor_measurements, new_sensor_measurements_all_trajectories))
+                self.sensor_measurements = np.concatenate(
+                    (self.sensor_measurements, new_sensor_measurements_all_trajectories),
+                    axis=-1
+                )
             self.train_sensor_measurements = self.sensor_measurements[train_indices]
             self.val_sensor_measurements = self.sensor_measurements[val_indices]
             self.test_sensor_measurements = self.sensor_measurements[test_indices]
@@ -260,14 +263,6 @@ class ParametricDataManager:
         scaled_val_sensor_measurements = scaled_val_sensor_measurements.reshape(val_sensor_measurements.shape)
         scaled_test_sensor_measurements = scaled_test_sensor_measurements.reshape(test_sensor_measurements.shape)
 
-        def generate_lagged_sensor_measurements_rom(dataset, lags):
-            # dataset is expected to be of shape (n_trajectories, ntimes, nsensors)
-            sequences = [
-                generate_lagged_sensor_measurements(traj_sensor_measurements, lags)
-                for traj_sensor_measurements in dataset
-            ]
-            return np.concatenate(sequences, axis=0)
-
         lagged_train_sensor_measurements = generate_lagged_sensor_measurements_rom(scaled_train_sensor_measurements, self.lags)
         lagged_val_sensor_measurements = generate_lagged_sensor_measurements_rom(scaled_val_sensor_measurements, self.lags)
         lagged_test_sensor_measurements = generate_lagged_sensor_measurements_rom(scaled_test_sensor_measurements, self.lags)
@@ -288,26 +283,3 @@ class ParametricDataManager:
         val_dataset     = TimeSeriesDataset(X_val, Y_val)
         test_dataset    = TimeSeriesDataset(X_test, Y_test)
         return train_dataset, val_dataset, test_dataset
-
-    def _parse_compress(self, compress: Union[None, bool, int]) -> int:
-        """Normalize the compress argument into an integer number of modes.
-
-        Parameters
-        ----------
-        compress : None, bool, or int
-            - None or False → 0 (no compression)
-            - True → DEFAULT_MODES
-            - int → use that many modes
-
-        Returns
-        -------
-        int
-            The number of SVD modes to use.
-        """
-        if compress is None or compress is False:
-            return 0
-        if compress is True:
-            return DEFAULT_MODES
-        if isinstance(compress, int):
-            return compress
-        raise TypeError(f"`compress` must be None, bool, or int, got {type(compress).__name__!r}")

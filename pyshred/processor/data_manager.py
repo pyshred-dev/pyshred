@@ -91,7 +91,7 @@ class DataManager:
         """
         if id in self._dataset_ids:
             raise ValueError(f"Dataset id {id!r} already exists. Please choose a new id.")
-        modes = self._parse_compress(compress)
+        modes = parse_compress(compress)
         data = get_data(data)
         dataset_spatial_shape = data.shape[1:]
         train_indices = self.train_indices if self.train_indices is not None else np.arange(0, int(len(data)*self.train_size))
@@ -192,26 +192,3 @@ class DataManager:
         val_dataset     = TimeSeriesDataset(X_val, Y_val)
         test_dataset    = TimeSeriesDataset(X_test, Y_test)
         return train_dataset, val_dataset, test_dataset
-
-    def _parse_compress(self, compress: Union[None, bool, int]) -> int:
-        """Normalize the compress argument into an integer number of modes.
-
-        Parameters
-        ----------
-        compress : None, bool, or int
-            - None or False → 0 (no compression)
-            - True → DEFAULT_MODES
-            - int → use that many modes
-
-        Returns
-        -------
-        int
-            The number of SVD modes to use.
-        """
-        if compress is None or compress is False:
-            return 0
-        if compress is True:
-            return DEFAULT_MODES
-        if isinstance(compress, int):
-            return compress
-        raise TypeError(f"`compress` must be None, bool, or int, got {type(compress).__name__!r}")

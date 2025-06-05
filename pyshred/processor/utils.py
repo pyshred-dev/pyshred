@@ -3,6 +3,8 @@ import numpy as np
 import torch
 import pandas as pd
 
+DEFAULT_MODES = 50
+
 DataInput = Union[
     str,                # .npy/.npz file path
     np.ndarray,         # raw NumPy
@@ -253,3 +255,35 @@ def generate_lagged_sensor_measurements(sensor_measurements, lags):
     for i in range(lagged_sequences.shape[0]):
         lagged_sequences[i] = sensor_measurements[i:i+lags, :]
     return lagged_sequences
+
+def generate_lagged_sensor_measurements_rom(dataset, lags):
+    # dataset is expected to be of shape (n_trajectories, ntimes, nsensors)
+    sequences = [
+        generate_lagged_sensor_measurements(traj_sensor_measurements, lags)
+        for traj_sensor_measurements in dataset
+    ]
+    return np.concatenate(sequences, axis=0)
+
+
+def parse_compress(compress: Union[None, bool, int]) -> int:
+    """Normalize the compress argument into an integer number of modes.
+
+    Parameters
+    ----------
+    compress : None, bool, or int
+        - None or False → 0 (no compression)
+        - True → DEFAULT_MODES
+        - int → use that many modes
+
+    Returns
+    -------
+    int
+        The number of SVD modes to use.
+    """
+    if compress is None or compress is False:
+        return 0
+    if compress is True:
+        return DEFAULT_MODES
+    if isinstance(compress, int):
+        return compress
+    raise TypeError(f"`compress` must be None, bool, or int, got {type(compress).__name__!r}")
