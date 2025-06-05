@@ -79,7 +79,7 @@ def get_data_npy(file_path: str) -> np.ndarray:
     return np.load(file_path)
 
 
-def get_sensor_measurements(data, id, sensor_number, random, stationary, mobile, measurements):
+def get_sensor_measurements(data, id, sensor_number, random, stationary, mobile, measurements, seed):
     """
     Extract sensor measurements from data using various sensor configurations.
 
@@ -99,7 +99,8 @@ def get_sensor_measurements(data, id, sensor_number, random, stationary, mobile,
         Coordinates of mobile sensors.
     measurements : np.ndarray or None
         Pre-computed sensor measurements with time on axis 0 and sensors on axis 1.
-
+    seed : int or None
+        Seed for selecting random sensor locations.
     Returns
     -------
     dict
@@ -114,7 +115,7 @@ def get_sensor_measurements(data, id, sensor_number, random, stationary, mobile,
     # randomly selected stationary sensors
     if random is not None:
         if isinstance(random, int):
-            random_sensor_locations = generate_random_sensor_locations(data = data, num_sensors = random)
+            random_sensor_locations = generate_random_sensor_locations(data = data, num_sensors = random, seed = seed)
             for sensor_coordinate in random_sensor_locations:
                 sensor_summary.append([id, next(sensor_number), 'stationary (random)', sensor_coordinate])
                 sensor_measurements.append(data[(slice(None),) + sensor_coordinate]) # all timesteps at that (i,j) location
@@ -196,7 +197,7 @@ def get_sensor_measurements(data, id, sensor_number, random, stationary, mobile,
         "sensor_measurements_df": sensor_measurements_df
     }
 
-def generate_random_sensor_locations(data, num_sensors):
+def generate_random_sensor_locations(data, num_sensors, seed):
     """
     Generate random sensor locations for the given data shape.
 
@@ -206,7 +207,8 @@ def generate_random_sensor_locations(data, num_sensors):
         Data array where first axis is time, followed by spatial axes.
     num_sensors : int
         Number of random sensor locations to generate.
-
+    seed : int
+        Seed for the random number generator.
     Returns
     -------
     list
@@ -214,6 +216,8 @@ def generate_random_sensor_locations(data, num_sensors):
     """
     spatial_shape = data.shape[1:] # first dimension is number of timesteps, rest is spatial dimentions
     spatial_points = np.prod(spatial_shape)
+    if seed is not None:
+        np.random.seed(seed)
     sensor_indices = np.random.choice(spatial_points, size = num_sensors, replace = False)
     sensor_locations = []
     for sensor_index in sensor_indices:
