@@ -2,6 +2,7 @@
 
 #### Import Libraries
 
+
 ```python
 # PYSHRED
 %load_ext autoreload
@@ -17,8 +18,10 @@ import numpy as np
 
     The autoreload extension is already loaded. To reload it, use:
       %reload_ext autoreload
+    
 
 #### Load Kuramoto Sivashinsky dataset
+
 
 ```python
 import numpy as np
@@ -35,6 +38,7 @@ dataset = np.load(filename)
 
 #### Initialize Data Manager
 
+
 ```python
 # Initialize ParametricSHREDDataManager
 manager = ParametricDataManager(
@@ -46,6 +50,7 @@ manager = ParametricDataManager(
 ```
 
 #### Add datasets and sensors
+
 
 ```python
 data = dataset['u'] # shape (500, 201, 100)
@@ -61,9 +66,13 @@ manager.add_data(
 
 #### Analyze sensor summary
 
+
 ```python
 manager.sensor_measurements_df
 ```
+
+
+
 
 <div>
 <style scoped>
@@ -78,7 +87,6 @@ manager.sensor_measurements_df
     .dataframe thead th {
         text-align: right;
     }
-
 </style>
 <table border="1" class="dataframe">
   <thead>
@@ -92,33 +100,33 @@ manager.sensor_measurements_df
   <tbody>
     <tr>
       <th>0</th>
-      <td>0.154032</td>
-      <td>-1.140074</td>
-      <td>-0.006130</td>
+      <td>0.708629</td>
+      <td>0.989837</td>
+      <td>-0.001146</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.332515</td>
-      <td>-1.079287</td>
-      <td>-0.023609</td>
+      <td>1.016122</td>
+      <td>0.875062</td>
+      <td>0.000188</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.361393</td>
-      <td>-1.070717</td>
-      <td>0.002758</td>
+      <td>1.069693</td>
+      <td>0.865250</td>
+      <td>0.015522</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.404951</td>
-      <td>-1.049306</td>
-      <td>0.015024</td>
+      <td>1.137522</td>
+      <td>0.865200</td>
+      <td>0.018314</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.485893</td>
-      <td>-1.031259</td>
-      <td>0.017951</td>
+      <td>1.226237</td>
+      <td>0.880023</td>
+      <td>0.014118</td>
     </tr>
     <tr>
       <th>...</th>
@@ -128,42 +136,48 @@ manager.sensor_measurements_df
     </tr>
     <tr>
       <th>100495</th>
-      <td>0.261712</td>
-      <td>-1.793277</td>
-      <td>-0.135204</td>
+      <td>1.009500</td>
+      <td>0.152590</td>
+      <td>-0.098147</td>
     </tr>
     <tr>
       <th>100496</th>
-      <td>-0.622521</td>
-      <td>-1.301706</td>
-      <td>0.021596</td>
+      <td>0.406561</td>
+      <td>-0.059743</td>
+      <td>0.034844</td>
     </tr>
     <tr>
       <th>100497</th>
-      <td>-1.591052</td>
-      <td>-0.838068</td>
-      <td>0.158474</td>
+      <td>-0.789511</td>
+      <td>-0.240309</td>
+      <td>0.154053</td>
     </tr>
     <tr>
       <th>100498</th>
-      <td>-2.129965</td>
-      <td>-0.466887</td>
-      <td>0.281114</td>
+      <td>-2.024618</td>
+      <td>-0.387233</td>
+      <td>0.263992</td>
     </tr>
     <tr>
       <th>100499</th>
-      <td>-2.005693</td>
-      <td>-0.192670</td>
-      <td>0.383173</td>
+      <td>-2.510078</td>
+      <td>-0.493061</td>
+      <td>0.357317</td>
     </tr>
   </tbody>
 </table>
 <p>100500 rows × 3 columns</p>
 </div>
 
+
+
+
 ```python
 manager.sensor_summary_df
 ```
+
+
+
 
 <div>
 <style scoped>
@@ -178,7 +192,6 @@ manager.sensor_summary_df
     .dataframe thead th {
         text-align: right;
     }
-
 </style>
 <table border="1" class="dataframe">
   <thead>
@@ -195,28 +208,31 @@ manager.sensor_summary_df
       <th>0</th>
       <td>KS</td>
       <td>0</td>
-      <td>stationary</td>
-      <td>(15,)</td>
+      <td>stationary (random)</td>
+      <td>(12,)</td>
     </tr>
     <tr>
       <th>1</th>
       <td>KS</td>
       <td>1</td>
-      <td>stationary</td>
-      <td>(30,)</td>
+      <td>stationary (random)</td>
+      <td>(63,)</td>
     </tr>
     <tr>
       <th>2</th>
       <td>KS</td>
       <td>2</td>
-      <td>stationary</td>
-      <td>(45,)</td>
+      <td>stationary (random)</td>
+      <td>(46,)</td>
     </tr>
   </tbody>
 </table>
 </div>
 
+
+
 #### Get train, validation, and test set
+
 
 ```python
 train_dataset, val_dataset, test_dataset= manager.prepare()
@@ -226,11 +242,13 @@ train_dataset, val_dataset, test_dataset= manager.prepare()
 
 When using a `ParametricDataManager`, ensure `latent_forecaster` is set to None.
 
+
 ```python
 shred = SHRED(sequence_model="LSTM", decoder_model="MLP", latent_forecaster=None)
 ```
 
 #### Fit SHRED
+
 
 ```python
 val_errors = shred.fit(train_dataset=train_dataset, val_dataset=val_dataset, num_epochs=10, sindy_regularization=0)
@@ -238,19 +256,32 @@ print('val_errors:', val_errors)
 ```
 
     Fitting SHRED...
-    Epoch 1: Average training loss = 0.023503
-    Validation MSE (epoch 1): 0.015884
-    Epoch 2: Average training loss = 0.011217
-    Validation MSE (epoch 2): 0.013228
-    Epoch 3: Average training loss = 0.009117
-    Validation MSE (epoch 3): 0.010834
-    Epoch 4: Average training loss = 0.007808
-    Validation MSE (epoch 4): 0.009817
-    Epoch 5: Average training loss = 0.006982
-    Validation MSE (epoch 5): 0.008005
-    val_errors: [0.01588413 0.01322768 0.01083446 0.00981664 0.0080053 ]
+    Epoch 1: Average training loss = 0.028080
+    Validation MSE (epoch 1): 0.016037
+    Epoch 2: Average training loss = 0.013088
+    Validation MSE (epoch 2): 0.012211
+    Epoch 3: Average training loss = 0.009953
+    Validation MSE (epoch 3): 0.010281
+    Epoch 4: Average training loss = 0.008823
+    Validation MSE (epoch 4): 0.009362
+    Epoch 5: Average training loss = 0.008046
+    Validation MSE (epoch 5): 0.008667
+    Epoch 6: Average training loss = 0.007330
+    Validation MSE (epoch 6): 0.007975
+    Epoch 7: Average training loss = 0.006515
+    Validation MSE (epoch 7): 0.007390
+    Epoch 8: Average training loss = 0.005872
+    Validation MSE (epoch 8): 0.006428
+    Epoch 9: Average training loss = 0.005262
+    Validation MSE (epoch 9): 0.006255
+    Epoch 10: Average training loss = 0.004845
+    Validation MSE (epoch 10): 0.005555
+    val_errors: [0.01603747 0.01221097 0.0102807  0.00936181 0.00866734 0.00797478
+     0.00739024 0.00642837 0.00625512 0.00555485]
+    
 
 #### Evaluate SHRED
+
 
 ```python
 train_mse = shred.evaluate(dataset=train_dataset)
@@ -261,11 +292,13 @@ print(f"Val   MSE: {val_mse:.3f}")
 print(f"Test  MSE: {test_mse:.3f}")
 ```
 
-    Train MSE: 0.006
-    Val   MSE: 0.008
-    Test  MSE: 0.005
+    Train MSE: 0.004
+    Val   MSE: 0.006
+    Test  MSE: 0.004
+    
 
 #### Initialize Parametric SHRED Engine for Downstream Tasks
+
 
 ```python
 engine = ParametricSHREDEngine(manager, shred)
@@ -273,21 +306,27 @@ engine = ParametricSHREDEngine(manager, shred)
 
 #### Sensor Measurements to Latent Space
 
+
 ```python
 test_latent_from_sensors = engine.sensor_to_latent(manager.test_sensor_measurements)
 ```
 
 #### Decode Latent Space to Full-State Space
 
+
 ```python
 test_prediction = engine.decode(test_latent_from_sensors) # latent space generated from sensor data
 ```
 
-Compare prediction against the truth
+#### Compare prediction against the truth
+
+Since both number of trajectories (`data.shape[0]`) and number of timesteps (`data.shape[1]`) are both variable, we will leave them combined on the first axis. The remaining axes are all spatial dimensions.
+
 
 ```python
 spatial_shape = data.shape[2:]
-truth      = data.reshape(-1, *spatial_shape)
+test_data = data[manager.test_indices]
+truth      = test_data.reshape(-1, *spatial_shape)
 prediction = test_prediction['KS']
 
 compare_data = [truth, prediction]
@@ -305,13 +344,23 @@ for ax, d, title in zip(axes, compare_data, titles):
 fig.colorbar(im, ax=axes, label="Value", shrink=0.8)
 ```
 
-    <matplotlib.colorbar.Colorbar at 0x2031d9725f0>
 
+
+
+    <matplotlib.colorbar.Colorbar at 0x20320495b70>
+
+
+
+
+    
 ![png](shred_rom_files/shred_rom_27_1.png)
+    
+
 
 #### Evaluate MSE on Ground Truth Data
 
 Since both number of trajectories (`data.shape[0]`) and number of timesteps (`data.shape[1]`) are both variable, we will leave them combined on the first axis. The remaining axes are all spatial dimensions.
+
 
 ```python
 # Train
@@ -338,16 +387,17 @@ print(test_error)
 ```
 
     ---------- TRAIN ----------
-                 MSE      RMSE      MAE        R2
-    dataset
-    KS       0.18685  0.432262  0.27461  0.857352
-
+                  MSE      RMSE       MAE        R2
+    dataset                                        
+    KS       0.122041  0.349344  0.223251  0.908356
+    
     ---------- VAL   ----------
                   MSE      RMSE       MAE        R2
-    dataset
-    KS       0.270706  0.520294  0.336177  0.789836
-
+    dataset                                        
+    KS       0.188222  0.433846  0.278454  0.854639
+    
     ---------- TEST  ----------
                   MSE      RMSE       MAE        R2
-    dataset
-    KS       0.168299  0.410243  0.252061  0.872379
+    dataset                                        
+    KS       0.122997  0.350709  0.215074  0.908787
+    
