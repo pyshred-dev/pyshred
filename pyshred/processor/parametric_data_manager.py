@@ -137,7 +137,9 @@ class ParametricDataManager:
                     next(self._sensor_number)
             new_sensor_measurements_df = sensors_dict['sensor_measurements_df']
             new_sensor_summary_df = sensors_dict['sensor_summary']
-            new_sensor_measurements = sensors_dict['sensor_measurements'][np.newaxis, :]
+            new_sensor_measurements = sensors_dict['sensor_measurements']
+            if new_sensor_measurements is not None:
+                new_sensor_measurements = new_sensor_measurements[np.newaxis, :]
 
             if new_sensor_measurements_df_all_trajectories is None:
                 new_sensor_measurements_df_all_trajectories = new_sensor_measurements_df
