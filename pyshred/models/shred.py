@@ -99,7 +99,8 @@ class SHRED(torch.nn.Module):
         """
         super().__init__()
         if sequence_model is None:
-            if isinstance(latent_forecaster, SINDy_Forecaster):
+            if (isinstance(latent_forecaster, SINDy_Forecaster) or 
+                (isinstance(latent_forecaster, str) and latent_forecaster.upper() == "SINDY_FORECASTER")):
                 self.sequence = GRU()
             else:
                 self.sequence = LSTM()
