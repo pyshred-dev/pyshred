@@ -27,7 +27,6 @@ class SHREDEngine:
         The trained SHRED model.
     """
     
-    # We want forecaster in the init as well... so need to fit in shred_model??
     def __init__(self, data_manager: DataManager, shred_model: SHRED):
         """
         Initialize the SHRED inference engine.
@@ -104,34 +103,14 @@ class SHREDEngine:
         RuntimeError
             If no latent forecaster is available.
         """
-        ### move all model specific logic into the model itself
-        ### pass in exactly t and init_latents to each model
-        ### this wrapper should only help decide what model to go with
         if self.model.latent_forecaster is None:
             raise RuntimeError("No `latent_forecaster` available. Please initialize SHRED with a " \
             "`latent_forecaster` model.")
         if isinstance(init_latents, torch.Tensor):
             init_latents = init_latents.detach().cpu().numpy()
-        # if isinstance(self.model.latent_forecaster, SINDy_Forecaster):
         return self.model.latent_forecaster.forecast(h, init_latents)
-            # dt = self.model.latent_forecaster.dt
-            # t_train = np.arange(0, t*dt, dt)
-            # if init_latents.ndim > 2:
-            #     raise ValueError(
-            #         f"Invalid `init_latents`: expected a 1D array (shape (m,)) or a 2D array "
-            #         f"(shape (timesteps, m)), but got a {init_latents.ndim}D array with shape {init_latents.shape}."
-            #     )
-            # if init_latents.ndim == 2:
-            #     warnings.warn(
-            #         f"`init_latents` has shape {init_latents.shape}; only its last row "
-            #         "will be used as the initial latent state for SINDy.",
-            #         UserWarning
-            #     )
-            #     init_latents = init_latents[-1]
-            # return self.model.latent_forecaster.model.simulate(init_latents, t_train)
-        
 
-# recon_dict_out = manager.postprocess(reconstruction, mode = "reconstruct")
+
     def decode(self, latents):
         """
         Decode latent states back to full physical state space.
