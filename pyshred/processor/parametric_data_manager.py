@@ -200,7 +200,7 @@ class ParametricDataManager:
         if modes > 0:
             self._preSVD_scaler_registry[self._dataset_ids[-1]] = sc
             self._Vt_registry[self._dataset_ids[-1]] = Vt
-        self._dataset_lengths[self._dataset_ids[-1]] = data.shape[1] # save spatial dim to registry
+        self._dataset_lengths[self._dataset_ids[-1]] = train_data.shape[1] # save spatial dim to registry
        
         if self.train_data is None:
             self.train_data = train_data
