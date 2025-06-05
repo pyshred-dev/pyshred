@@ -65,7 +65,8 @@ class DataManager:
                  stationary: Optional[Union[Tuple, List[Tuple]]] = None,
                  mobile: Optional[Union[List[Tuple], List[List[Tuple]]]] = None,
                  measurements: Optional[np.ndarray] = None,
-                 compress: Union[None, bool, int] = True):
+                 compress: Union[None, bool, int] = True,
+                 seed: Optional[int] = None):
         """
         Add a dataset with sensor measurements to the data manager.
 
@@ -85,16 +86,18 @@ class DataManager:
             Pre-computed sensor measurements with time on axis 0.
         compress : None, bool, or int, optional
             Data compression settings. True uses default modes, int specifies number of modes.
+        seed : int, optional
+            Seed for selecting random sensor locations.
         """
         if id in self._dataset_ids:
             raise ValueError(f"Dataset id {id!r} already exists. Please choose a new id.")
         modes = self._parse_compress(compress)
         data = get_data(data)
         dataset_spatial_shape = data.shape[1:]
-        train_indices = self.train_indices or np.arange(0, int(len(data)*self.train_size))
-        val_indices = self.val_indices or np.arange(int(len(data)*self.train_size),
+        train_indices = self.train_indices if self.train_indices is not None else np.arange(0, int(len(data)*self.train_size))
+        val_indices = self.val_indices if self.val_indices is not None else np.arange(int(len(data)*self.train_size),
                                                     int(len(data)*self.train_size + len(data)*self.val_size))
-        test_indices = self.test_indices or np.arange(int(len(data)*self.train_size +len(data)*self.val_size), len(data))
+        test_indices = self.test_indices if self.test_indices is not None else np.arange(int(len(data)*self.train_size +len(data)*self.val_size), len(data))
         sensors_dict = get_sensor_measurements(
                         data = data,
                         id = id,
@@ -103,6 +106,7 @@ class DataManager:
                         stationary = stationary,
                         mobile = mobile,
                         measurements = measurements,
+                        seed = seed
                     )
         new_sensor_measurements_df = sensors_dict['sensor_measurements_df']
         new_sensor_summary_df = sensors_dict['sensor_summary']
