@@ -1,4 +1,6 @@
-# ROM-SHRED Tutorial on Kuramoto Sivashinsky
+# SHRED-ROM Tutorial on Kuramoto Sivashinsky
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1eFR-3l6qFgo3360V2LrJqBPSLheI4Mfd)
 
 #### Import Libraries
 
@@ -100,33 +102,33 @@ manager.sensor_measurements_df
   <tbody>
     <tr>
       <th>0</th>
-      <td>0.708629</td>
-      <td>0.989837</td>
-      <td>-0.001146</td>
+      <td>0.047727</td>
+      <td>0.553612</td>
+      <td>-0.954329</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>1.016122</td>
-      <td>0.875062</td>
-      <td>0.000188</td>
+      <td>0.067329</td>
+      <td>0.695523</td>
+      <td>-0.849845</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>1.069693</td>
-      <td>0.865250</td>
-      <td>0.015522</td>
+      <td>0.014021</td>
+      <td>0.630202</td>
+      <td>-0.823280</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>1.137522</td>
-      <td>0.865200</td>
-      <td>0.018314</td>
+      <td>-0.031031</td>
+      <td>0.515125</td>
+      <td>-0.789117</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>1.226237</td>
-      <td>0.880023</td>
-      <td>0.014118</td>
+      <td>-0.063776</td>
+      <td>0.346338</td>
+      <td>-0.763155</td>
     </tr>
     <tr>
       <th>...</th>
@@ -136,33 +138,33 @@ manager.sensor_measurements_df
     </tr>
     <tr>
       <th>100495</th>
-      <td>1.009500</td>
-      <td>0.152590</td>
-      <td>-0.098147</td>
+      <td>-0.039383</td>
+      <td>1.815631</td>
+      <td>-1.450543</td>
     </tr>
     <tr>
       <th>100496</th>
-      <td>0.406561</td>
-      <td>-0.059743</td>
-      <td>0.034844</td>
+      <td>-0.029805</td>
+      <td>1.404686</td>
+      <td>-0.953344</td>
     </tr>
     <tr>
       <th>100497</th>
-      <td>-0.789511</td>
-      <td>-0.240309</td>
-      <td>0.154053</td>
+      <td>-0.026611</td>
+      <td>0.981305</td>
+      <td>-0.544849</td>
     </tr>
     <tr>
       <th>100498</th>
-      <td>-2.024618</td>
-      <td>-0.387233</td>
-      <td>0.263992</td>
+      <td>-0.030562</td>
+      <td>0.600680</td>
+      <td>-0.249002</td>
     </tr>
     <tr>
       <th>100499</th>
-      <td>-2.510078</td>
-      <td>-0.493061</td>
-      <td>0.357317</td>
+      <td>-0.042778</td>
+      <td>0.278897</td>
+      <td>-0.048559</td>
     </tr>
   </tbody>
 </table>
@@ -209,21 +211,21 @@ manager.sensor_summary_df
       <td>KS</td>
       <td>0</td>
       <td>stationary (random)</td>
-      <td>(12,)</td>
+      <td>(52,)</td>
     </tr>
     <tr>
       <th>1</th>
       <td>KS</td>
       <td>1</td>
       <td>stationary (random)</td>
-      <td>(63,)</td>
+      <td>(76,)</td>
     </tr>
     <tr>
       <th>2</th>
       <td>KS</td>
       <td>2</td>
       <td>stationary (random)</td>
-      <td>(46,)</td>
+      <td>(32,)</td>
     </tr>
   </tbody>
 </table>
@@ -251,33 +253,55 @@ shred = SHRED(sequence_model="LSTM", decoder_model="MLP", latent_forecaster=None
 
 
 ```python
-val_errors = shred.fit(train_dataset=train_dataset, val_dataset=val_dataset, num_epochs=10, sindy_regularization=0)
+val_errors = shred.fit(train_dataset=train_dataset, val_dataset=val_dataset, num_epochs=20, sindy_regularization=0)
 print('val_errors:', val_errors)
 ```
 
     Fitting SHRED...
-    Epoch 1: Average training loss = 0.028080
-    Validation MSE (epoch 1): 0.016037
-    Epoch 2: Average training loss = 0.013088
-    Validation MSE (epoch 2): 0.012211
-    Epoch 3: Average training loss = 0.009953
-    Validation MSE (epoch 3): 0.010281
-    Epoch 4: Average training loss = 0.008823
-    Validation MSE (epoch 4): 0.009362
-    Epoch 5: Average training loss = 0.008046
-    Validation MSE (epoch 5): 0.008667
-    Epoch 6: Average training loss = 0.007330
-    Validation MSE (epoch 6): 0.007975
-    Epoch 7: Average training loss = 0.006515
-    Validation MSE (epoch 7): 0.007390
-    Epoch 8: Average training loss = 0.005872
-    Validation MSE (epoch 8): 0.006428
-    Epoch 9: Average training loss = 0.005262
-    Validation MSE (epoch 9): 0.006255
-    Epoch 10: Average training loss = 0.004845
-    Validation MSE (epoch 10): 0.005555
-    val_errors: [0.01603747 0.01221097 0.0102807  0.00936181 0.00866734 0.00797478
-     0.00739024 0.00642837 0.00625512 0.00555485]
+    Epoch 1: Average training loss = 0.029015
+    Validation MSE (epoch 1): 0.021528
+    Epoch 2: Average training loss = 0.013127
+    Validation MSE (epoch 2): 0.014481
+    Epoch 3: Average training loss = 0.009712
+    Validation MSE (epoch 3): 0.010857
+    Epoch 4: Average training loss = 0.008075
+    Validation MSE (epoch 4): 0.009062
+    Epoch 5: Average training loss = 0.006994
+    Validation MSE (epoch 5): 0.008068
+    Epoch 6: Average training loss = 0.006186
+    Validation MSE (epoch 6): 0.007633
+    Epoch 7: Average training loss = 0.005487
+    Validation MSE (epoch 7): 0.006828
+    Epoch 8: Average training loss = 0.004934
+    Validation MSE (epoch 8): 0.005742
+    Epoch 9: Average training loss = 0.004453
+    Validation MSE (epoch 9): 0.005338
+    Epoch 10: Average training loss = 0.004108
+    Validation MSE (epoch 10): 0.005088
+    Epoch 11: Average training loss = 0.003822
+    Validation MSE (epoch 11): 0.004542
+    Epoch 12: Average training loss = 0.003573
+    Validation MSE (epoch 12): 0.004109
+    Epoch 13: Average training loss = 0.003342
+    Validation MSE (epoch 13): 0.003901
+    Epoch 14: Average training loss = 0.003125
+    Validation MSE (epoch 14): 0.003875
+    Epoch 15: Average training loss = 0.003004
+    Validation MSE (epoch 15): 0.003635
+    Epoch 16: Average training loss = 0.002933
+    Validation MSE (epoch 16): 0.003634
+    Epoch 17: Average training loss = 0.002643
+    Validation MSE (epoch 17): 0.003414
+    Epoch 18: Average training loss = 0.002590
+    Validation MSE (epoch 18): 0.003550
+    Epoch 19: Average training loss = 0.002506
+    Validation MSE (epoch 19): 0.003352
+    Epoch 20: Average training loss = 0.002391
+    Validation MSE (epoch 20): 0.003189
+    val_errors: [0.02152832 0.01448148 0.01085665 0.00906194 0.00806843 0.00763291
+     0.00682771 0.0057418  0.00533777 0.00508846 0.00454171 0.00410912
+     0.00390149 0.00387539 0.00363467 0.0036336  0.00341429 0.00355012
+     0.00335244 0.00318871]
     
 
 #### Evaluate SHRED
@@ -292,9 +316,9 @@ print(f"Val   MSE: {val_mse:.3f}")
 print(f"Test  MSE: {test_mse:.3f}")
 ```
 
-    Train MSE: 0.004
-    Val   MSE: 0.006
-    Test  MSE: 0.004
+    Train MSE: 0.002
+    Val   MSE: 0.003
+    Test  MSE: 0.002
     
 
 #### Initialize Parametric SHRED Engine for Downstream Tasks
@@ -347,13 +371,13 @@ fig.colorbar(im, ax=axes, label="Value", shrink=0.8)
 
 
 
-    <matplotlib.colorbar.Colorbar at 0x20320495b70>
+    <matplotlib.colorbar.Colorbar at 0x2a69a35fdc0>
 
 
 
 
     
-![png](shred_rom_files/shred_rom_27_1.png)
+![png](shred_rom_kuramoto_sivashinsky_files/shred_rom_kuramoto_sivashinsky_27_1.png)
     
 
 
@@ -387,17 +411,17 @@ print(test_error)
 ```
 
     ---------- TRAIN ----------
-                  MSE      RMSE       MAE        R2
-    dataset                                        
-    KS       0.122041  0.349344  0.223251  0.908356
+                  MSE      RMSE       MAE       R2
+    dataset                                       
+    KS       0.058591  0.242056  0.157245  0.95542
     
     ---------- VAL   ----------
-                  MSE      RMSE       MAE        R2
-    dataset                                        
-    KS       0.188222  0.433846  0.278454  0.854639
+                  MSE      RMSE      MAE        R2
+    dataset                                       
+    KS       0.108668  0.329648  0.20142  0.916482
     
     ---------- TEST  ----------
                   MSE      RMSE       MAE        R2
     dataset                                        
-    KS       0.122997  0.350709  0.215074  0.908787
+    KS       0.073058  0.270293  0.160392  0.944935
     
