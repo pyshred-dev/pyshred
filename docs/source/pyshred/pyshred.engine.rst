@@ -12,6 +12,14 @@ pyshred.engine.engine module
    :undoc-members:
    :show-inheritance:
 
+pyshred.engine.parametric\_engine module
+----------------------------------------
+
+.. automodule:: pyshred.engine.parametric_engine
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

@@ -12,6 +12,14 @@ pyshred.processor.data\_manager module
    :undoc-members:
    :show-inheritance:
 
+pyshred.processor.parametric\_data\_manager module
+--------------------------------------------------
+
+.. automodule:: pyshred.processor.parametric_data_manager
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pyshred.processor.utils module
 ------------------------------
 

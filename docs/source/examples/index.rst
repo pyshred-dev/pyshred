@@ -8,3 +8,4 @@ Example Gallery
    tutorial_bunny_hill
    basic_shred_sst
    sindy_shred_sst
+   shred_rom
