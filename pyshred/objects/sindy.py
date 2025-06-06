@@ -1,7 +1,6 @@
 from ..models._sindy import sindy_library_torch, e_sindy_library_torch
 import torch
-
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+from .device import get_device
 
 class SINDy(torch.nn.Module):
     """
@@ -52,6 +51,7 @@ class SINDy(torch.nn.Module):
         self.library_dim = library_dim
         self.coefficients = torch.ones(library_dim, latent_dim, requires_grad=True)
         torch.nn.init.normal_(self.coefficients, mean=0.0, std=0.001)
+        device = get_device()
         self.coefficient_mask = torch.ones(library_dim, latent_dim, requires_grad=False).to(device)
         self.coefficients = torch.nn.Parameter(self.coefficients)
 
@@ -97,6 +97,7 @@ class SINDy(torch.nn.Module):
             Standard deviation of noise to add. Defaults to 0.1.
         """
         self.coefficients.data += torch.randn_like(self.coefficients.data) * noise
+        device = get_device()
         self.coefficient_mask = torch.ones(self.library_dim, self.latent_dim, requires_grad=False).to(device)
         
     def recenter(self):
@@ -104,7 +105,8 @@ class SINDy(torch.nn.Module):
         Reset coefficients to zero and mask to ones.
         """
         self.coefficients.data = torch.randn_like(self.coefficients.data) * 0.0
-        self.coefficient_mask = torch.ones(self.library_dim, self.latent_dim, requires_grad=False).to(device)   
+        device = get_device()
+        self.coefficient_mask = torch.ones(self.library_dim, self.latent_dim, requires_grad=False).to(device)
 
 class E_SINDy(torch.nn.Module):
     """
@@ -159,6 +161,7 @@ class E_SINDy(torch.nn.Module):
         self.library_dim = library_dim
         self.coefficients = torch.ones(num_replicates, library_dim, latent_dim, requires_grad=True)
         torch.nn.init.normal_(self.coefficients, mean=0.0, std=0.001)
+        device = get_device()
         self.coefficient_mask = torch.ones(num_replicates, library_dim, latent_dim, requires_grad=False).to(device)
         self.coefficients = torch.nn.Parameter(self.coefficients)
 
@@ -213,6 +216,7 @@ class E_SINDy(torch.nn.Module):
             Standard deviation of noise to add. Defaults to 0.1.
         """
         self.coefficients.data += torch.randn_like(self.coefficients.data) * noise
+        device = get_device()
         self.coefficient_mask = torch.ones(self.num_replicates, self.library_dim, self.latent_dim, requires_grad=False).to(device)   
         
     def recenter(self):
@@ -220,4 +224,5 @@ class E_SINDy(torch.nn.Module):
         Reset all coefficients to zero and masks to ones.
         """
         self.coefficients.data = torch.randn_like(self.coefficients.data) * 0.0
+        device = get_device()
         self.coefficient_mask = torch.ones(self.num_replicates, self.library_dim, self.latent_dim, requires_grad=False).to(device)  

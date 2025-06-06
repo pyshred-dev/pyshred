@@ -13,6 +13,7 @@ import warnings
 from ..objects.dataset import TimeSeriesDataset
 from ..models.latent_forecaster_models.sindy import SINDy_Forecaster
 from ..models.latent_forecaster_models.lstm import LSTM_Forecaster
+from ..objects.device import get_device
 
 
 
@@ -299,7 +300,7 @@ class SHRED(torch.nn.Module):
         else:
             sindy = False
 
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        device = get_device()
         if isinstance(self.latent_forecaster, SINDy_Forecaster):
             self.dt = self.latent_forecaster.dt
             self.poly_order = self.latent_forecaster.poly_order

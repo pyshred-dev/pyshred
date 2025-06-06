@@ -6,6 +6,7 @@ from ..objects.dataset import *
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.utils.extmath import randomized_svd
 from itertools import count
+from ..objects.device import get_device
 
 DEFAULT_MODES = 50
 
@@ -269,7 +270,7 @@ class ParametricDataManager:
         lagged_val_sensor_measurements = generate_lagged_sensor_measurements_rom(scaled_val_sensor_measurements, self.lags)
         lagged_test_sensor_measurements = generate_lagged_sensor_measurements_rom(scaled_test_sensor_measurements, self.lags)
 
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        device = get_device()
 
         # build torch tensors, dtype float32, on that device
         X_train = torch.tensor(lagged_train_sensor_measurements, dtype=torch.float32, device=device)

@@ -4,6 +4,7 @@
 # Include necessary packages
 import torch
 from scipy.special import binom
+from ..objects.device import get_device
 
 def sindy_library_torch(z, latent_dim, poly_order, include_sine=False):
     """
@@ -19,8 +20,7 @@ def sindy_library_torch(z, latent_dim, poly_order, include_sine=False):
         number of library functions. The number of library functions is determined by the number
         of state variables of the input, the polynomial order, and whether or not sines are included.
     """
-    use_cuda = torch.cuda.is_available()
-    device = torch.device('cuda' if use_cuda else 'cpu')
+    device = get_device()
 
     library = [torch.ones(z.shape[0]).to(device)]
 
@@ -57,7 +57,7 @@ def sindy_library_torch(z, latent_dim, poly_order, include_sine=False):
         for i in range(latent_dim):
             library.append(torch.sin(z[:,i]))
 
-    return torch.stack(library, axis=1)
+    return torch.stack(library, dim=1)
 
 def e_sindy_library_torch(z, latent_dim, poly_order, include_sine=False):
     """
@@ -73,8 +73,7 @@ def e_sindy_library_torch(z, latent_dim, poly_order, include_sine=False):
         number of library functions. The number of library functions is determined by the number
         of state variables of the input, the polynomial order, and whether or not sines are included.
     """
-    use_cuda = torch.cuda.is_available()
-    device = torch.device('cuda' if use_cuda else 'cpu')
+    device = get_device()
 
     library = [torch.ones(z.shape[0]).to(device)]
 
@@ -111,7 +110,7 @@ def e_sindy_library_torch(z, latent_dim, poly_order, include_sine=False):
         for i in range(latent_dim):
             library.append(torch.sin(z[:,i]))
 
-    return torch.stack(library, axis=1)
+    return torch.stack(library, dim=1)
 
 def sindy_library_torch_version2(z, latent_dim, poly_order=3, include_sine=False):
     """
@@ -159,7 +158,8 @@ def sindy_library_torch_order2(z, dz, latent_dim, poly_order, include_sine=False
     Build the SINDy library for a second order system. This is essentially the same as for a first
     order system, but library terms are also built for the derivatives.
     """
-    library = [torch.ones(z.shape[0]).cuda()]
+    device = get_device()
+    library = [torch.ones(z.shape[0]).to(device)]
     library_names = ["constant", "constant"]
 
     z_combined = torch.concat([z, dz], 1)
@@ -210,7 +210,8 @@ def e_sindy_library_torch_order2(z, dz, latent_dim, poly_order, include_sine=Fal
     Build the SINDy library for a second order system. This is essentially the same as for a first
     order system, but library terms are also built for the derivatives.
     """
-    library = [torch.ones(z.shape[0]).cuda()]
+    device = get_device()
+    library = [torch.ones(z.shape[0]).to(device)]
     library_names = ["constant", "constant"]
 
     z_combined = torch.concat([z, dz], 1)
@@ -261,7 +262,8 @@ def sindy_library_torch_double_pendulum(z, dz, ddz, latent_dim, poly_order, incl
     Build the SINDy library for a second order system. This is essentially the same as for a first
     order system, but library terms are also built for the derivatives.
     """
-    library = [torch.ones(z.shape[0]).cuda()]
+    device = get_device()
+    library = [torch.ones(z.shape[0]).to(device)]
     library_names = ["constant", "constant"]
 
     z_combined = torch.concat([z, dz], 1)

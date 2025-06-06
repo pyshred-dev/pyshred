@@ -6,6 +6,7 @@ from ..objects.dataset import *
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.utils.extmath import randomized_svd
 from itertools import count
+from ..objects.device import get_device
 
 DEFAULT_MODES = 50
 
@@ -176,7 +177,7 @@ class DataManager:
         scaled_sensor_measurements = sc.transform(self.sensor_measurements)
         lagged_sensor_measurements = generate_lagged_sensor_measurements(scaled_sensor_measurements, self.lags)
 
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        device = get_device()
 
         # build torch tensors, dtype float32, on that device
         X_train = torch.tensor(lagged_sensor_measurements[self.train_indices], dtype=torch.float32, device=device)
