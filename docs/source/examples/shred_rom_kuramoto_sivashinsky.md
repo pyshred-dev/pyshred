@@ -7,8 +7,7 @@
 
 ```python
 # PYSHRED
-%load_ext autoreload
-%autoreload 2
+import pyshred
 from pyshred import ParametricDataManager, SHRED, ParametricSHREDEngine
 
 # Other helper libraries
@@ -38,6 +37,28 @@ urllib.request.urlretrieve(url, filename)
 dataset = np.load(filename)
 ```
 
+#### Device Info
+
+
+```python
+device = pyshred.set_device("auto")
+# device = pyshred.set_device("cpu") # force CPU
+# device = pyshred.set_device("cuda") # force CUDA
+# device = pyshred.set_device("mps") # force MPS
+# device = pyshred.set_device("cuda", device_id=0) # force specific GPU
+pyshred.device_info()
+```
+
+    === PyShred Device Information ===
+    Current device: cpu
+    Device config: DeviceConfig(device_type=<DeviceType.AUTO: 'auto'>, device_id=None, force_cpu=False, warn_on_fallback=True)
+    
+    Device Availability:
+      CUDA available: False
+      MPS available: False
+      CPU: Always available
+    
+
 #### Initialize Data Manager
 
 
@@ -56,6 +77,8 @@ manager = ParametricDataManager(
 
 ```python
 data = dataset['u'] # shape (500, 201, 100)
+params = dataset['mu'] # shape (500, 201, 2)
+
 
 manager.add_data(
     data=data,
@@ -64,6 +87,15 @@ manager.add_data(
     id = 'KS',
     compress = False
 )
+
+# add params
+manager.add_data(
+    data=params,
+    # stationary=[(15,),(30,),(45,)],
+    id = 'MU',
+    compress = False
+)
+
 ```
 
 #### Analyze sensor summary
@@ -102,33 +134,33 @@ manager.sensor_measurements_df
   <tbody>
     <tr>
       <th>0</th>
-      <td>0.047727</td>
-      <td>0.553612</td>
-      <td>-0.954329</td>
+      <td>-0.434038</td>
+      <td>-1.148071</td>
+      <td>0.154032</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.067329</td>
-      <td>0.695523</td>
-      <td>-0.849845</td>
+      <td>-0.457136</td>
+      <td>-0.961066</td>
+      <td>0.332515</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.014021</td>
-      <td>0.630202</td>
-      <td>-0.823280</td>
+      <td>-0.459894</td>
+      <td>-0.912785</td>
+      <td>0.361393</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>-0.031031</td>
-      <td>0.515125</td>
-      <td>-0.789117</td>
+      <td>-0.446475</td>
+      <td>-0.873385</td>
+      <td>0.404951</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>-0.063776</td>
-      <td>0.346338</td>
-      <td>-0.763155</td>
+      <td>-0.389743</td>
+      <td>-0.829674</td>
+      <td>0.485893</td>
     </tr>
     <tr>
       <th>...</th>
@@ -138,33 +170,33 @@ manager.sensor_measurements_df
     </tr>
     <tr>
       <th>100495</th>
-      <td>-0.039383</td>
-      <td>1.815631</td>
-      <td>-1.450543</td>
+      <td>-0.846195</td>
+      <td>-1.008426</td>
+      <td>0.261712</td>
     </tr>
     <tr>
       <th>100496</th>
-      <td>-0.029805</td>
-      <td>1.404686</td>
-      <td>-0.953344</td>
+      <td>-1.671882</td>
+      <td>-0.458563</td>
+      <td>-0.622521</td>
     </tr>
     <tr>
       <th>100497</th>
-      <td>-0.026611</td>
-      <td>0.981305</td>
-      <td>-0.544849</td>
+      <td>-2.103602</td>
+      <td>0.638096</td>
+      <td>-1.591052</td>
     </tr>
     <tr>
       <th>100498</th>
-      <td>-0.030562</td>
-      <td>0.600680</td>
-      <td>-0.249002</td>
+      <td>-1.971333</td>
+      <td>1.887684</td>
+      <td>-2.129965</td>
     </tr>
     <tr>
       <th>100499</th>
-      <td>-0.042778</td>
-      <td>0.278897</td>
-      <td>-0.048559</td>
+      <td>-1.450100</td>
+      <td>2.538589</td>
+      <td>-2.005693</td>
     </tr>
   </tbody>
 </table>
@@ -211,21 +243,21 @@ manager.sensor_summary_df
       <td>KS</td>
       <td>0</td>
       <td>stationary (random)</td>
-      <td>(52,)</td>
+      <td>(18,)</td>
     </tr>
     <tr>
       <th>1</th>
       <td>KS</td>
       <td>1</td>
       <td>stationary (random)</td>
-      <td>(76,)</td>
+      <td>(93,)</td>
     </tr>
     <tr>
       <th>2</th>
       <td>KS</td>
       <td>2</td>
       <td>stationary (random)</td>
-      <td>(32,)</td>
+      <td>(15,)</td>
     </tr>
   </tbody>
 </table>
@@ -258,50 +290,50 @@ print('val_errors:', val_errors)
 ```
 
     Fitting SHRED...
-    Epoch 1: Average training loss = 0.029015
-    Validation MSE (epoch 1): 0.021528
-    Epoch 2: Average training loss = 0.013127
-    Validation MSE (epoch 2): 0.014481
-    Epoch 3: Average training loss = 0.009712
-    Validation MSE (epoch 3): 0.010857
-    Epoch 4: Average training loss = 0.008075
-    Validation MSE (epoch 4): 0.009062
-    Epoch 5: Average training loss = 0.006994
-    Validation MSE (epoch 5): 0.008068
-    Epoch 6: Average training loss = 0.006186
-    Validation MSE (epoch 6): 0.007633
-    Epoch 7: Average training loss = 0.005487
-    Validation MSE (epoch 7): 0.006828
-    Epoch 8: Average training loss = 0.004934
-    Validation MSE (epoch 8): 0.005742
-    Epoch 9: Average training loss = 0.004453
-    Validation MSE (epoch 9): 0.005338
-    Epoch 10: Average training loss = 0.004108
-    Validation MSE (epoch 10): 0.005088
-    Epoch 11: Average training loss = 0.003822
-    Validation MSE (epoch 11): 0.004542
-    Epoch 12: Average training loss = 0.003573
-    Validation MSE (epoch 12): 0.004109
-    Epoch 13: Average training loss = 0.003342
-    Validation MSE (epoch 13): 0.003901
-    Epoch 14: Average training loss = 0.003125
-    Validation MSE (epoch 14): 0.003875
-    Epoch 15: Average training loss = 0.003004
-    Validation MSE (epoch 15): 0.003635
-    Epoch 16: Average training loss = 0.002933
-    Validation MSE (epoch 16): 0.003634
-    Epoch 17: Average training loss = 0.002643
-    Validation MSE (epoch 17): 0.003414
-    Epoch 18: Average training loss = 0.002590
-    Validation MSE (epoch 18): 0.003550
-    Epoch 19: Average training loss = 0.002506
-    Validation MSE (epoch 19): 0.003352
-    Epoch 20: Average training loss = 0.002391
-    Validation MSE (epoch 20): 0.003189
-    val_errors: [0.02152832 0.01448148 0.01085665 0.00906194 0.00806843 0.00763291
-     0.00682771 0.0057418  0.00533777 0.00508846 0.00454171 0.00410912
-     0.00390149 0.00387539 0.00363467 0.0036336  0.00341429 0.00355012
-     0.00335244 0.00318871]
+    Epoch 1: Average training loss = 0.031690
+    Validation MSE (epoch 1): 0.026569
+    Epoch 2: Average training loss = 0.016993
+    Validation MSE (epoch 2): 0.015352
+    Epoch 3: Average training loss = 0.011736
+    Validation MSE (epoch 3): 0.012691
+    Epoch 4: Average training loss = 0.009915
+    Validation MSE (epoch 4): 0.011286
+    Epoch 5: Average training loss = 0.008901
+    Validation MSE (epoch 5): 0.010464
+    Epoch 6: Average training loss = 0.008259
+    Validation MSE (epoch 6): 0.009664
+    Epoch 7: Average training loss = 0.007670
+    Validation MSE (epoch 7): 0.008933
+    Epoch 8: Average training loss = 0.007126
+    Validation MSE (epoch 8): 0.008480
+    Epoch 9: Average training loss = 0.006610
+    Validation MSE (epoch 9): 0.008143
+    Epoch 10: Average training loss = 0.006278
+    Validation MSE (epoch 10): 0.008485
+    Epoch 11: Average training loss = 0.005930
+    Validation MSE (epoch 11): 0.007433
+    Epoch 12: Average training loss = 0.005582
+    Validation MSE (epoch 12): 0.006999
+    Epoch 13: Average training loss = 0.005281
+    Validation MSE (epoch 13): 0.006656
+    Epoch 14: Average training loss = 0.005139
+    Validation MSE (epoch 14): 0.006386
+    Epoch 15: Average training loss = 0.004810
+    Validation MSE (epoch 15): 0.005950
+    Epoch 16: Average training loss = 0.004614
+    Validation MSE (epoch 16): 0.005578
+    Epoch 17: Average training loss = 0.004570
+    Validation MSE (epoch 17): 0.005578
+    Epoch 18: Average training loss = 0.004257
+    Validation MSE (epoch 18): 0.005292
+    Epoch 19: Average training loss = 0.004113
+    Validation MSE (epoch 19): 0.005244
+    Epoch 20: Average training loss = 0.004088
+    Validation MSE (epoch 20): 0.005059
+    val_errors: [0.02656859 0.0153518  0.01269077 0.01128609 0.01046397 0.00966403
+     0.00893335 0.00848005 0.00814289 0.00848533 0.00743333 0.00699905
+     0.00665622 0.00638625 0.00594996 0.00557757 0.00557818 0.00529238
+     0.00524372 0.00505928]
     
 
 #### Evaluate SHRED
@@ -316,9 +348,9 @@ print(f"Val   MSE: {val_mse:.3f}")
 print(f"Test  MSE: {test_mse:.3f}")
 ```
 
-    Train MSE: 0.002
-    Val   MSE: 0.003
-    Test  MSE: 0.002
+    Train MSE: 0.003
+    Val   MSE: 0.005
+    Test  MSE: 0.004
     
 
 #### Initialize Parametric SHRED Engine for Downstream Tasks
@@ -371,14 +403,39 @@ fig.colorbar(im, ax=axes, label="Value", shrink=0.8)
 
 
 
-    <matplotlib.colorbar.Colorbar at 0x2a69a35fdc0>
+    <matplotlib.colorbar.Colorbar at 0x2a69c042da0>
 
 
 
 
     
-![png](shred_rom_kuramoto_sivashinsky_files/shred_rom_kuramoto_sivashinsky_27_1.png)
+![png](shred_rom_kuramoto_sivashinsky_files/shred_rom_kuramoto_sivashinsky_29_1.png)
     
+
+
+#### Predicted params
+
+
+```python
+params_prediction = test_prediction['MU']
+print(params_prediction.shape)
+params_prediction
+```
+
+    (10050, 2)
+    
+
+
+
+
+    array([[1.502923 , 2.701217 ],
+           [1.5866294, 4.104658 ],
+           [1.6049353, 4.049966 ],
+           ...,
+           [1.0774401, 2.5793262],
+           [0.9692009, 2.925611 ],
+           [1.0723687, 2.6876066]], dtype=float32)
+
 
 
 #### Evaluate MSE on Ground Truth Data
@@ -411,17 +468,17 @@ print(test_error)
 ```
 
     ---------- TRAIN ----------
-                  MSE      RMSE       MAE       R2
-    dataset                                       
-    KS       0.058591  0.242056  0.157245  0.95542
-    
-    ---------- VAL   ----------
-                  MSE      RMSE      MAE        R2
-    dataset                                       
-    KS       0.108668  0.329648  0.20142  0.916482
-    
-    ---------- TEST  ----------
                   MSE      RMSE       MAE        R2
     dataset                                        
-    KS       0.073058  0.270293  0.160392  0.944935
+    KS       0.085787  0.292894  0.189655  0.934717
+    
+    ---------- VAL   ----------
+                MSE      RMSE       MAE        R2
+    dataset                                      
+    KS       0.1452  0.381051  0.237308  0.887799
+    
+    ---------- TEST  ----------
+                 MSE     RMSE       MAE        R2
+    dataset                                      
+    KS       0.08774  0.29621  0.185969  0.933305
     
