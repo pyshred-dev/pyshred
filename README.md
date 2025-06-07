@@ -50,6 +50,13 @@ _Citation instructions coming soon._
 - Issue Tracking: [https://github.com/pyshred-dev/pyshred/issues](https://github.com/pyshred-dev/pyshred/issues)
 - Source code: [https://github.com/pyshred-dev/pyshred](https://github.com/pyshred-dev/pyshred)
 
+## Main Contributors
+<a href="https://github.com/pyshred-dev/pyshred/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=pyshred-dev/pyshred" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
+
 ## References
 
 - Williams, J. P., Zahn, O., & Kutz, J. N. (2024).  
