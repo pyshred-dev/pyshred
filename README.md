@@ -35,7 +35,7 @@ The docs include a [tutorial](https://pyshred-dev.github.io/pyshred/user_guide/t
   PySHRED can be installed via source code on GitHub.
 
   ```
-  git clone https://github.com/PyShred-Dev/PySHRED.git
+  git clone https://github.com/pyshred-dev/pyshred.git
   cd pyshred
   pip install .
   ```
