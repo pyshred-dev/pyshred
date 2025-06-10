@@ -23,6 +23,12 @@ extensions = [
     "myst_parser",
     "sphinx.ext.githubpages",
     "sphinx_design",
+    'sphinx.ext.mathjax',
+]
+
+myst_enable_extensions = [
+    "dollarmath",
+    "amsmath",
 ]
 
 html_theme_options = {
