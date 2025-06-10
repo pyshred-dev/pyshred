@@ -111,6 +111,10 @@ class ParametricDataManager:
         new_sensor_measurements_all_trajectories = None
         for i in range(ntrajectories):
             traj_data = data[i]
+            if measurements is not None:
+                traj_meas = measurements[i]
+            else:
+                traj_meas = None
             if i == 0 and random is not None:
                 if seed is None:
                     # initialize a seed so random sensor locations are the same across every trajectory
@@ -125,7 +129,7 @@ class ParametricDataManager:
                             random = random,
                             stationary = stationary,
                             mobile = mobile,
-                            measurements = measurements,
+                            measurements = traj_meas,
                             seed = seed
                         )
             # Advance the global counter only once
