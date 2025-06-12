@@ -6,7 +6,7 @@ long_description = Path("README.md").read_text(encoding="utf-8")
 setup(
     name="pyshred",
     version="1.0.0",
-    author="Kutz Research Group",
+    author="David Ye, Jan Williams, Mars Gao, Matteo Tomasetto, Stefano Riva, Nathan Kutz",
     author_email="pyshred1@gmail.com",
     description="PySHRED: A Python Package for SHallow REcurrent Decoders (SHRED)",
     long_description=long_description,
