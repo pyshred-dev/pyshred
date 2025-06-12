@@ -8,11 +8,11 @@ setup(
     version="1.0.0",
     author="Kutz Research Group",
     author_email="pyshred1@gmail.com",
-    description="PySHRED: A Python Package for SHallow REcurrent Decoders (SHRED) for Spatial-Temporal Systems",
+    description="PySHRED: A Python Package for SHallow REcurrent Decoders (SHRED)",
     long_description=long_description,
     long_description_content_type="text/markdown",   # 'text/x-rst' for reStructuredText
     packages=find_packages(),
-    license = "BSD-3-Clause",
+    license = "MIT",
     install_requires=[
         "pysindy",
         "numpy<2.0",
