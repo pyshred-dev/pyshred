@@ -35,7 +35,7 @@ PySHRED offers a high-level interface and a simple three-step pipeline, making i
 
 ![PySHRED Pipeline](https://raw.githubusercontent.com/pyshred-dev/pyshred/main/docs/source/_static/pipeline.png)
 
-## Documentation:
+## Documentation
 
 Online documentation: [pyshred-dev.github.io/pyshred/](https://pyshred-dev.github.io/pyshred/)
 
