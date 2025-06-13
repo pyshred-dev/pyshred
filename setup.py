@@ -8,7 +8,7 @@ setup(
     version="1.0.0",
     author="David Ye, Jan Williams, Mars Gao, Matteo Tomasetto, Stefano Riva, Nathan Kutz",
     author_email="pyshred1@gmail.com",
-    description="PySHRED: A Python Package for SHallow REcurrent Decoders (SHRED)",
+    description="PySHRED: Package for Shallow Recurrent Decoding",
     long_description=long_description,
     long_description_content_type="text/markdown",   # 'text/x-rst' for reStructuredText
     packages=find_packages(),
