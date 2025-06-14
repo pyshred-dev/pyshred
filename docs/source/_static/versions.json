@@ -1,13 +1,5 @@
 [
     {
-        "version": "main",
-        "url": "/pyshred/main/"
-    },
-    {
-        "version": "stable",
-        "url": "/pyshred/stable/"
-    },
-    {
         "version": "v1.0.0",
         "url": "/pyshred/v1.0.0/"
     }
