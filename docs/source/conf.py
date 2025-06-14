@@ -56,10 +56,3 @@ napoleon_use_ivar = True
 html_theme = "pydata_sphinx_theme"
 html_static_path = ['_static']
 html_title = "PySHRED"
-
-smv_tag_whitelist   = r'^v\d+\.\d+\.\d+$'   # build all vX.Y.Z tags
-smv_branch_whitelist = r'^main$'            # plus main branch
-smv_aliases = {
-    "stable": r"^v\d+\.\d+\.\d+$",          # newest tag becomes “stable”
-}
-smv_always_copy = True               # copy instead of symlink – works anywhere
