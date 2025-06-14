@@ -10,7 +10,7 @@ import os
 project = 'PySHRED'
 copyright = '2025, Kutz Research Group'
 author = 'Kutz Research Group'
-version = release = os.getenv("SPHINX_MULTIVERSION_NAME", "local")
+version = release = os.getenv("SPHINX_MULTIVERSION_NAME")
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
