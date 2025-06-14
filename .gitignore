@@ -5,3 +5,4 @@
 build
 pyshred/sst copy.ipynb
 pyshred/sst_figures.ipynb
+docs/_build

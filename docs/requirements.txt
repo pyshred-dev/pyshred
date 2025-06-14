@@ -2,3 +2,4 @@ sphinx>=8.0
 pydata-sphinx-theme
 myst-parser
 sphinx-design
+sphinx-multiversion
