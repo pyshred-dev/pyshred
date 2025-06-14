@@ -9,7 +9,7 @@
 project = 'PySHRED'
 copyright = '2025, Kutz Research Group'
 author = 'Kutz Research Group'
-version = '1.0.0'
+version = 'v1.0.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -56,3 +56,5 @@ napoleon_use_ivar = True
 html_theme = "pydata_sphinx_theme"
 html_static_path = ['_static']
 html_title = "PySHRED"
+
+# html_baseurl = 'https://pyshred-dev.github.io/pyshred/'
