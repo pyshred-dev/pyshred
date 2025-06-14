@@ -37,14 +37,14 @@ PySHRED offers a high-level interface and a simple three-step pipeline, making i
 
 ## Documentation
 
-Online documentation: [pyshred-dev.github.io/pyshred/](https://pyshred-dev.github.io/pyshred/)
+Online documentation: [pyshred-dev.github.io/pyshred/stable](https://pyshred-dev.github.io/pyshred/stable)
 
 The docs include:
 
-- 📘 [**Getting Started**](https://pyshred-dev.github.io/pyshred/user_guide/introduction.html)
-- 📖 [**User Guide**](https://pyshred-dev.github.io/pyshred/user_guide/index.html)
-- 🧪 [**Example Gallery**](https://pyshred-dev.github.io/pyshred/examples/index.html)
-- 🛠️ [**API Reference**](https://pyshred-dev.github.io/pyshred/pyshred/modules.html)
+- 📘 [**Getting Started**](https://pyshred-dev.github.io/pyshred/stable/user_guide/introduction.html)
+- 📖 [**User Guide**](https://pyshred-dev.github.io/pyshred/stable/user_guide/index.html)
+- 🧪 [**Example Gallery**](https://pyshred-dev.github.io/pyshred/stable/examples/index.html)
+- 🛠️ [**API Reference**](https://pyshred-dev.github.io/pyshred/stable/pyshred/modules.html)
 
 ## Installation
 
@@ -72,7 +72,7 @@ _Citation instructions coming soon._
 
 ## Resources
 
-- Docs: [https://pyshred-dev.github.io/pyshred/](https://pyshred-dev.github.io/pyshred/)
+- Docs: [https://pyshred-dev.github.io/pyshred/stable](https://pyshred-dev.github.io/pyshred/stable)
 - Issue Tracking: [https://github.com/pyshred-dev/pyshred/issues](https://github.com/pyshred-dev/pyshred/issues)
 - Source code: [https://github.com/pyshred-dev/pyshred](https://github.com/pyshred-dev/pyshred)
 
