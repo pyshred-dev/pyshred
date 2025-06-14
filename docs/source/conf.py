@@ -56,5 +56,3 @@ napoleon_use_ivar = True
 html_theme = "pydata_sphinx_theme"
 html_static_path = ['_static']
 html_title = "PySHRED"
-
-# html_baseurl = 'https://pyshred-dev.github.io/pyshred/'

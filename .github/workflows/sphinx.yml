@@ -30,10 +30,17 @@ jobs:
         with:
           name: html-docs
           path: docs/build/html/
-      - name: Deploy
+      - name: Add root index.html
+        run: |
+          cp docs/source/index.html docs/build/html/index.html
+      - name: Copy latest version to stable
+        run: |
+          mkdir -p docs/build/html/stable
+          cp -r docs/build/html/v1.0.0/* docs/build/html/stable/
+      - name: Deploy docs (all versions + stable alias)
         uses: peaceiris/actions-gh-pages@v3
         if: github.ref == 'refs/heads/main'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: docs/build/html/v1.0.0
+          publish_dir: docs/build/html
           force_orphan: true
