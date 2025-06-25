@@ -7,7 +7,7 @@ PySHRED documentation
 =====================
 
 
-Version: |version|
+.. Version: |version|
 
 **Useful links:** `Installation <https://pyshred-dev.github.io/pyshred/stable/user_guide/installation.html>`_ | 
 `Source repository <https://github.com/PyShred-Dev/PyShred>`_ |

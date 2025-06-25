@@ -5,18 +5,34 @@
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
-import os
+import re
+from pathlib import Path
 
 project = 'PySHRED'
 copyright = '2025, Kutz Research Group'
 author = 'Kutz Research Group'
 
-version = release = "v1.0.21"
+def get_version_from_setup():
+    """Extract version from setup.py"""
+    setup_py = Path(__file__).parent.parent.parent / "setup.py"
+    content = setup_py.read_text()
+    # Look for version="..." pattern
+    match = re.search(r'version\s*=\s*["\']([^"\']+)["\']', content)
+    print('--------------------------------')
+    print('match', match)
+    print('--------------------------------')
+    if match:
+        return match.group(1)
+    return "unknown"
+
+version = release = get_version_from_setup()
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 html_show_sourcelink = False
+
+smv_tag_whitelist = r'^v\d+\.\d+\.\d+$'
 
 extensions = [
     "sphinx.ext.autodoc",      # pull in docstrings
