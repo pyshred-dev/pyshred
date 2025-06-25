@@ -1,6 +1,5 @@
-<!-- ![PyPI](https://img.shields.io/pypi/v/pyshred)
-![Python](https://img.shields.io/pypi/pyversions/pyshred) -->
-
+![PyPI](https://img.shields.io/pypi/v/pyshred)
+![Python](https://img.shields.io/pypi/pyversions/pyshred)
 ![License](https://img.shields.io/github/license/pyshred-dev/pyshred)
 ![CI](https://github.com/pyshred-dev/pyshred/actions/workflows/sphinx.yml/badge.svg)
 
