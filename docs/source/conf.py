@@ -51,11 +51,6 @@ myst_enable_extensions = [
 
 html_theme_options = {
     "collapse_navigation": False,
-    "navbar_end": ["version-switcher"],
-    "switcher": {
-        "json_url": "_static/versions.json",
-        "version_match": version,
-    },
 }
 # Tell Sphinx to recognize both .rst and .md files
 source_suffix = {
