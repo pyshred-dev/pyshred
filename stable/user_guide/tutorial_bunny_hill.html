@@ -1,0 +1,934 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Tutorial: Bunny Hill &#8212; PySHRED</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=957c0bd3"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/tutorial_bunny_hill';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Fundamentals and Usage" href="fundamentals.html" />
+    <link rel="prev" title="Installation" href="installation.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="v1.0.21" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">PySHRED</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples/index.html">
+    Example Gallery
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pyshred/modules.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../release_notes/index.html">
+    Release Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples/index.html">
+    Example Gallery
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pyshred/modules.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../release_notes/index.html">
+    Release Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="start_shredding.html">Start shredding</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="introduction.html">Introduction to PySHRED</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Tutorial: Bunny Hill</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="fundamentals.html">Fundamentals and Usage</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="data_prep.html">Data Preparation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shred_training.html">SHRED Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="downstream_tasks.html">Downstream Tasks</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">User Guide</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="start_shredding.html" class="nav-link">Start shredding</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Tutorial: Bunny Hill</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="tutorial-bunny-hill">
+<h1>Tutorial: Bunny Hill<a class="headerlink" href="#tutorial-bunny-hill" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://colab.research.google.com/drive/1NhgosukPjCr9STTY1M_KiRib2gqRtZAi"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<p>This iPython notebook gives an absolute-beginners tutorial on using PySHRED. The dataset we consider is weekly mean sea-surface temperature as given by the <a class="reference external" href="https://psl.noaa.gov/data/gridded/data.noaa.oisst.v2.html">NOAA Optimum Interpolation SST V2 dataset</a>.</p>
+<section id="loading-sea-surface-temperature-sst-data">
+<h2>🌊 Loading sea surface temperature (SST) data<a class="headerlink" href="#loading-sea-surface-temperature-sst-data" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Download the weekly mean sea-surface temperature (SST) dataset from NOAA <a class="reference external" href="https://downloads.psl.noaa.gov/Datasets/noaa.oisst.v2/sst.wkmean.1990-present.nc"><strong>here</strong></a>.</p></li>
+<li><p>Download the land sea mask dataset from NOAA <a class="reference external" href="https://downloads.psl.noaa.gov/Datasets/noaa.oisst.v2/lsmask.nc"><strong>here</strong></a></p></li>
+<li><p>Place the two downloaded <code class="docutils literal notranslate"><span class="pre">.nc</span></code> files in the same directory as this notebook.</p></li>
+<li><p>Run the code below to load the SST data, apply the land–sea mask, and extract a clean NumPy array.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span> <span class="c1"># for loading NetCDF files</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Load SST and land-sea mask datasets</span>
+<span class="n">sst_dataset</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;sst.wkmean.1990-present.nc&#39;</span><span class="p">)</span>
+<span class="n">mask_dataset</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;lsmask.nc&quot;</span><span class="p">)</span>
+
+<span class="c1"># Extract raw SST values and land-sea mask</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">sst_dataset</span><span class="p">[</span><span class="s2">&quot;sst&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">mask_dataset</span><span class="p">[</span><span class="s2">&quot;mask&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+<span class="c1"># Apply land-sea mask: set land regions (mask == 0) to 0</span>
+<span class="n">data</span><span class="p">[:,</span><span class="n">mask</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</section>
+<section id="understanding-and-visualizing-sst-data">
+<h2>Understanding and visualizing SST Data<a class="headerlink" href="#understanding-and-visualizing-sst-data" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">data</span></code> variable is a 3D NumPy array containing weekly sea surface temperature values.</p>
+<ul class="simple">
+<li><p><strong>axis 0:</strong> weekly timestep (timesteps)</p></li>
+<li><p><strong>axis 1:</strong> latitude (180 grid points)</p></li>
+<li><p><strong>axis 2:</strong> longitude (360 grid points)</p></li>
+</ul>
+<p>Each slice <code class="docutils literal notranslate"><span class="pre">data[t]</span></code> is a 2D array representing global SST for week <code class="docutils literal notranslate"><span class="pre">t</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print the shape of the array and plot the SST map for the first available week.</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># Print shape of SST data</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shape of SST data:&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># (time, lat, lon)</span>
+
+<span class="c1"># Plot the first week&#39;s SST values</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;SST (°C)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Weekly Sea Surface Temperature&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Longitude Index&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Latitude Index&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Shape of SST data: (1727, 180, 360)
+</pre></div>
+</div>
+<p><img alt="png" src="../_images/tutorial_bunny_hill_4_11.png" /></p>
+</section>
+<section id="initialize-the-data-manager">
+<h2>Initialize the data manager<a class="headerlink" href="#initialize-the-data-manager" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">DataManager</span></code> handles preprocessing and splitting of your dataset into training, validation, and test sets.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyshred</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataManager</span><span class="p">,</span> <span class="n">SHRED</span><span class="p">,</span> <span class="n">SHREDEngine</span>
+
+<span class="n">manager</span> <span class="o">=</span> <span class="n">DataManager</span><span class="p">(</span>
+    <span class="n">lags</span><span class="o">=</span><span class="mi">52</span><span class="p">,</span>          <span class="c1"># 1 year of weekly history as input</span>
+    <span class="n">train_size</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>   <span class="c1"># 80% for training</span>
+    <span class="n">val_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>     <span class="c1"># 10% for validation</span>
+    <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span>     <span class="c1"># 10% for testing</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="add-datasets-to-data-manager">
+<h2>Add datasets to data manager<a class="headerlink" href="#add-datasets-to-data-manager" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">DataManager</span></code> provides an <code class="docutils literal notranslate"><span class="pre">add_data()</span></code> method for registering datasets to be used with SHRED.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">manager</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>         <span class="c1"># 3D array (time, lat, lon); time must be on axis 0</span>
+    <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;SST&quot;</span><span class="p">,</span>          <span class="c1"># Unique identifier for the dataset</span>
+    <span class="n">random</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>          <span class="c1"># Randomly select 3 sensor locations</span>
+    <span class="n">compress</span><span class="o">=</span><span class="kc">False</span>     <span class="c1"># Keep original spatial resolution (no compression)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="data-manager-attributes">
+<h2>Data manager attributes<a class="headerlink" href="#data-manager-attributes" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">DataManager</span></code> exposes several useful attributes to inspect the sensor configuration and measurements.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sensor_summary_df</span></code>: a DataFrame summarizing metadata for each sensor</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sensor_measurements_df</span></code>: a time-indexed Dataframe containing the raw sensor measurements for all selected sensors.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">manager</span><span class="o">.</span><span class="n">sensor_summary_df</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</pre></div>
+</div>
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>data id</th>
+      <th>sensor_number</th>
+      <th>type</th>
+      <th>loc/traj</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>SST</td>
+      <td>0</td>
+      <td>stationary (random)</td>
+      <td>(102, 22)</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>SST</td>
+      <td>1</td>
+      <td>stationary (random)</td>
+      <td>(129, 78)</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>SST</td>
+      <td>2</td>
+      <td>stationary (random)</td>
+      <td>(99, 281)</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">manager</span><span class="o">.</span><span class="n">sensor_measurements_df</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</pre></div>
+</div>
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>SST-0</th>
+      <th>SST-1</th>
+      <th>SST-2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.0</td>
+      <td>14.700000</td>
+      <td>20.650000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.0</td>
+      <td>14.809999</td>
+      <td>21.049999</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.0</td>
+      <td>14.469999</td>
+      <td>21.410000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.0</td>
+      <td>15.750000</td>
+      <td>20.820000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.0</td>
+      <td>16.299999</td>
+      <td>20.859999</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>1722</th>
+      <td>0.0</td>
+      <td>15.549999</td>
+      <td>20.480000</td>
+    </tr>
+    <tr>
+      <th>1723</th>
+      <td>0.0</td>
+      <td>15.950000</td>
+      <td>20.559999</td>
+    </tr>
+    <tr>
+      <th>1724</th>
+      <td>0.0</td>
+      <td>17.170000</td>
+      <td>21.139999</td>
+    </tr>
+    <tr>
+      <th>1725</th>
+      <td>0.0</td>
+      <td>17.379999</td>
+      <td>21.590000</td>
+    </tr>
+    <tr>
+      <th>1726</th>
+      <td>0.0</td>
+      <td>18.879999</td>
+      <td>21.900000</td>
+    </tr>
+  </tbody>
+</table>
+<p>1727 rows × 3 columns</p>
+</div>
+</section>
+<section id="generate-train-validation-and-test-set">
+<h2>Generate train, validation, and test set<a class="headerlink" href="#generate-train-validation-and-test-set" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">DataManager</span></code> provides a <code class="docutils literal notranslate"><span class="pre">.prepare()</span></code> method for generating the train, validation, and test set for SHRED.</p>
+<p>Run the code below to generate train, validation, and test sets.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">val_dataset</span><span class="p">,</span> <span class="n">test_dataset</span><span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">prepare</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="initialize-shred">
+<h2>Initialize SHRED<a class="headerlink" href="#initialize-shred" title="Link to this heading">#</a></h2>
+<p>The SHRED architecture is composed of three core modules:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sequence_model</span></code>: Encodes temporal patterns in the sensor measurements</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">decoder_model</span></code>: Reconstructs the full system state from the latent representation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">latent_forecaster</span></code>: Predicts future latent states from current ones</p></li>
+</ul>
+<p>The simplest way to initialize SHRED is by passing preset model names as strings for each component.
+Below we use the default pairing that performs well across many datasets.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">shred</span> <span class="o">=</span> <span class="n">SHRED</span><span class="p">(</span>
+    <span class="n">sequence_model</span><span class="o">=</span><span class="s2">&quot;LSTM&quot;</span><span class="p">,</span>
+    <span class="n">decoder_model</span><span class="o">=</span><span class="s2">&quot;MLP&quot;</span><span class="p">,</span>
+    <span class="n">latent_forecaster</span><span class="o">=</span><span class="s2">&quot;LSTM_Forecaster&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="fit-shred">
+<h2>Fit SHRED<a class="headerlink" href="#fit-shred" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">SHRED</span></code> object provides a <code class="docutils literal notranslate"><span class="pre">.fit()</span></code> method for training the shred model using the training and validation datasets. It returns a list of validation errors (MSE) recorded after each epoch.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">val_errors</span> <span class="o">=</span> <span class="n">shred</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="n">train_dataset</span><span class="o">=</span><span class="n">train_dataset</span><span class="p">,</span>
+    <span class="n">val_dataset</span><span class="o">=</span><span class="n">val_dataset</span><span class="p">,</span>
+    <span class="n">num_epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;val_errors:&#39;</span><span class="p">,</span> <span class="n">val_errors</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting SHRED...
+val_errors: [0.04347949 0.03559002]
+</pre></div>
+</div>
+</section>
+<section id="evaluate-shred">
+<h2>Evaluate SHRED<a class="headerlink" href="#evaluate-shred" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">SHRED</span></code> object provides an <code class="docutils literal notranslate"><span class="pre">.evaluate()</span></code> method that computes the mean squared error (MSE) between the model’s reconstruction and the target values in a given dataset.</p>
+<p>This is useful for monitoring training progress or for comparing performance across different SHRED models.</p>
+<p><strong>Note:</strong> The target in this evaluation is not the raw ground truth. Instead, it reflects the target produced by the DataManager after preprocessing (e.g. compression, stacking datasets, scaling).</p>
+<p>If you want to compare reconstructions directly against the full-resolution ground truth, use the <code class="docutils literal notranslate"><span class="pre">SHREDEngine</span></code>’s <code class="docutils literal notranslate"><span class="pre">evaluate()</span></code> method, as described later in this tutorial.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_mse</span> <span class="o">=</span> <span class="n">shred</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">train_dataset</span><span class="p">)</span>
+<span class="n">val_mse</span> <span class="o">=</span> <span class="n">shred</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">val_dataset</span><span class="p">)</span>
+<span class="n">test_mse</span> <span class="o">=</span> <span class="n">shred</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">test_dataset</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Train MSE: </span><span class="si">{</span><span class="n">train_mse</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Val   MSE: </span><span class="si">{</span><span class="n">val_mse</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test  MSE: </span><span class="si">{</span><span class="n">test_mse</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Train MSE: 0.033
+Val   MSE: 0.036
+Test  MSE: 0.033
+</pre></div>
+</div>
+</section>
+<section id="initialize-shred-engine-for-downstream-tasks">
+<h2>Initialize SHRED engine for downstream tasks<a class="headerlink" href="#initialize-shred-engine-for-downstream-tasks" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">SHREDEngine</span></code> object wraps the trained <code class="docutils literal notranslate"><span class="pre">SHRED</span></code> model and the associated <code class="docutils literal notranslate"><span class="pre">DataManager</span></code>, providing a simple interface for performing downstream sensing tasks such as:</p>
+<ul class="simple">
+<li><p>generating latent space states from sensor measurements</p></li>
+<li><p>forecasting future latent space states</p></li>
+<li><p>decoding latent space to full-state space</p></li>
+<li><p>evaluating full-state reconstructions from sensor measurements against the ground-truth</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">engine</span> <span class="o">=</span> <span class="n">SHREDEngine</span><span class="p">(</span><span class="n">manager</span><span class="p">,</span> <span class="n">shred</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="generate-latent-space-states-from-sensor-measurements">
+<h2>Generate latent space states from sensor measurements<a class="headerlink" href="#generate-latent-space-states-from-sensor-measurements" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">SHREDEngine</span></code> object provides a <code class="docutils literal notranslate"><span class="pre">.sensor_to_latent()</span></code> method for generating the latent space associated with the raw sensor measurements.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># obtain latent space of test sensor measurements</span>
+<span class="n">test_latent_from_sensors</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">sensor_to_latent</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">test_sensor_measurements</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="forecast-future-latent-space-states">
+<h2>Forecast future latent space states<a class="headerlink" href="#forecast-future-latent-space-states" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">SHREDEngine</span></code> provides a <code class="docutils literal notranslate"><span class="pre">.forecast_latent()</span></code> method that predicts future latent states starting from an initial sequence of latent vectors.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="c1"># generate latent states from validation sensor measurements</span>
+<span class="n">val_latents</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">sensor_to_latent</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">val_sensor_measurements</span><span class="p">)</span>
+
+<span class="c1"># seed the forecaster with the final `seed_length` latent states from validation</span>
+<span class="n">init_latents</span> <span class="o">=</span> <span class="n">val_latents</span><span class="p">[</span><span class="o">-</span><span class="n">shred</span><span class="o">.</span><span class="n">latent_forecaster</span><span class="o">.</span><span class="n">seed_length</span><span class="p">:]</span> <span class="c1"># seed forecaster with final lag timesteps of latent space from val</span>
+
+<span class="c1"># set forecast horizon to match the length of the test dataset</span>
+<span class="n">h</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">test_sensor_measurements</span><span class="p">)</span>
+
+<span class="c1"># forecast latent states for the test horizon</span>
+<span class="n">test_latent_from_forecaster</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">forecast_latent</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="n">h</span><span class="p">,</span> <span class="n">init_latents</span><span class="o">=</span><span class="n">init_latents</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="decode-latent-space-to-full-state-space">
+<h2>Decode Latent Space to Full-State Space<a class="headerlink" href="#decode-latent-space-to-full-state-space" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">SHREDEngine</span></code> provides a <code class="docutils literal notranslate"><span class="pre">.decode()</span></code> method for converting latent representations back into the full-state space.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># decode latent space generated from sensor measurements (generated using engine.sensor_to_latent())</span>
+<span class="n">test_reconstruction</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">test_latent_from_sensors</span><span class="p">)</span>
+
+<span class="c1"># decode latent space generated by the latent forecaster (generated using engine.forecast_latent())</span>
+<span class="n">test_forecast</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">test_latent_from_forecaster</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="evaluate-mse-on-ground-truth-data">
+<h2>Evaluate MSE on Ground Truth Data<a class="headerlink" href="#evaluate-mse-on-ground-truth-data" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">SHREDEngine</span></code> provides an <code class="docutils literal notranslate"><span class="pre">.evaluate()</span></code> method that compares reconstructed full-state outputs (from sensor measurements) against the unprocessed ground truth. This includes:</p>
+<ul class="simple">
+<li><p>unscaling the predictions</p></li>
+<li><p>project back to full-state space (if compression is used)</p></li>
+<li><p>unstacking multiple datasets if more than one was added</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ---------------- Train Evaluation ----------------</span>
+<span class="n">t_train</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">train_sensor_measurements</span><span class="p">)</span>
+<span class="n">train_Y</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;SST&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">t_train</span><span class="p">]}</span>  <span class="c1"># Ground truth segment</span>
+<span class="n">train_error</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">train_sensor_measurements</span><span class="p">,</span> <span class="n">train_Y</span><span class="p">)</span>
+
+<span class="c1"># ---------------- Validation Evaluation ----------------</span>
+<span class="n">t_val</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">val_sensor_measurements</span><span class="p">)</span>
+<span class="n">val_Y</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;SST&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="n">t_train</span><span class="p">:</span><span class="n">t_train</span> <span class="o">+</span> <span class="n">t_val</span><span class="p">]}</span>
+<span class="n">val_error</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">val_sensor_measurements</span><span class="p">,</span> <span class="n">val_Y</span><span class="p">)</span>
+
+<span class="c1"># ---------------- Test Evaluation ----------------</span>
+<span class="n">t_test</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">test_sensor_measurements</span><span class="p">)</span>
+<span class="n">test_Y</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;SST&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="n">t_test</span><span class="p">:]}</span>
+<span class="n">test_error</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">test_sensor_measurements</span><span class="p">,</span> <span class="n">test_Y</span><span class="p">)</span>
+
+<span class="c1"># ---------------- Print Results ----------------</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---------- TRAIN ----------&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">train_error</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">---------- VALIDATION ----------&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">val_error</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">---------- TEST ----------&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">test_error</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>---------- TRAIN ----------
+              MSE      RMSE       MAE        R2
+dataset                                        
+SST      2.571972  1.603737  0.940529 -0.010622
+
+---------- VALIDATION ----------
+              MSE      RMSE       MAE            R2
+dataset                                            
+SST      2.856155  1.690016  0.978884 -5.246062e+06
+
+---------- TEST ----------
+              MSE      RMSE       MAE            R2
+dataset                                            
+SST      2.696861  1.642212  0.948656 -3.597258e+07
+</pre></div>
+</div>
+</section>
+<section id="visualize-results">
+<h2>Visualize Results<a class="headerlink" href="#visualize-results" title="Link to this heading">#</a></h2>
+<p>Below we compare the final frame of the test ground truth, the reconstruction from sensor measurements, and the forecast from the latent forecaster.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Final ground truth frame from the test set</span>
+<span class="n">truth</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Extract final reconstructed frame (from sensor-based latents)</span>
+<span class="n">reconstructions</span> <span class="o">=</span> <span class="n">test_reconstruction</span><span class="p">[</span><span class="s2">&quot;SST&quot;</span><span class="p">]</span>
+<span class="n">reconstruction</span> <span class="o">=</span> <span class="n">reconstructions</span><span class="p">[</span><span class="n">h</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Extract final forecasted frame (from forecasted latents)</span>
+<span class="n">forecasts</span> <span class="o">=</span> <span class="n">test_forecast</span><span class="p">[</span><span class="s2">&quot;SST&quot;</span><span class="p">]</span>
+<span class="n">forecast</span> <span class="o">=</span> <span class="n">forecasts</span><span class="p">[</span><span class="n">h</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Collect data and labels for visualization</span>
+<span class="n">compare_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">truth</span><span class="p">,</span> <span class="n">reconstruction</span><span class="p">,</span> <span class="n">forecast</span><span class="p">]</span>
+<span class="n">titles</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Test Ground Truth&quot;</span><span class="p">,</span> <span class="s2">&quot;SHRED Reconstruction&quot;</span><span class="p">,</span> <span class="s2">&quot;SHRED Forecast&quot;</span><span class="p">]</span>
+
+<span class="c1"># Set shared color scale based on overall data range</span>
+<span class="n">vmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="n">d</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">compare_data</span><span class="p">])</span>
+<span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">d</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">compare_data</span><span class="p">])</span>
+
+<span class="c1"># Create side-by-side comparison plot</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">compare_data</span><span class="p">,</span> <span class="n">titles</span><span class="p">):</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;coolwarm&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+
+<span class="c1"># Add shared colorbar</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;vertical&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;SST (°C)&quot;</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+</pre></div>
+</div>
+<p><img alt="png" src="../_images/tutorial_bunny_hill_32_01.png" /></p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="installation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Installation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="fundamentals.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Fundamentals and Usage</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-sea-surface-temperature-sst-data">🌊 Loading sea surface temperature (SST) data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-and-visualizing-sst-data">Understanding and visualizing SST Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initialize-the-data-manager">Initialize the data manager</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-datasets-to-data-manager">Add datasets to data manager</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-manager-attributes">Data manager attributes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-train-validation-and-test-set">Generate train, validation, and test set</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initialize-shred">Initialize SHRED</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fit-shred">Fit SHRED</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-shred">Evaluate SHRED</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initialize-shred-engine-for-downstream-tasks">Initialize SHRED engine for downstream tasks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-latent-space-states-from-sensor-measurements">Generate latent space states from sensor measurements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forecast-future-latent-space-states">Forecast future latent space states</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decode-latent-space-to-full-state-space">Decode Latent Space to Full-State Space</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-mse-on-ground-truth-data">Evaluate MSE on Ground Truth Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-results">Visualize Results</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Kutz Research Group.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

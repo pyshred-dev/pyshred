@@ -1,0 +1,1572 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pyshred package &#8212; PySHRED</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=957c0bd3"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'pyshred/pyshred';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyshred.engine package" href="pyshred.engine.html" />
+    <link rel="prev" title="API Reference" href="modules.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="v1.0.21" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">PySHRED</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples/index.html">
+    Example Gallery
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="modules.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../release_notes/index.html">
+    Release Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples/index.html">
+    Example Gallery
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="modules.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../release_notes/index.html">
+    Release Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">pyshred package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyshred.engine.html">pyshred.engine package</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pyshred.models.html">pyshred.models package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyshred.models.decoder_models.html">pyshred.models.decoder_models package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyshred.models.latent_forecaster_models.html">pyshred.models.latent_forecaster_models package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyshred.models.sequence_models.html">pyshred.models.sequence_models package</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="pyshred.objects.html">pyshred.objects package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyshred.processor.html">pyshred.processor package</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="modules.html" class="nav-link">API Reference</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyshred package</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="pyshred-package">
+<h1>pyshred package<a class="headerlink" href="#pyshred-package" title="Link to this heading">#</a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyshred.engine.html">pyshred.engine package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyshred.engine.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyshred.engine.html#module-pyshred.engine.engine">pyshred.engine.engine module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyshred.engine.html#pyshred.engine.engine.SHREDEngine"><code class="docutils literal notranslate"><span class="pre">SHREDEngine</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.engine.html#pyshred.engine.engine.SHREDEngine.decode"><code class="docutils literal notranslate"><span class="pre">SHREDEngine.decode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.engine.html#pyshred.engine.engine.SHREDEngine.evaluate"><code class="docutils literal notranslate"><span class="pre">SHREDEngine.evaluate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.engine.html#pyshred.engine.engine.SHREDEngine.forecast_latent"><code class="docutils literal notranslate"><span class="pre">SHREDEngine.forecast_latent()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.engine.html#pyshred.engine.engine.SHREDEngine.sensor_to_latent"><code class="docutils literal notranslate"><span class="pre">SHREDEngine.sensor_to_latent()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyshred.engine.html#module-pyshred.engine.parametric_engine">pyshred.engine.parametric_engine module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyshred.engine.html#pyshred.engine.parametric_engine.ParametricSHREDEngine"><code class="docutils literal notranslate"><span class="pre">ParametricSHREDEngine</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.engine.html#pyshred.engine.parametric_engine.ParametricSHREDEngine.decode"><code class="docutils literal notranslate"><span class="pre">ParametricSHREDEngine.decode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.engine.html#pyshred.engine.parametric_engine.ParametricSHREDEngine.evaluate"><code class="docutils literal notranslate"><span class="pre">ParametricSHREDEngine.evaluate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.engine.html#pyshred.engine.parametric_engine.ParametricSHREDEngine.sensor_to_latent"><code class="docutils literal notranslate"><span class="pre">ParametricSHREDEngine.sensor_to_latent()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyshred.engine.html#module-pyshred.engine">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyshred.models.html">pyshred.models package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyshred.models.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyshred.models.decoder_models.html">pyshred.models.decoder_models package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.models.decoder_models.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.models.decoder_models.html#module-pyshred.models.decoder_models.abstract_decoder">pyshred.models.decoder_models.abstract_decoder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.models.decoder_models.html#module-pyshred.models.decoder_models.mlp_model">pyshred.models.decoder_models.mlp_model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.models.decoder_models.html#module-pyshred.models.decoder_models.unet_model">pyshred.models.decoder_models.unet_model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.models.decoder_models.html#module-pyshred.models.decoder_models">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyshred.models.latent_forecaster_models.html">pyshred.models.latent_forecaster_models package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.models.latent_forecaster_models.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.models.latent_forecaster_models.html#module-pyshred.models.latent_forecaster_models.abstract_latent_forecaster">pyshred.models.latent_forecaster_models.abstract_latent_forecaster module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.models.latent_forecaster_models.html#module-pyshred.models.latent_forecaster_models.lstm">pyshred.models.latent_forecaster_models.lstm module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.models.latent_forecaster_models.html#module-pyshred.models.latent_forecaster_models.sindy">pyshred.models.latent_forecaster_models.sindy module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.models.latent_forecaster_models.html#module-pyshred.models.latent_forecaster_models">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyshred.models.sequence_models.html">pyshred.models.sequence_models package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.models.sequence_models.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.models.sequence_models.html#module-pyshred.models.sequence_models.abstract_sequence">pyshred.models.sequence_models.abstract_sequence module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.models.sequence_models.html#module-pyshred.models.sequence_models.gru_model">pyshred.models.sequence_models.gru_model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.models.sequence_models.html#module-pyshred.models.sequence_models.lstm_model">pyshred.models.sequence_models.lstm_model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.models.sequence_models.html#module-pyshred.models.sequence_models.transformer_model">pyshred.models.sequence_models.transformer_model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.models.sequence_models.html#module-pyshred.models.sequence_models">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyshred.models.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyshred.models.html#module-pyshred.models.shred">pyshred.models.shred module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyshred.models.html#pyshred.models.shred.SHRED"><code class="docutils literal notranslate"><span class="pre">SHRED</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.models.html#pyshred.models.shred.SHRED.evaluate"><code class="docutils literal notranslate"><span class="pre">SHRED.evaluate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.models.html#pyshred.models.shred.SHRED.fit"><code class="docutils literal notranslate"><span class="pre">SHRED.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.models.html#pyshred.models.shred.SHRED.forward"><code class="docutils literal notranslate"><span class="pre">SHRED.forward()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyshred.models.html#module-pyshred.models">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyshred.objects.html">pyshred.objects package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyshred.objects.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyshred.objects.html#module-pyshred.objects.dataset">pyshred.objects.dataset module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyshred.objects.html#pyshred.objects.dataset.TimeSeriesDataset"><code class="docutils literal notranslate"><span class="pre">TimeSeriesDataset</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyshred.objects.html#module-pyshred.objects.sindy">pyshred.objects.sindy module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyshred.objects.html#pyshred.objects.sindy.E_SINDy"><code class="docutils literal notranslate"><span class="pre">E_SINDy</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.objects.html#pyshred.objects.sindy.E_SINDy.add_noise"><code class="docutils literal notranslate"><span class="pre">E_SINDy.add_noise()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.objects.html#pyshred.objects.sindy.E_SINDy.forward"><code class="docutils literal notranslate"><span class="pre">E_SINDy.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.objects.html#pyshred.objects.sindy.E_SINDy.recenter"><code class="docutils literal notranslate"><span class="pre">E_SINDy.recenter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.objects.html#pyshred.objects.sindy.E_SINDy.thresholding"><code class="docutils literal notranslate"><span class="pre">E_SINDy.thresholding()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyshred.objects.html#pyshred.objects.sindy.SINDy"><code class="docutils literal notranslate"><span class="pre">SINDy</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.objects.html#pyshred.objects.sindy.SINDy.add_noise"><code class="docutils literal notranslate"><span class="pre">SINDy.add_noise()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.objects.html#pyshred.objects.sindy.SINDy.forward"><code class="docutils literal notranslate"><span class="pre">SINDy.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.objects.html#pyshred.objects.sindy.SINDy.recenter"><code class="docutils literal notranslate"><span class="pre">SINDy.recenter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.objects.html#pyshred.objects.sindy.SINDy.thresholding"><code class="docutils literal notranslate"><span class="pre">SINDy.thresholding()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyshred.objects.html#module-pyshred.objects">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyshred.processor.html">pyshred.processor package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyshred.processor.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyshred.processor.html#module-pyshred.processor.data_manager">pyshred.processor.data_manager module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyshred.processor.html#pyshred.processor.data_manager.DataManager"><code class="docutils literal notranslate"><span class="pre">DataManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.processor.html#pyshred.processor.data_manager.DataManager.add_data"><code class="docutils literal notranslate"><span class="pre">DataManager.add_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.processor.html#pyshred.processor.data_manager.DataManager.prepare"><code class="docutils literal notranslate"><span class="pre">DataManager.prepare()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyshred.processor.html#module-pyshred.processor.parametric_data_manager">pyshred.processor.parametric_data_manager module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyshred.processor.html#pyshred.processor.parametric_data_manager.ParametricDataManager"><code class="docutils literal notranslate"><span class="pre">ParametricDataManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.processor.html#pyshred.processor.parametric_data_manager.ParametricDataManager.add_data"><code class="docutils literal notranslate"><span class="pre">ParametricDataManager.add_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyshred.processor.html#pyshred.processor.parametric_data_manager.ParametricDataManager.prepare"><code class="docutils literal notranslate"><span class="pre">ParametricDataManager.prepare()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyshred.processor.html#module-pyshred.processor.utils">pyshred.processor.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyshred.processor.html#pyshred.processor.utils.generate_lagged_sensor_measurements"><code class="docutils literal notranslate"><span class="pre">generate_lagged_sensor_measurements()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyshred.processor.html#pyshred.processor.utils.generate_lagged_sensor_measurements_rom"><code class="docutils literal notranslate"><span class="pre">generate_lagged_sensor_measurements_rom()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyshred.processor.html#pyshred.processor.utils.generate_random_sensor_locations"><code class="docutils literal notranslate"><span class="pre">generate_random_sensor_locations()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyshred.processor.html#pyshred.processor.utils.get_data"><code class="docutils literal notranslate"><span class="pre">get_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyshred.processor.html#pyshred.processor.utils.get_data_npy"><code class="docutils literal notranslate"><span class="pre">get_data_npy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyshred.processor.html#pyshred.processor.utils.get_data_npz"><code class="docutils literal notranslate"><span class="pre">get_data_npz()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyshred.processor.html#pyshred.processor.utils.get_sensor_measurements"><code class="docutils literal notranslate"><span class="pre">get_sensor_measurements()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyshred.processor.html#pyshred.processor.utils.parse_compress"><code class="docutils literal notranslate"><span class="pre">parse_compress()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyshred.processor.html#module-pyshred.processor">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyshred.</span></span><span class="sig-name descname"><span class="pre">DataManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/processor/data_manager.html#DataManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>DataManager performs all processing needed to prepare the data for SHRED:
+- Gets sensor measurements from inputed sensor locations
+- Scales sensor measurements
+- Generates lagged sensor measurements
+- Scales full-state data
+- Compresses full-state data
+- Splits data into train, validation, and test</p>
+<p>Notes:
+DataManager is passed into the initialization of SHREDEngine for performing downstream tasks.</p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">add_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stationary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mobile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measurements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">None</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/processor/data_manager.html#DataManager.add_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Add a dataset with sensor measurements to the data manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>DataInput</em>) – Input data as file path (.npy/.npz), numpy array, or torch tensor.</p></li>
+<li><p><strong>id</strong> (<em>str</em>) – Unique identifier for this dataset.</p></li>
+<li><p><strong>random</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of randomly placed stationary sensors.</p></li>
+<li><p><strong>stationary</strong> (<em>tuple</em><em> or </em><em>list</em><em> of </em><em>tuples</em><em>, </em><em>optional</em>) – Coordinates of stationary sensors.</p></li>
+<li><p><strong>mobile</strong> (<em>list</em><em> of </em><em>tuples</em><em> or </em><em>list</em><em> of </em><em>list</em><em> of </em><em>tuples</em><em>, </em><em>optional</em>) – Coordinates of mobile sensors for each timestep.</p></li>
+<li><p><strong>measurements</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – Pre-computed sensor measurements with time on axis 0.</p></li>
+<li><p><strong>compress</strong> (<em>None</em><em>, </em><em>bool</em><em>, or </em><em>int</em><em>, </em><em>optional</em>) – Data compression settings. True uses default modes, int specifies number of modes.</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>optional</em>) – Seed for selecting random sensor locations.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">prepare</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/processor/data_manager.html#DataManager.prepare"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Prepare the data for training by scaling and creating lagged sequences.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(train_dataset, val_dataset, test_dataset) - PyTorch datasets ready for training.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If no sensor measurements are available.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyshred.</span></span><span class="sig-name descname"><span class="pre">DeviceConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DeviceType</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">DeviceType.AUTO</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_cpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">warn_on_fallback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/objects/device.html#DeviceConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Configuration for device selection and management.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">device_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">device_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">DeviceType</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'auto'</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">force_cpu</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">warn_on_fallback</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyshred.</span></span><span class="sig-name descname"><span class="pre">GRU</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_norm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/sequence_models/gru_model.html#GRU"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyshred.models.sequence_models.html#pyshred.models.sequence_models.abstract_sequence.AbstractSequence" title="pyshred.models.sequence_models.abstract_sequence.AbstractSequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractSequence</span></code></a></p>
+<p>GRU (Gated Recurrent Unit) sequence model for encoding temporal sensor dynamics.</p>
+<p>A recurrent neural network that processes sensor measurement sequences
+to learn latent representations of the underlying dynamics. Supports
+optional layer normalization for improved training stability.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hidden_size</strong> (<em>int</em><em>, </em><em>optional</em>) – Size of the GRU hidden state. Defaults to 3.</p></li>
+<li><p><strong>num_layers</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of GRU layers. Defaults to 1.</p></li>
+<li><p><strong>layer_norm</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to apply layer normalization. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>hidden_size</strong> (<em>int</em>) – Size of the GRU hidden state.</p></li>
+<li><p><strong>num_layers</strong> (<em>int</em>) – Number of GRU layers.</p></li>
+<li><p><strong>use_layer_norm</strong> (<em>bool</em>) – Whether layer normalization is applied.</p></li>
+<li><p><strong>output_size</strong> (<em>int</em>) – Size of the output (equals hidden_size).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/sequence_models/gru_model.html#GRU.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Forward pass through the GRU model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>torch.Tensor</em>) – Input tensor of shape (batch_size, sequence_length, input_size).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Output tensor with latent representations. Shape depends on decoder type:
+- MLP decoder: (batch_size, hidden_size)
+- UNET decoder: (batch_size, hidden_size, sequence_length)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If decoder type is not supported.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_type</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/sequence_models/gru_model.html#GRU.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Initialize the GRU with input size and decoder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_size</strong> (<em>int</em>) – Number of input features (sensor measurements).</p></li>
+<li><p><strong>decoder_type</strong> (<em>str</em>) – Decoder model type.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_name</span></span></dt>
+<dd><p>Name of the sequence model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns “GRU”.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyshred.</span></span><span class="sig-name descname"><span class="pre">LSTM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_norm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/sequence_models/lstm_model.html#LSTM"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyshred.models.sequence_models.html#pyshred.models.sequence_models.abstract_sequence.AbstractSequence" title="pyshred.models.sequence_models.abstract_sequence.AbstractSequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractSequence</span></code></a></p>
+<p>LSTM sequence model for encoding temporal sensor dynamics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hidden_size</strong> (<em>int</em><em>, </em><em>optional</em>) – Size of the hidden state. Defaults to 64.</p></li>
+<li><p><strong>num_layers</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of LSTM layers. Defaults to 2.</p></li>
+<li><p><strong>layer_norm</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to apply layer normalization. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>hidden_size</strong> (<em>int</em>) – Size of the hidden state.</p></li>
+<li><p><strong>num_layers</strong> (<em>int</em>) – Number of LSTM layers.</p></li>
+<li><p><strong>use_layer_norm</strong> (<em>bool</em>) – Whether layer normalization is applied.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/sequence_models/lstm_model.html#LSTM.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Forward pass through the LSTM model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>torch.Tensor</em>) – Input tensor of shape (batch_size, sequence_length, input_size).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Output tensor with latent representations.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_type</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/sequence_models/lstm_model.html#LSTM.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Initialize the LSTM with input size and decoder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_size</strong> (<em>int</em>) – Number of input features.</p></li>
+<li><p><strong>decoder_type</strong> (<em>str</em>) – Decoder model type.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_name</span></span></dt>
+<dd><p>Name of the sequence model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns “LSTM”.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyshred.</span></span><span class="sig-name descname"><span class="pre">LSTM_Forecaster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lags</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/latent_forecaster_models/lstm.html#LSTM_Forecaster"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyshred.models.latent_forecaster_models.html#pyshred.models.latent_forecaster_models.abstract_latent_forecaster.AbstractLatentForecaster" title="pyshred.models.latent_forecaster_models.abstract_latent_forecaster.AbstractLatentForecaster"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractLatentForecaster</span></code></a></p>
+<p>LSTM-based forecaster for latent space dynamics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hidden_size</strong> (<em>int</em><em>, </em><em>optional</em>) – Size of LSTM hidden state. Defaults to 64.</p></li>
+<li><p><strong>num_layers</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of LSTM layers. Defaults to 1.</p></li>
+<li><p><strong>lags</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of time lags to use for forecasting. Defaults to 20.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>seed_length</strong> (<em>int</em>) – Number of latent space timesteps required to seed forecaster.</p></li>
+<li><p><strong>latent_dim</strong> (<em>int</em>) – Dimension of the latent space.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latents</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_epochs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/latent_forecaster_models/lstm.html#LSTM_Forecaster.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>data: torch.Tensor of shape (T, D)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forecast</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_latents</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/latent_forecaster_models/lstm.html#LSTM_Forecaster.forecast"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>init_latents: torch.Tensor of shape (&gt;=lags, D)
+returns: Tensor of shape (h, D)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/latent_forecaster_models/lstm.html#LSTM_Forecaster.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Forward pass through the LSTM forecaster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>torch.Tensor</em>) – Input tensor of shape (batch, lags, latent_dim).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Forecasted latent state of shape (batch, latent_dim).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latent_dim</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/latent_forecaster_models/lstm.html#LSTM_Forecaster.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Initialize the LSTM with the given latent dimension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>latent_dim</strong> (<em>int</em>) – Dimension of the latent space.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyshred.</span></span><span class="sig-name descname"><span class="pre">MLP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_sizes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[350,</span> <span class="pre">400]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/decoder_models/mlp_model.html#MLP"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyshred.models.decoder_models.html#pyshred.models.decoder_models.abstract_decoder.AbstractDecoder" title="pyshred.models.decoder_models.abstract_decoder.AbstractDecoder"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractDecoder</span></code></a></p>
+<p>Flexible Multilayer Perceptron (MLP) implementation.</p>
+<p>A fully connected decoder that maps a low-dimensional latent space
+back to a high-dimensional state with user-defined hidden layers.</p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/decoder_models/mlp_model.html#MLP.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Forward pass through MLP.</p>
+<p>Applies ReLU + dropout after each hidden layer; no activation on output.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/decoder_models/mlp_model.html#MLP.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Initialize the MLP with input and output sizes.</p>
+<section id="parameters">
+<h3>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>input_size<span class="classifier">int</span></dt><dd><p>Size of the input features.</p>
+</dd>
+<dt>output_size<span class="classifier">int</span></dt><dd><p>Size of the output features.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_name</span></span></dt>
+<dd><p>Returns the name of the decoder model.</p>
+<section id="returns">
+<h3>Returns:<a class="headerlink" href="#returns" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>str</dt><dd><p>The name of the model.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyshred.</span></span><span class="sig-name descname"><span class="pre">ParametricDataManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/processor/parametric_data_manager.html#ParametricDataManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>ParametricDataManager performs all processing needed to prepare the data for SHRED:
+- Gets sensor measurements from inputed sensor locations
+- Scales sensor measurements
+- Generates lagged sensor measurements
+- Scales full-state data
+- Compresses full-state data
+- Splits data into train, validation, and test</p>
+<p>Notes:
+ParametricDataManager is passed into the initialization of SHREDEngine for performing downstream tasks.</p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">add_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stationary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mobile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measurements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">None</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/processor/parametric_data_manager.html#ParametricDataManager.add_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Add a dataset with sensor measurements to the data manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>DataInput</em>) – Input data as file path (.npy/.npz), numpy array, or torch tensor.</p></li>
+<li><p><strong>id</strong> (<em>str</em>) – Unique identifier for this dataset.</p></li>
+<li><p><strong>random</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of randomly placed stationary sensors.</p></li>
+<li><p><strong>stationary</strong> (<em>tuple</em><em> or </em><em>list</em><em> of </em><em>tuples</em><em>, </em><em>optional</em>) – Coordinates of stationary sensors.</p></li>
+<li><p><strong>mobile</strong> (<em>list</em><em> of </em><em>tuples</em><em> or </em><em>list</em><em> of </em><em>list</em><em> of </em><em>tuples</em><em>, </em><em>optional</em>) – Coordinates of mobile sensors for each timestep.</p></li>
+<li><p><strong>measurements</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – Pre-computed sensor measurements with time on axis 0.</p></li>
+<li><p><strong>compress</strong> (<em>None</em><em>, </em><em>bool</em><em>, or </em><em>int</em><em>, </em><em>optional</em>) – Data compression settings. True uses default modes, int specifies number of modes.</p></li>
+<li><p><strong>params</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – Parameters for the dataset of shape (ntrajectories, ntimes, nparams)</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>optional</em>) – Seed for selecting random sensor locations.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">prepare</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/processor/parametric_data_manager.html#ParametricDataManager.prepare"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Prepare the data for training by scaling and creating lagged sequences.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(train_dataset, val_dataset, test_dataset) - PyTorch datasets ready for training.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If no sensor measurements are available.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyshred.</span></span><span class="sig-name descname"><span class="pre">ParametricSHREDEngine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_manager</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyshred.processor.html#pyshred.processor.parametric_data_manager.ParametricDataManager" title="pyshred.processor.parametric_data_manager.ParametricDataManager"><span class="pre">ParametricDataManager</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">shred_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyshred.models.html#pyshred.models.shred.SHRED" title="pyshred.models.shred.SHRED"><span class="pre">SHRED</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/engine/parametric_engine.html#ParametricSHREDEngine"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>High-level interface for SHRED model inference and evaluation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_manager</strong> (<a class="reference internal" href="pyshred.processor.html#pyshred.processor.parametric_data_manager.ParametricDataManager" title="pyshred.processor.parametric_data_manager.ParametricDataManager"><em>ParametricDataManager</em></a>) – Prepared data manager with fitted scalers.</p></li>
+<li><p><strong>shred_model</strong> (<a class="reference internal" href="pyshred.models.html#pyshred.models.shred.SHRED" title="pyshred.models.shred.SHRED"><em>SHRED</em></a>) – Trained SHRED model instance.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>dm</strong> (<a class="reference internal" href="pyshred.processor.html#pyshred.processor.parametric_data_manager.ParametricDataManager" title="pyshred.processor.parametric_data_manager.ParametricDataManager"><em>ParametricDataManager</em></a>) – The data manager for preprocessing and postprocessing.</p></li>
+<li><p><strong>model</strong> (<a class="reference internal" href="pyshred.models.html#pyshred.models.shred.SHRED" title="pyshred.models.shred.SHRED"><em>SHRED</em></a>) – The trained SHRED model.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">decode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latents</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/engine/parametric_engine.html#ParametricSHREDEngine.decode"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Decode latent states back to full physical state space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>latents</strong> (<em>np.ndarray</em><em> or </em><em>torch.Tensor</em>) – Latent representations to decode.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary mapping dataset IDs to reconstructed physical states.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sensor_measurements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../_modules/pyshred/engine/parametric_engine.html#ParametricSHREDEngine.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Performs end‐to‐end reconstruction error in the <em>physical</em> space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sensor_measurements</strong> (<em>(</em><em>T</em><em>, </em><em>n_sensors</em><em>)</em>) – The test sensor time series.</p></li>
+<li><p><strong>Y</strong> (dict[id] -&gt; array (T, <a href="#id1"><span class="problematic" id="id2">*</span></a>spatial_shape)) – The <em>raw</em> full‐state ground truth for each dataset id.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>DataFrame indexed by dataset id with columns [MSE, RMSE, MAE, R2].</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">sensor_to_latent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sensor_measurements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/pyshred/engine/parametric_engine.html#ParametricSHREDEngine.sensor_to_latent"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Convert raw sensor measurements into latent-space embeddings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sensor_measurements</strong> (<em>array-like</em><em> of </em><em>shape</em><em> (</em><em>T</em><em>, </em><em>n_sensors</em><em>)</em>) – Raw sensor time series.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>latents</strong> – The GRU/LSTM final-hidden-state at each time index.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray of shape (T, latent_dim)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyshred.</span></span><span class="sig-name descname"><span class="pre">SHRED</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyshred.models.sequence_models.html#pyshred.models.sequence_models.abstract_sequence.AbstractSequence" title="pyshred.models.sequence_models.abstract_sequence.AbstractSequence"><span class="pre">AbstractSequence</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyshred.models.decoder_models.html#pyshred.models.decoder_models.abstract_decoder.AbstractDecoder" title="pyshred.models.decoder_models.abstract_decoder.AbstractDecoder"><span class="pre">AbstractDecoder</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latent_forecaster</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyshred.models.latent_forecaster_models.html#pyshred.models.latent_forecaster_models.abstract_latent_forecaster.AbstractLatentForecaster" title="pyshred.models.latent_forecaster_models.abstract_latent_forecaster.AbstractLatentForecaster"><span class="pre">AbstractLatentForecaster</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/shred.html#SHRED"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>SHallow REcurrent Decoder (SHRED) neural network architecture.</p>
+<p>SHRED leverages a sequence model to learn a latent representation of the temporal dynamics of sensor measurements, a
+latent forecaster model to forecast the latent space into the future, and a decoder model to learn a mapping between
+the latent space and the high-dimensional full-state space. The SHRED architecture enables accurate full-state
+reconstructions and forecasts from limited sensors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sequence_model</strong> (<a class="reference internal" href="pyshred.models.sequence_models.html#pyshred.models.sequence_models.abstract_sequence.AbstractSequence" title="pyshred.models.sequence_models.abstract_sequence.AbstractSequence"><em>AbstractSequence</em></a><em> or </em><em>str</em><em>, </em><em>optional</em>) – Sequence model instance (GRU, LSTM, Transformer) or its name.
+Default None → LSTM if not using SINDy_Forecaster, otherwise GRU.</p></li>
+<li><p><strong>decoder_model</strong> (<a class="reference internal" href="pyshred.models.decoder_models.html#pyshred.models.decoder_models.abstract_decoder.AbstractDecoder" title="pyshred.models.decoder_models.abstract_decoder.AbstractDecoder"><em>AbstractDecoder</em></a><em> or </em><em>str</em><em>, </em><em>optional</em>) – Decoder model instance (MLP, UNET) or its name.
+Default None → MLP.</p></li>
+<li><p><strong>latent_forecaster</strong> (<a class="reference internal" href="pyshred.models.latent_forecaster_models.html#pyshred.models.latent_forecaster_models.abstract_latent_forecaster.AbstractLatentForecaster" title="pyshred.models.latent_forecaster_models.abstract_latent_forecaster.AbstractLatentForecaster"><em>AbstractLatentForecaster</em></a><em> or </em><em>str</em><em>, </em><em>optional</em>) – Latent forecaster instance (SINDy_Forecaster, LSTM_Forecaster) or its name.
+Default None → no latent forecaster.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>sequence</strong> (<a class="reference internal" href="pyshred.models.sequence_models.html#pyshred.models.sequence_models.abstract_sequence.AbstractSequence" title="pyshred.models.sequence_models.abstract_sequence.AbstractSequence"><em>AbstractSequence</em></a>) – The sequence model that encodes the temporal dynamics of sensor measurements in the latent space.</p></li>
+<li><p><strong>decoder</strong> (<a class="reference internal" href="pyshred.models.decoder_models.html#pyshred.models.decoder_models.abstract_decoder.AbstractDecoder" title="pyshred.models.decoder_models.abstract_decoder.AbstractDecoder"><em>AbstractDecoder</em></a>) – The decoder model that maps the latent space back to the full‐state space.</p></li>
+<li><p><strong>latent_forecaster</strong> (<a class="reference internal" href="pyshred.models.latent_forecaster_models.html#pyshred.models.latent_forecaster_models.abstract_latent_forecaster.AbstractLatentForecaster" title="pyshred.models.latent_forecaster_models.abstract_latent_forecaster.AbstractLatentForecaster"><em>AbstractLatentForecaster</em></a><em> or </em><em>None</em>) – The latent forecaster that forecasts future latent space states.
+If None, no latent forecaster is used.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># basic SHRED</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">SHRED</span><span class="p">(</span><span class="n">sequence_model</span><span class="o">=</span><span class="s1">&#39;LSTM&#39;</span><span class="p">,</span> <span class="n">decoder_model</span><span class="o">=</span><span class="s1">&#39;MLP&#39;</span><span class="p">,</span> <span class="n">latent_forecaster</span><span class="o">=</span><span class="s1">&#39;LSTM_Forecaster&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># SINDy SHRED</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">SHRED</span><span class="p">(</span><span class="n">sequence_model</span><span class="o">=</span><span class="s1">&#39;GRU&#39;</span><span class="p">,</span> <span class="n">decoder_model</span><span class="o">=</span><span class="s1">&#39;MLP&#39;</span><span class="p">,</span> <span class="n">latent_forecaster</span><span class="o">=</span><span class="s1">&#39;SINDy_Forecaster&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyshred.objects.html#pyshred.objects.dataset.TimeSeriesDataset" title="pyshred.objects.dataset.TimeSeriesDataset"><span class="pre">TimeSeriesDataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/shred.html#SHRED.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Compute mean squared error on a held‐out test dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>test_dataset</strong> (<em>torch.utils.data.Dataset</em>) – Should return (X, Y) pairs just like your train/val datasets.</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em><em>, </em><em>optional</em>) – How many samples per batch. Defaults to 64.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The MSE over all elements in the test set.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sindy_regularization</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'AdamW'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patience</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sindy_thres_epoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/shred.html#SHRED.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Train the SHRED model on the provided datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train_dataset</strong> (<a class="reference internal" href="pyshred.objects.html#pyshred.objects.dataset.TimeSeriesDataset" title="pyshred.objects.dataset.TimeSeriesDataset"><em>TimeSeriesDataset</em></a>) – Training dataset containing sensor sequences and target reconstructions.</p></li>
+<li><p><strong>val_dataset</strong> (<a class="reference internal" href="pyshred.objects.html#pyshred.objects.dataset.TimeSeriesDataset" title="pyshred.objects.dataset.TimeSeriesDataset"><em>TimeSeriesDataset</em></a>) – Validation dataset for monitoring training progress.</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em><em>, </em><em>optional</em>) – Batch size for training. Defaults to 64.</p></li>
+<li><p><strong>num_epochs</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum number of training epochs. Defaults to 200.</p></li>
+<li><p><strong>lr</strong> (<em>float</em><em>, </em><em>optional</em>) – Learning rate. Defaults to 1e-3.</p></li>
+<li><p><strong>sindy_regularization</strong> (<em>float</em><em>, </em><em>optional</em>) – Weight for SINDy regularization term. Defaults to 0.</p></li>
+<li><p><strong>optimizer</strong> (<em>str</em><em>, </em><em>optional</em>) – Optimizer type. Defaults to “AdamW”.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to print training progress. Defaults to True.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – SINDy thresholding value. Defaults to 0.5.</p></li>
+<li><p><strong>base_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – Base threshold for SINDy. Defaults to 0.0.</p></li>
+<li><p><strong>patience</strong> (<em>int</em><em>, </em><em>optional</em>) – Early stopping patience. Defaults to 20.</p></li>
+<li><p><strong>sindy_thres_epoch</strong> (<em>int</em><em>, </em><em>optional</em>) – Frequency of SINDy thresholding. Defaults to 20.</p></li>
+<li><p><strong>weight_decay</strong> (<em>float</em><em>, </em><em>optional</em>) – Weight decay for optimizer. Defaults to 0.01.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array of validation errors for each epoch.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sindy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/shred.html#SHRED.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Forward pass through the SHRED model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>torch.Tensor</em>) – Input sensor sequences of shape (batch_size, lags, n_sensors).</p></li>
+<li><p><strong>sindy</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to compute SINDy regularization terms. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>If sindy=False: Reconstructed full-state tensor.
+If sindy=True: Tuple of (reconstruction, target_latents, predicted_latents).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.Tensor or tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyshred.</span></span><span class="sig-name descname"><span class="pre">SHREDEngine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_manager</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyshred.processor.html#pyshred.processor.data_manager.DataManager" title="pyshred.processor.data_manager.DataManager"><span class="pre">DataManager</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">shred_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyshred.models.html#pyshred.models.shred.SHRED" title="pyshred.models.shred.SHRED"><span class="pre">SHRED</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/engine/engine.html#SHREDEngine"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>High-level interface for SHRED model inference and evaluation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_manager</strong> (<a class="reference internal" href="pyshred.processor.html#pyshred.processor.data_manager.DataManager" title="pyshred.processor.data_manager.DataManager"><em>DataManager</em></a>) – Prepared data manager with fitted scalers.</p></li>
+<li><p><strong>shred_model</strong> (<a class="reference internal" href="pyshred.models.html#pyshred.models.shred.SHRED" title="pyshred.models.shred.SHRED"><em>SHRED</em></a>) – Trained SHRED model instance.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>dm</strong> (<a class="reference internal" href="pyshred.processor.html#pyshred.processor.data_manager.DataManager" title="pyshred.processor.data_manager.DataManager"><em>DataManager</em></a>) – The data manager for preprocessing and postprocessing.</p></li>
+<li><p><strong>model</strong> (<a class="reference internal" href="pyshred.models.html#pyshred.models.shred.SHRED" title="pyshred.models.shred.SHRED"><em>SHRED</em></a>) – The trained SHRED model.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">decode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latents</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/engine/engine.html#SHREDEngine.decode"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Decode latent states back to full physical state space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>latents</strong> (<em>np.ndarray</em><em> or </em><em>torch.Tensor</em>) – Latent representations to decode.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary mapping dataset IDs to reconstructed physical states.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sensor_measurements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../_modules/pyshred/engine/engine.html#SHREDEngine.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Performs end‐to‐end reconstruction error in the <em>physical</em> space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sensor_measurements</strong> (<em>(</em><em>T</em><em>, </em><em>n_sensors</em><em>)</em>) – The test sensor time series.</p></li>
+<li><p><strong>Y</strong> (dict[id] -&gt; array (T, <a href="#id3"><span class="problematic" id="id4">*</span></a>spatial_shape)) – The <em>raw</em> full‐state ground truth for each dataset id.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>DataFrame indexed by dataset id with columns [MSE, RMSE, MAE, R2].</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forecast_latent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_latents</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/engine/engine.html#SHREDEngine.forecast_latent"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Forecast future latent states using the latent forecaster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>h</strong> (<em>int</em>) – Number of future timesteps to forecast.</p></li>
+<li><p><strong>init_latents</strong> (<em>np.ndarray</em><em> or </em><em>torch.Tensor</em>) – Initial latent states for seeding the forecast.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Forecasted latent states.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If no latent forecaster is available.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">sensor_to_latent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sensor_measurements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/pyshred/engine/engine.html#SHREDEngine.sensor_to_latent"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Convert raw sensor measurements into latent-space embeddings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sensor_measurements</strong> (<em>array-like</em><em> of </em><em>shape</em><em> (</em><em>T</em><em>, </em><em>n_sensors</em><em>)</em>) – Raw sensor time series.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>latents</strong> – The GRU/LSTM final-hidden-state at each time index.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray of shape (T, latent_dim)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyshred.</span></span><span class="sig-name descname"><span class="pre">SINDy_Forecaster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">poly_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_sine</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">STLSQ(threshold=0.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diff_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FiniteDifference()</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/latent_forecaster_models/sindy.html#SINDy_Forecaster"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyshred.models.latent_forecaster_models.html#pyshred.models.latent_forecaster_models.abstract_latent_forecaster.AbstractLatentForecaster" title="pyshred.models.latent_forecaster_models.abstract_latent_forecaster.AbstractLatentForecaster"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractLatentForecaster</span></code></a></p>
+<p>Sparse Identification of Nonlinear Dynamics (SINDy) forecaster for latent space dynamics.</p>
+<p>This forecaster uses the SINDy algorithm to discover governing equations for the latent
+space dynamics and uses these equations for forecasting. SINDy identifies sparse
+dynamical systems by finding a parsimonious balance between model complexity and
+prediction accuracy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>poly_order</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum polynomial order for the feature library. Defaults to 1.</p></li>
+<li><p><strong>include_sine</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to include sine functions in the feature library. Defaults to False.</p></li>
+<li><p><strong>dt</strong> (<em>float</em><em>, </em><em>optional</em>) – Time step size for the dynamical system. Defaults to 1.0.</p></li>
+<li><p><strong>optimizer</strong> (<em>pysindy.optimizers</em><em>, </em><em>optional</em>) – SINDy optimizer for sparse regression. Defaults to STLSQ with threshold=0.0 and alpha=0.05.</p></li>
+<li><p><strong>diff_method</strong> (<em>pysindy.differentiation</em><em>, </em><em>optional</em>) – Method for computing time derivatives. Defaults to FiniteDifference().</p></li>
+</ul>
+</dd>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>seed_length</strong> (<em>int</em>) – Number of latent space timesteps required to seed forecaster (always 1 for SINDy).</p></li>
+<li><p><strong>latent_dim</strong> (<em>int</em>) – Dimension of the latent space.</p></li>
+<li><p><strong>lib_dim</strong> (<em>int</em>) – Dimension of the feature library after initialization.</p></li>
+<li><p><strong>model</strong> (<em>pysindy.SINDy</em>) – The fitted SINDy model containing discovered equations.</p></li>
+<li><p><strong>coefficients</strong> (<em>torch.nn.Parameter</em>) – Learnable coefficients tensor for the dynamical system.</p></li>
+<li><p><strong>coefficient_mask</strong> (<em>torch.Tensor</em>) – Binary mask indicating active coefficients.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latents</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/latent_forecaster_models/sindy.html#SINDy_Forecaster.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Fit the SINDy model to the latent time series data.</p>
+<p>This method discovers the sparse dynamical system governing the latent
+space evolution by fitting the SINDy model to the provided data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>latents</strong> (<em>array-like</em>) – Latent time series data of shape (T, latent_dim) where T is the
+number of time steps and latent_dim is the dimension of the latent space.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forecast</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_latents</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/latent_forecaster_models/sindy.html#SINDy_Forecaster.forecast"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Forecast the next h latent steps using the discovered SINDy equations.</p>
+<p>The forecasting is performed by simulating the discovered dynamical system
+forward in time from the given initial conditions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>h</strong> (<em>int</em>) – Number of time steps to forecast into the future.</p></li>
+<li><p><strong>init_latents</strong> (<em>array-like</em>) – Initial latent state(s) for forecasting. Can be:
+- 1D array of shape (latent_dim,): single initial state
+- 2D array of shape (timesteps, latent_dim): uses last row as initial state</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Forecasted latent states of shape (h, latent_dim).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If init_latents has more than 2 dimensions.</p>
+</dd>
+<dt class="field-odd">Warns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>UserWarning</strong> – If init_latents is 2D, only the last row will be used.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latent_dim</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/latent_forecaster_models/sindy.html#SINDy_Forecaster.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Initialize the SINDy model with the given latent dimension.</p>
+<p>This method sets up the feature library dimension, initializes learnable
+parameters, and creates the SINDy model with the specified configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>latent_dim</strong> (<em>int</em>) – Dimension of the latent space.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyshred.</span></span><span class="sig-name descname"><span class="pre">TRANSFORMER</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nhead</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_norm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/sequence_models/transformer_model.html#TRANSFORMER"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyshred.models.sequence_models.html#pyshred.models.sequence_models.abstract_sequence.AbstractSequence" title="pyshred.models.sequence_models.abstract_sequence.AbstractSequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractSequence</span></code></a></p>
+<p>Transformer-based sequence model for encoding temporal sensor dynamics.</p>
+<p>Uses self-attention mechanisms to capture long-range dependencies in
+sensor measurement sequences. Includes positional encoding and supports
+optional layer normalization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_model</strong> (<em>int</em><em>, </em><em>optional</em>) – Dimensionality of the model (embedding size). Defaults to 128.</p></li>
+<li><p><strong>nhead</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of attention heads. Defaults to 16.</p></li>
+<li><p><strong>dropout</strong> (<em>float</em><em>, </em><em>optional</em>) – Dropout probability. Defaults to 0.2.</p></li>
+<li><p><strong>layer_norm</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to apply layer normalization. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_model</strong> (<em>int</em>) – Model dimensionality.</p></li>
+<li><p><strong>hidden_size</strong> (<em>int</em>) – Hidden size (same as d_model).</p></li>
+<li><p><strong>output_size</strong> (<em>int</em>) – Output size (same as d_model).</p></li>
+<li><p><strong>use_layer_norm</strong> (<em>bool</em>) – Whether layer normalization is applied.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="reference internal" href="../_modules/pyshred/models/sequence_models/transformer_model.html#TRANSFORMER.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Forward pass through the Transformer model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>torch.Tensor</em>) – Input tensor of shape (batch_size, sequence_length, input_size).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Output tensor with latent representations. Shape depends on decoder type:
+- MLP decoder: (batch_size, d_model)
+- UNET decoder: (batch_size, d_model, sequence_length)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If decoder type is not supported.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_type</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/sequence_models/transformer_model.html#TRANSFORMER.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Initialize the Transformer with input size, sequence length, and decoder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_size</strong> (<em>int</em>) – Number of input features (sensor measurements).</p></li>
+<li><p><strong>lags</strong> (<em>int</em>) – Length of input sequences.</p></li>
+<li><p><strong>decoder_type</strong> (<em>str</em>) – Decoder model type.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_name</span></span></dt>
+<dd><p>Name of the sequence model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns “Transformer”.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyshred.</span></span><span class="sig-name descname"><span class="pre">UNET</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conv1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conv2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/decoder_models/unet_model.html#UNET"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyshred.models.decoder_models.html#pyshred.models.decoder_models.abstract_decoder.AbstractDecoder" title="pyshred.models.decoder_models.abstract_decoder.AbstractDecoder"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractDecoder</span></code></a></p>
+<p>1D U-Net style convolutional decoder for SHRED.</p>
+<p>Uses a series of 1D convolutions to decode latent representations
+back to the physical state space. Particularly suitable for
+spatially-structured data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>conv1</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of channels in first convolutional layer. Defaults to 256.</p></li>
+<li><p><strong>conv2</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of channels in second convolutional layer. Defaults to 1024.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>c1</strong> (<em>int</em>) – First convolution layer channel count.</p></li>
+<li><p><strong>c2</strong> (<em>int</em>) – Second convolution layer channel count.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="reference internal" href="../_modules/pyshred/models/decoder_models/unet_model.html#UNET.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Forward pass through the UNET decoder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>torch.Tensor</em>) – Input latent tensor of shape (batch_size, input_size, sequence_length).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Decoded output tensor of shape (batch_size, output_size).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyshred/models/decoder_models/unet_model.html#UNET.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Initialize the UNET decoder with input and output sizes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_size</strong> (<em>int</em>) – Size of the input latent features.</p></li>
+<li><p><strong>output_size</strong> (<em>int</em>) – Size of the output physical state.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_name</span></span></dt>
+<dd><p>Name of the decoder model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns “UNET”.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pyshred.</span></span><span class="sig-name descname"><span class="pre">get_device</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">device</span></span></span><a class="reference internal" href="../_modules/pyshred/objects/device.html#get_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Get the current default device for PyShred operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The current default device.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>torch.device</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">device</span> <span class="o">=</span> <span class="n">get_device</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pyshred.</span></span><span class="sig-name descname"><span class="pre">set_default_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">device</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DeviceType</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_cpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">warn_on_fallback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">device</span></span></span><a class="reference internal" href="../_modules/pyshred/objects/device.html#set_default_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Set the default device for PyShred operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device</strong> (<em>str</em><em>, </em><em>torch.device</em><em>, </em><em>DeviceType</em><em>, or </em><em>None</em><em>, </em><em>optional</em>) – Device to use. Can be:
+- “auto”: Auto-detect best device (default)
+- “cpu”: Force CPU usage
+- “cuda”: Use CUDA if available
+- “mps”: Use MPS if available (Apple Silicon)
+- torch.device object
+- DeviceType enum value</p></li>
+<li><p><strong>device_id</strong> (<em>int</em><em>, </em><em>optional</em>) – Specific device ID for multi-GPU setups (only used with CUDA).</p></li>
+<li><p><strong>force_cpu</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, override all other settings and force CPU usage.</p></li>
+<li><p><strong>warn_on_fallback</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to warn when falling back to a different device.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The device that will be used.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.device</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Auto-detect best device</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">device</span> <span class="o">=</span> <span class="n">set_default_device</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Force CUDA usage</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">device</span> <span class="o">=</span> <span class="n">set_default_device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Use specific GPU</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">device</span> <span class="o">=</span> <span class="n">set_default_device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span><span class="p">,</span> <span class="n">device_id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Force CPU (useful for debugging)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">device</span> <span class="o">=</span> <span class="n">set_default_device</span><span class="p">(</span><span class="n">force_cpu</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Use MPS on Apple Silicon</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">device</span> <span class="o">=</span> <span class="n">set_default_device</span><span class="p">(</span><span class="s2">&quot;mps&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="modules.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">API Reference</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="pyshred.engine.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">pyshred.engine package</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subpackages">Subpackages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module contents</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Kutz Research Group.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

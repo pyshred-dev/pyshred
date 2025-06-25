@@ -1,0 +1,598 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Downstream Tasks &#8212; PySHRED</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=957c0bd3"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/downstream_tasks';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example Gallery" href="../examples/index.html" />
+    <link rel="prev" title="SHRED Training" href="shred_training.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="v1.0.21" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">PySHRED</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples/index.html">
+    Example Gallery
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pyshred/modules.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../release_notes/index.html">
+    Release Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples/index.html">
+    Example Gallery
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pyshred/modules.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../release_notes/index.html">
+    Release Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="start_shredding.html">Start shredding</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html">Introduction to PySHRED</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial_bunny_hill.html">Tutorial: Bunny Hill</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="fundamentals.html">Fundamentals and Usage</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="data_prep.html">Data Preparation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shred_training.html">SHRED Training</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Downstream Tasks</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">User Guide</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="fundamentals.html" class="nav-link">Fundamentals and Usage</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Downstream Tasks</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="downstream-tasks">
+<h1>Downstream Tasks<a class="headerlink" href="#downstream-tasks" title="Link to this heading">#</a></h1>
+<p>Once you have trained a SHRED model, you can use it for various downstream sensing and prediction tasks. The <code class="docutils literal notranslate"><span class="pre">SHREDEngine</span></code> object provides a convenient interface that wraps your trained SHRED model and DataManager, making it easy to:</p>
+<ul class="simple">
+<li><p>encode sensor measurements to latent space</p></li>
+<li><p>forecast future latent space states</p></li>
+<li><p>decode latent space back to full-state space</p></li>
+<li><p>evaluate full-state reconstructions from sensor measurements against the ground-truth</p></li>
+</ul>
+<section id="initialize-shredengine">
+<h2>Initialize SHREDEngine<a class="headerlink" href="#initialize-shredengine" title="Link to this heading">#</a></h2>
+<p>To initialize SHREDEngine, pass in a <code class="docutils literal notranslate"><span class="pre">DataManager</span></code> and a trained <code class="docutils literal notranslate"><span class="pre">SHRED</span></code> model.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyshred</span><span class="w"> </span><span class="kn">import</span> <span class="n">SHREDEngine</span>
+
+<span class="c1"># Assuming you have a trained SHRED model and DataManager</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">SHREDEngine</span><span class="p">(</span><span class="n">data_manager</span><span class="p">,</span> <span class="n">trained_shred_model</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="encode-sensor-measurements-to-latent-space">
+<h2>Encode sensor measurements to latent space<a class="headerlink" href="#encode-sensor-measurements-to-latent-space" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">SHREDEngine</span></code> object provides a <code class="docutils literal notranslate"><span class="pre">.sensor_to_latent()</span></code> method for generating the latent space associated with the raw sensor measurements.
+The raw sensor measurements should have shape (time_steps, num_sensors) and the column order of sensors should match the <code class="docutils literal notranslate"><span class="pre">.sensor_measurements_df</span></code> attribute in <code class="docutils literal notranslate"><span class="pre">DataManager</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Raw sensor measurements (e.g., from physical sensors)</span>
+<span class="n">sensor_data</span> <span class="o">=</span> <span class="n">your_sensor_measurements</span>  <span class="c1"># Shape: (time_steps, num_sensors)</span>
+
+<span class="c1"># Convert to latent space</span>
+<span class="n">latent_representation</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">sensor_to_latent</span><span class="p">(</span><span class="n">sensor_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default" id="fig-sensor-to-latent-pipeline">
+<a class="reference internal image-reference" href="../_images/sensor_to_latent_figure.png"><img alt="Sensor to Latent Pipeline" src="../_images/sensor_to_latent_figure.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text"><strong>Figure:</strong> The <code class="docutils literal notranslate"><span class="pre">sensor_to_latent</span></code> method takes in raw sensor measurements, scales it, generates lagged sequences of the scaled sensor measurements, then passes it through SHRED’s <code class="docutils literal notranslate"><span class="pre">sequence_model</span></code> to obtain the latent space associated with the raw sensor measurements.</span><a class="headerlink" href="#fig-sensor-to-latent-pipeline" title="Link to this image">#</a></p>
+<div class="legend">
+<p>Note: the lagged sequences near the start are padded by zeros because there is not enough sensor measurements to look back on.</p>
+</div>
+</figcaption>
+</figure>
+</section>
+<section id="forecast-future-latent-space-states">
+<h2>Forecast future latent space states<a class="headerlink" href="#forecast-future-latent-space-states" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">SHREDEngine</span></code> provides a <code class="docutils literal notranslate"><span class="pre">.forecast_latent()</span></code> method that predicts future latent states starting from an initial sequence of latent vectors. This method is available if <code class="docutils literal notranslate"><span class="pre">SHRED</span></code>’s <code class="docutils literal notranslate"><span class="pre">.latent_forecaster</span></code> is not <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate latent states from current sensor measurements</span>
+<span class="n">current_latents</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">sensor_to_latent</span><span class="p">(</span><span class="n">sensor_measurements</span><span class="p">)</span>
+
+<span class="c1"># Set forecast horizon (number of steps to predict into the future)</span>
+<span class="n">forecast_horizon</span> <span class="o">=</span> <span class="mi">50</span>
+
+<span class="c1"># Prepare initial seed for forecasting</span>
+<span class="n">seed_length</span> <span class="o">=</span> <span class="n">shred</span><span class="o">.</span><span class="n">latent_forecaster</span><span class="o">.</span><span class="n">seed_length</span>
+<span class="n">init_latents</span> <span class="o">=</span> <span class="n">current_latents</span><span class="p">[</span><span class="o">-</span><span class="n">seed_length</span><span class="p">:]</span>
+
+<span class="c1"># Forecast future latent states</span>
+<span class="n">forecasted_latents</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">forecast_latent</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="n">forecast_horizon</span><span class="p">,</span> <span class="n">init_latents</span><span class="o">=</span><span class="n">init_latents</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default" id="fig-latent-forecasting-pipeline">
+<a class="reference internal image-reference" href="../_images/forecast_latent_figure.png"><img alt="Latent Space Forecasting Pipeline" src="../_images/forecast_latent_figure.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text"><strong>Figure:</strong> The <code class="docutils literal notranslate"><span class="pre">forecast_latent</span></code> method takes in a forecast horizon (number of steps to forecast into the future) and an initial latent space seed. The timesteps requried for the seed depends on SHRED’s <code class="docutils literal notranslate"><span class="pre">latent_forecaster</span></code> model selected. <code class="docutils literal notranslate"><span class="pre">SINDy_forecaster</span></code> requires only a single latent space timestep. <code class="docutils literal notranslate"><span class="pre">LSTM_forecaster</span></code> requires the latent space seed to be of length lags (lags set in <code class="docutils literal notranslate"><span class="pre">LSTM_forecaster</span></code>). The seed is passed into the SHRED’s <code class="docutils literal notranslate"><span class="pre">latent_forecaster</span></code>, which then forecasts the latent space <code class="docutils literal notranslate"><span class="pre">h</span></code> timesteps into the future.</span><a class="headerlink" href="#fig-latent-forecasting-pipeline" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="decode-latent-space-back-to-full-state-space">
+<h2>Decode Latent Space Back to Full-State Space<a class="headerlink" href="#decode-latent-space-back-to-full-state-space" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">SHREDEngine</span></code> provides a <code class="docutils literal notranslate"><span class="pre">.decode()</span></code> method for converting latent representations back into the full-state space.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert latent representations back to full state</span>
+<span class="n">full_state_reconstruction</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">latent_representation</span><span class="p">)</span>
+
+<span class="c1"># You can also decode forecasted latent states</span>
+<span class="n">forecasted_full_state</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">forecasted_latent</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default" id="fig-latent-to-full-state-pipeline">
+<a class="reference internal image-reference" href="../_images/decoder_figure.png"><img alt="Latent Space to Full-State Space Pipeline" src="../_images/decoder_figure.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text"><strong>Figure:</strong> The <code class="docutils literal notranslate"><span class="pre">decoder</span></code> method takes in a latent space, passes it through SHRED’s <code class="docutils literal notranslate"><span class="pre">decoder_model</span></code>, and returns the full-state reconstruction of the latent space.</span><a class="headerlink" href="#fig-latent-to-full-state-pipeline" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="evaluate-reconstructions-from-sensor-measurements-against-ground-truth">
+<h2>Evaluate reconstructions from sensor measurements against ground truth<a class="headerlink" href="#evaluate-reconstructions-from-sensor-measurements-against-ground-truth" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">SHREDEngine</span></code> provides an <code class="docutils literal notranslate"><span class="pre">.evaluate()</span></code> method that compares reconstructed full-state outputs (from sensor measurements) against the unprocessed ground truth. This method performs end-to-end evaluation in the physical space, automatically handling all necessary post-processing steps.</p>
+<section id="what-the-evaluation-includes">
+<h3>What the evaluation includes:<a class="headerlink" href="#what-the-evaluation-includes" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Unscaling</strong>: Converts normalized predictions back to original scales using fitted scalers</p></li>
+<li><p><strong>Decompression</strong>: Projects back to full-state space if SVD compression was used during preprocessing</p></li>
+<li><p><strong>Dataset unstacking</strong>: Separates multiple datasets if more than one was added to the DataManager</p></li>
+<li><p><strong>Metric computation</strong>: Calculates comprehensive error metrics (MSE, RMSE, MAE, R²)</p></li>
+</ul>
+</section>
+<section id="usage-example">
+<h3>Usage example:<a class="headerlink" href="#usage-example" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Prepare ground truth data as a dictionary mapping dataset IDs to arrays</span>
+<span class="c1"># Each array should have shape (time_steps, *spatial_dimensions)</span>
+<span class="n">ground_truth</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;dataset_1&quot;</span><span class="p">:</span> <span class="n">full_state_data_1</span><span class="p">,</span>  <span class="c1"># shape: (T, height, width) for 2D spatial data</span>
+    <span class="s2">&quot;dataset_2&quot;</span><span class="p">:</span> <span class="n">full_state_data_2</span>   <span class="c1"># shape: (T, nx, ny, nz) for 3D spatial data</span>
+<span class="p">}</span>
+
+<span class="c1"># Evaluate model performance</span>
+<span class="n">evaluation_results</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
+    <span class="n">sensor_measurements</span><span class="o">=</span><span class="n">test_sensor_data</span><span class="p">,</span>  <span class="c1"># shape: (T, n_sensors)</span>
+    <span class="n">Y</span><span class="o">=</span><span class="n">ground_truth</span>
+<span class="p">)</span>
+
+<span class="c1"># Display results</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">evaluation_results</span><span class="p">)</span>
+<span class="c1">#           MSE      RMSE       MAE        R2</span>
+<span class="c1"># dataset</span>
+<span class="c1"># dataset_1  0.123    0.351     0.245     0.892</span>
+<span class="c1"># dataset_2  0.098    0.313     0.198     0.913</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="shred_training.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">SHRED Training</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../examples/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Example Gallery</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initialize-shredengine">Initialize SHREDEngine</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encode-sensor-measurements-to-latent-space">Encode sensor measurements to latent space</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forecast-future-latent-space-states">Forecast future latent space states</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decode-latent-space-back-to-full-state-space">Decode Latent Space Back to Full-State Space</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-reconstructions-from-sensor-measurements-against-ground-truth">Evaluate reconstructions from sensor measurements against ground truth</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-the-evaluation-includes">What the evaluation includes:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-example">Usage example:</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Kutz Research Group.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

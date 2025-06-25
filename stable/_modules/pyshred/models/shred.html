@@ -1,0 +1,868 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyshred.models.shred &#8212; PySHRED</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../_static/documentation_options.js?v=957c0bd3"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyshred/models/shred';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="v1.0.21" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">PySHRED</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../examples/index.html">
+    Example Gallery
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../pyshred/modules.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../release_notes/index.html">
+    Release Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../examples/index.html">
+    Example Gallery
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../pyshred/modules.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../release_notes/index.html">
+    Release Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyshred.models.shred</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pyshred.models.shred</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..objects.sindy</span><span class="w"> </span><span class="kn">import</span> <span class="n">E_SINDy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..models.sequence_models.abstract_sequence</span><span class="w"> </span><span class="kn">import</span> <span class="n">AbstractSequence</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..models.decoder_models.abstract_decoder</span><span class="w"> </span><span class="kn">import</span> <span class="n">AbstractDecoder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..models.latent_forecaster_models.abstract_latent_forecaster</span><span class="w"> </span><span class="kn">import</span> <span class="n">AbstractLatentForecaster</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..models.decoder_models.mlp_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">MLP</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..models.decoder_models.unet_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">UNET</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..models.sequence_models.gru_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">GRU</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..models.sequence_models.lstm_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LSTM</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..models.sequence_models.transformer_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">TRANSFORMER</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..objects.dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeSeriesDataset</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..models.latent_forecaster_models.sindy</span><span class="w"> </span><span class="kn">import</span> <span class="n">SINDy_Forecaster</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..models.latent_forecaster_models.lstm</span><span class="w"> </span><span class="kn">import</span> <span class="n">LSTM_Forecaster</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..objects.device</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_device</span>
+
+
+
+
+<span class="n">SEQUENCE_MODELS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;LSTM&quot;</span><span class="p">:</span> <span class="n">LSTM</span><span class="p">,</span>
+    <span class="s2">&quot;TRANSFORMER&quot;</span><span class="p">:</span> <span class="n">TRANSFORMER</span><span class="p">,</span>
+    <span class="s2">&quot;GRU&quot;</span><span class="p">:</span> <span class="n">GRU</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">DECODER_MODELS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;MLP&quot;</span><span class="p">:</span> <span class="n">MLP</span><span class="p">,</span>
+    <span class="s2">&quot;UNET&quot;</span><span class="p">:</span> <span class="n">UNET</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">LATENT_FORECASTER_MODELS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;SINDY_FORECASTER&quot;</span><span class="p">:</span> <span class="n">SINDy_Forecaster</span><span class="p">,</span>
+    <span class="s2">&quot;LSTM_FORECASTER&quot;</span><span class="p">:</span> <span class="n">LSTM_Forecaster</span>
+<span class="p">}</span>
+
+<span class="n">NUM_REPLICATES</span> <span class="o">=</span> <span class="mi">10</span>
+
+<div class="viewcode-block" id="SHRED">
+<a class="viewcode-back" href="../../../pyshred/pyshred.models.html#pyshred.SHRED">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SHRED</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SHallow REcurrent Decoder (SHRED) neural network architecture.</span>
+
+<span class="sd">    SHRED leverages a sequence model to learn a latent representation of the temporal dynamics of sensor measurements, a </span>
+<span class="sd">    latent forecaster model to forecast the latent space into the future, and a decoder model to learn a mapping between </span>
+<span class="sd">    the latent space and the high-dimensional full-state space. The SHRED architecture enables accurate full-state </span>
+<span class="sd">    reconstructions and forecasts from limited sensors.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sequence_model : AbstractSequence or str, optional</span>
+<span class="sd">        Sequence model instance (GRU, LSTM, Transformer) or its name.</span>
+<span class="sd">        Default None → LSTM if not using SINDy_Forecaster, otherwise GRU.</span>
+<span class="sd">    decoder_model : AbstractDecoder or str, optional</span>
+<span class="sd">        Decoder model instance (MLP, UNET) or its name.</span>
+<span class="sd">        Default None → MLP.</span>
+<span class="sd">    latent_forecaster : AbstractLatentForecaster or str, optional</span>
+<span class="sd">        Latent forecaster instance (SINDy_Forecaster, LSTM_Forecaster) or its name.</span>
+<span class="sd">        Default None → no latent forecaster.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sequence : AbstractSequence</span>
+<span class="sd">        The sequence model that encodes the temporal dynamics of sensor measurements in the latent space.</span>
+<span class="sd">    decoder : AbstractDecoder</span>
+<span class="sd">        The decoder model that maps the latent space back to the full‐state space.</span>
+<span class="sd">    latent_forecaster : AbstractLatentForecaster or None</span>
+<span class="sd">        The latent forecaster that forecasts future latent space states.</span>
+<span class="sd">        If None, no latent forecaster is used.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; # basic SHRED</span>
+<span class="sd">    &gt;&gt;&gt; model = SHRED(sequence_model=&#39;LSTM&#39;, decoder_model=&#39;MLP&#39;, latent_forecaster=&#39;LSTM_Forecaster&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; # SINDy SHRED</span>
+<span class="sd">    &gt;&gt;&gt; model = SHRED(sequence_model=&#39;GRU&#39;, decoder_model=&#39;MLP&#39;, latent_forecaster=&#39;SINDy_Forecaster&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequence_model</span><span class="p">:</span> <span class="n">AbstractSequence</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">decoder_model</span><span class="p">:</span> <span class="n">AbstractDecoder</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">latent_forecaster</span><span class="p">:</span> <span class="n">AbstractLatentForecaster</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a SHallow REcurrent Decoder (SHRED) model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sequence_model : AbstractSequence or str, optional</span>
+<span class="sd">            Sequence model instance (GRU, LSTM, Transformer) or its name.</span>
+<span class="sd">            Default None → LSTM if not using SINDy_Forecaster, otherwise GRU.</span>
+<span class="sd">        decoder_model : AbstractDecoder or str, optional</span>
+<span class="sd">            Decoder model instance (MLP, UNET) or its name.</span>
+<span class="sd">            Default None → MLP.</span>
+<span class="sd">        latent_forecaster : AbstractLatentForecaster or str, optional</span>
+<span class="sd">            Latent forecaster instance (SINDy_Forecaster, LSTM_Forecaster) or its name.</span>
+<span class="sd">            Default None → no latent forecaster.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If a string name is given but not found in the corresponding model mapping.</span>
+<span class="sd">        TypeError</span>
+<span class="sd">            If an object of the wrong type is passed in for any of the three arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">sequence_model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">latent_forecaster</span><span class="p">,</span> <span class="n">SINDy_Forecaster</span><span class="p">)</span> <span class="ow">or</span> 
+                <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">latent_forecaster</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">latent_forecaster</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;SINDY_FORECASTER&quot;</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="n">GRU</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="n">LSTM</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sequence_model</span><span class="p">,</span> <span class="n">AbstractSequence</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="n">sequence_model</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sequence_model</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">sequence_model</span> <span class="o">=</span> <span class="n">sequence_model</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">sequence_model</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">SEQUENCE_MODELS</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid sequence model: </span><span class="si">{</span><span class="n">sequence_model</span><span class="si">}</span><span class="s2">. Choose from: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">SEQUENCE_MODELS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="n">SEQUENCE_MODELS</span><span class="p">[</span><span class="n">sequence_model</span><span class="p">]()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Invalid type for &#39;sequence_model&#39;. Must be str or an AbstractSequence instance or None.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">decoder_model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span> <span class="o">=</span> <span class="n">MLP</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">decoder_model</span><span class="p">,</span> <span class="n">AbstractDecoder</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">latent_forecaster</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">decoder_model</span><span class="p">,</span> <span class="n">MLP</span><span class="p">):</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="s2">&quot;`latent_forecaster` is not None, but `decoder_model` is not an instance of `MLP`. &quot;</span>
+                    <span class="s2">&quot;The decoder is being overridden with `MLP()` for compatibility with the `latent_forecaster`.&quot;</span><span class="p">,</span>
+                    <span class="ne">UserWarning</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span> <span class="o">=</span> <span class="n">MLP</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span> <span class="o">=</span> <span class="n">decoder_model</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">decoder_model</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">decoder_model</span> <span class="o">=</span> <span class="n">decoder_model</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">decoder_model</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">DECODER_MODELS</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid decoder model: </span><span class="si">{</span><span class="n">decoder_model</span><span class="si">}</span><span class="s2">. Choose from: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">DECODER_MODELS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">latent_forecaster</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">decoder_model</span><span class="o">!=</span><span class="s2">&quot;MLP&quot;</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="s2">&quot;`latent_forecaster` is not None, but `decoder_model` is not set to </span><span class="se">\&quot;</span><span class="s2">MLP</span><span class="se">\&quot;</span><span class="s2">. &quot;</span>
+                    <span class="s2">&quot;The decoder is being overridden with `MLP()` for compatibility with the `latent_forecaster`.&quot;</span><span class="p">,</span>
+                    <span class="ne">UserWarning</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span> <span class="o">=</span> <span class="n">MLP</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span> <span class="o">=</span> <span class="n">DECODER_MODELS</span><span class="p">[</span><span class="n">decoder_model</span><span class="p">]()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Invalid type for &#39;decoder&#39;. Must be str or an AbstractDecoder instance or None.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_replicates</span> <span class="o">=</span> <span class="n">NUM_REPLICATES</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latent_forecaster</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">latent_forecaster</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">latent_forecaster</span><span class="p">,</span> <span class="n">AbstractLatentForecaster</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">latent_forecaster</span> <span class="o">=</span> <span class="n">latent_forecaster</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">latent_forecaster</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">latent_forecaster</span> <span class="o">=</span> <span class="n">latent_forecaster</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">latent_forecaster</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">LATENT_FORECASTER_MODELS</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid sequence model: </span><span class="si">{</span><span class="n">latent_forecaster</span><span class="si">}</span><span class="s2">. Choose from: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">LATENT_FORECASTER_MODELS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">latent_forecaster</span> <span class="o">=</span> <span class="n">LATENT_FORECASTER_MODELS</span><span class="p">[</span><span class="n">latent_forecaster</span><span class="p">]()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Invalid type for &#39;latent_forecaster&#39;. Must be str or an AbstractLatentForecaster instance or None.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">latent_forecaster</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">latent_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SHRED.forward">
+<a class="viewcode-back" href="../../../pyshred/pyshred.models.html#pyshred.SHRED.forward">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">sindy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Forward pass through the SHRED model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : torch.Tensor</span>
+<span class="sd">            Input sensor sequences of shape (batch_size, lags, n_sensors).</span>
+<span class="sd">        sindy : bool, optional</span>
+<span class="sd">            Whether to compute SINDy regularization terms. Defaults to False.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        torch.Tensor or tuple</span>
+<span class="sd">            If sindy=False: Reconstructed full-state tensor.</span>
+<span class="sd">            If sindy=True: Tuple of (reconstruction, target_latents, predicted_latents).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">sindy</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">h_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">(</span><span class="n">h_out</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">set_detect_anomaly</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">sindy</span><span class="p">:</span>
+                    <span class="n">h_t</span> <span class="o">=</span> <span class="n">h_out</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+                    <span class="n">ht_replicates</span> <span class="o">=</span> <span class="n">h_t</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_replicates</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+                        <span class="n">ht_replicates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e_sindy</span><span class="p">(</span><span class="n">ht_replicates</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span>
+                    <span class="n">h_out_replicates</span> <span class="o">=</span> <span class="n">h_out</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_replicates</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="p">,</span> <span class="n">h_out_replicates</span><span class="p">,</span> <span class="n">ht_replicates</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">h_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">(</span><span class="n">h_out</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">output</span></div>
+
+
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_seq_model_outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">sindy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get sequence model outputs with optional SINDy ensemble computation.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : torch.Tensor</span>
+<span class="sd">            Input sensor sequences.</span>
+<span class="sd">        sindy : bool, optional</span>
+<span class="sd">            Whether to compute SINDy ensemble outputs. Defaults to False.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        torch.Tensor or tuple</span>
+<span class="sd">            Sequence model outputs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">sindy</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">h_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">sindy</span><span class="p">:</span>
+                <span class="n">h_t</span> <span class="o">=</span> <span class="n">h_out</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+                <span class="n">ht_replicates</span> <span class="o">=</span> <span class="n">h_t</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_replicates</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+                    <span class="n">ht_replicates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e_sindy</span><span class="p">(</span><span class="n">ht_replicates</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span>
+                <span class="n">h_out_replicates</span> <span class="o">=</span> <span class="n">h_out</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_replicates</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">h_outs</span> <span class="o">=</span> <span class="n">h_out_replicates</span><span class="p">,</span> <span class="n">ht_replicates</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">h_outs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">h_outs</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_sindys_threshold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply thresholding to SINDy coefficients.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        threshold : float</span>
+<span class="sd">            Threshold value for coefficient pruning.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">e_sindy</span><span class="o">.</span><span class="n">thresholding</span><span class="p">(</span><span class="n">threshold</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_sindys_add_noise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">noise</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add noise to SINDy coefficients.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        noise : float</span>
+<span class="sd">            Noise level to add.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">e_sindy</span><span class="o">.</span><span class="n">add_noise</span><span class="p">(</span><span class="n">noise</span><span class="p">)</span>
+
+
+    <span class="c1"># sindy_regularization previously set to 1.0</span>
+<div class="viewcode-block" id="SHRED.fit">
+<a class="viewcode-back" href="../../../pyshred/pyshred.models.html#pyshred.SHRED.fit">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_dataset</span><span class="p">,</span> <span class="n">val_dataset</span><span class="p">,</span>  <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">sindy_regularization</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">optimizer</span><span class="o">=</span><span class="s2">&quot;AdamW&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">base_threshold</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">patience</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+            <span class="n">sindy_thres_epoch</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Train the SHRED model on the provided datasets.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        train_dataset : TimeSeriesDataset</span>
+<span class="sd">            Training dataset containing sensor sequences and target reconstructions.</span>
+<span class="sd">        val_dataset : TimeSeriesDataset</span>
+<span class="sd">            Validation dataset for monitoring training progress.</span>
+<span class="sd">        batch_size : int, optional</span>
+<span class="sd">            Batch size for training. Defaults to 64.</span>
+<span class="sd">        num_epochs : int, optional</span>
+<span class="sd">            Maximum number of training epochs. Defaults to 200.</span>
+<span class="sd">        lr : float, optional</span>
+<span class="sd">            Learning rate. Defaults to 1e-3.</span>
+<span class="sd">        sindy_regularization : float, optional</span>
+<span class="sd">            Weight for SINDy regularization term. Defaults to 0.</span>
+<span class="sd">        optimizer : str, optional</span>
+<span class="sd">            Optimizer type. Defaults to &quot;AdamW&quot;.</span>
+<span class="sd">        verbose : bool, optional</span>
+<span class="sd">            Whether to print training progress. Defaults to True.</span>
+<span class="sd">        threshold : float, optional</span>
+<span class="sd">            SINDy thresholding value. Defaults to 0.5.</span>
+<span class="sd">        base_threshold : float, optional</span>
+<span class="sd">            Base threshold for SINDy. Defaults to 0.0.</span>
+<span class="sd">        patience : int, optional</span>
+<span class="sd">            Early stopping patience. Defaults to 20.</span>
+<span class="sd">        sindy_thres_epoch : int, optional</span>
+<span class="sd">            Frequency of SINDy thresholding. Defaults to 20.</span>
+<span class="sd">        weight_decay : float, optional</span>
+<span class="sd">            Weight decay for optimizer. Defaults to 0.01.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray</span>
+<span class="sd">            Array of validation errors for each epoch.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latent_forecaster</span><span class="p">,</span> <span class="n">SINDy_Forecaster</span><span class="p">)</span> <span class="ow">and</span> <span class="n">sindy_regularization</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;`latent_forecaster` is not a SINDy_Forecaster; disabling SINDy regularization.&quot;</span><span class="p">,</span>
+                <span class="ne">UserWarning</span>
+            <span class="p">)</span>
+            <span class="n">sindy_regularization</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="n">sindy_regularization</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">sindy</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">,</span> <span class="n">MLP</span><span class="p">):</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;WARNING: SINDy regularization &gt; 0: switching decoder to MLP for compatibility.&quot;</span><span class="p">,</span>
+                    <span class="ne">UserWarning</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span> <span class="o">=</span> <span class="n">MLP</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sindy</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">device</span> <span class="o">=</span> <span class="n">get_device</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latent_forecaster</span><span class="p">,</span> <span class="n">SINDy_Forecaster</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_forecaster</span><span class="o">.</span><span class="n">dt</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">poly_order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_forecaster</span><span class="o">.</span><span class="n">poly_order</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lib_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_forecaster</span><span class="o">.</span><span class="n">lib_dim</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">include_sine</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_forecaster</span><span class="o">.</span><span class="n">include_sine</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">e_sindy</span> <span class="o">=</span> <span class="n">E_SINDy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_replicates</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib_dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">poly_order</span><span class="p">,</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">include_sine</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">input_size</span> <span class="o">=</span> <span class="n">train_dataset</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># nsensors + nparams</span>
+        <span class="n">output_size</span> <span class="o">=</span> <span class="n">train_dataset</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">lags</span> <span class="o">=</span> <span class="n">train_dataset</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># lags</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">input_size</span><span class="o">=</span><span class="n">input_size</span><span class="p">,</span> <span class="n">lags</span><span class="o">=</span><span class="n">lags</span><span class="p">,</span> <span class="n">decoder_type</span><span class="o">=</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">input_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="o">.</span><span class="n">output_size</span><span class="p">,</span> <span class="n">output_size</span><span class="o">=</span><span class="n">output_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="c1"># shuffle is False (used to be True)</span>
+        <span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
+        <span class="n">criterion</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()</span>
+        <span class="n">optimizer</span> <span class="o">=</span> <span class="n">SHRED</span><span class="o">.</span><span class="n">_get_optimizer</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="n">weight_decay</span><span class="p">)</span>
+        <span class="n">val_error_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">patience_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">best_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
+        <span class="n">best_val_error</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>  <span class="c1"># Initialize with a large value</span>
+        <span class="k">if</span> <span class="n">sindy</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fitting SindySHRED...&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fitting SHRED...&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_epochs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+            <span class="n">running_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">train_loader</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">sindy</span><span class="p">:</span>
+                    <span class="n">outputs</span><span class="p">,</span> <span class="n">h_gru</span><span class="p">,</span> <span class="n">h_sindy</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sindy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+                    <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">criterion</span><span class="p">(</span><span class="n">h_gru</span><span class="p">,</span> <span class="n">h_sindy</span><span class="p">)</span> <span class="o">*</span> <span class="n">sindy_regularization</span> <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">h_gru</span><span class="p">))</span> <span class="o">*</span> <span class="mf">0.1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sindy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+                    <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+                <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+                <span class="n">running_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s2">: Average training loss = </span><span class="si">{</span><span class="n">running_loss</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="p">)</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">sindy</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="n">sindy_thres_epoch</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">epoch</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">e_sindy</span><span class="o">.</span><span class="n">thresholding</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">,</span> <span class="n">base_threshold</span><span class="o">=</span><span class="n">base_threshold</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+            <span class="n">val_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">val_dataset</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
+            <span class="n">val_criterion</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">(</span><span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">)</span>
+            <span class="n">total_val_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">total_val_elems</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">X_val</span><span class="p">,</span> <span class="n">Y_val</span> <span class="ow">in</span> <span class="n">val_loader</span><span class="p">:</span>
+                    <span class="n">X_val</span><span class="p">,</span> <span class="n">Y_val</span> <span class="o">=</span> <span class="n">X_val</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">Y_val</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+                    <span class="n">preds</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">X_val</span><span class="p">)</span>
+                    <span class="c1"># if you ever forward with sindy=True, unpack the reconstruction</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                        <span class="n">preds</span> <span class="o">=</span> <span class="n">preds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">batch_loss</span> <span class="o">=</span> <span class="n">val_criterion</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">Y_val</span><span class="p">)</span>
+                    <span class="n">total_val_loss</span> <span class="o">+=</span> <span class="n">batch_loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+                    <span class="n">total_val_elems</span> <span class="o">+=</span> <span class="n">Y_val</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span>
+            <span class="c1"># now compute the true mean‐squared‐error</span>
+            <span class="n">val_error</span> <span class="o">=</span> <span class="n">total_val_loss</span> <span class="o">/</span> <span class="n">total_val_elems</span>
+            <span class="n">val_error_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_error</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Validation MSE (epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">val_error</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">val_error</span> <span class="o">&lt;</span> <span class="n">best_val_error</span><span class="p">:</span>
+                <span class="n">best_val_error</span> <span class="o">=</span> <span class="n">val_error</span>
+                <span class="n">best_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
+                <span class="n">patience_counter</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Reset if improvement</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">patience_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">patience_counter</span> <span class="o">&gt;=</span> <span class="n">patience</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Early stopping triggered: patience threshold reached.&quot;</span><span class="p">)</span>
+                <span class="k">break</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">best_params</span><span class="p">)</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span><span class="o">.</span><span class="n">device</span>
+        <span class="n">X_train</span> <span class="o">=</span> <span class="n">train_dataset</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>    <span class="c1"># shape (N_train, lags, n_sensors)</span>
+        <span class="n">X_val</span>   <span class="o">=</span> <span class="n">val_dataset</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>      <span class="c1"># shape (N_val,   lags, n_sensors)</span>
+        <span class="n">X_all</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_val</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>   <span class="c1"># shape (N_train+N_val, lags, n_sensors)</span>
+        <span class="c1"># run through encoder to get latents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="n">latents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq_model_outputs</span><span class="p">(</span><span class="n">X_all</span><span class="p">,</span> <span class="n">sindy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>   <span class="c1"># (N_train+N_val, latent_dim)</span>
+        <span class="c1"># to numpy and hand off to pysindy</span>
+        <span class="n">latents_np</span> <span class="o">=</span> <span class="n">latents</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latent_forecaster</span><span class="p">,</span> <span class="n">SINDy_Forecaster</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">latent_forecaster</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">latents_np</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latent_forecaster</span><span class="p">,</span> <span class="n">LSTM_Forecaster</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">latent_forecaster</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">latents</span><span class="o">=</span><span class="n">latents_np</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="n">num_epochs</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">val_error_list</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="SHRED.evaluate">
+<a class="viewcode-back" href="../../../pyshred/pyshred.models.html#pyshred.SHRED.evaluate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">:</span> <span class="n">TimeSeriesDataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">64</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute mean squared error on a held‐out test dataset.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        test_dataset : torch.utils.data.Dataset</span>
+<span class="sd">            Should return (X, Y) pairs just like your train/val datasets.</span>
+<span class="sd">        batch_size : int, optional</span>
+<span class="sd">            How many samples per batch. Defaults to 64.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The MSE over all elements in the test set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        <span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
+        <span class="n">criterion</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">(</span><span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">)</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span><span class="o">.</span><span class="n">device</span>
+        <span class="n">total_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">total_elements</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="ow">in</span> <span class="n">loader</span><span class="p">:</span>
+                <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">Y</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+                <span class="n">preds</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> 
+                <span class="c1"># if sindy=True forward returns a tuple,</span>
+                <span class="c1"># we only want the reconstruction</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                    <span class="n">preds</span> <span class="o">=</span> <span class="n">preds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+                <span class="n">total_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+                <span class="n">total_elements</span> <span class="o">+=</span> <span class="n">Y</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span>
+        <span class="c1"># mean over every scalar element</span>
+        <span class="n">mse</span> <span class="o">=</span> <span class="n">total_loss</span> <span class="o">/</span> <span class="n">total_elements</span>
+        <span class="k">return</span> <span class="n">mse</span></div>
+
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_optimizer</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lr</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">weight_decay</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">optimizer</span> <span class="o">==</span> <span class="s2">&quot;AdamW&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">AdamW</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="n">weight_decay</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">optimizer</span> <span class="o">==</span> <span class="s2">&quot;Adam&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="n">weight_decay</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">optimizer</span> <span class="o">==</span> <span class="s2">&quot;SGD&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="n">weight_decay</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">optimizer</span> <span class="o">==</span> <span class="s2">&quot;RMSprop&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">RMSprop</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="n">weight_decay</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">optimizer</span> <span class="o">==</span> <span class="s2">&quot;Adagrad&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adagrad</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="n">weight_decay</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unsupported optimizer </span><span class="si">{</span><span class="n">optimizer</span><span class="si">!r}</span><span class="s2">. Choose from: &quot;</span>
+                <span class="s2">&quot;&#39;Adam&#39;, &#39;AdamW&#39;, &#39;SGD&#39;, &#39;RMSprop&#39;, or &#39;Adagrad&#39;.&quot;</span>
+            <span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Kutz Research Group.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

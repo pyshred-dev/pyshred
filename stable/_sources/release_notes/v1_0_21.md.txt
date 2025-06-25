@@ -1,0 +1,5 @@
+# v1.0.21 — Fix Non-Functional Bugs
+
+Released: 2025-06-25
+
+PySHRED v1.0.21 fixes non-functional bugs mainly correcting the version number.

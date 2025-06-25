@@ -1,0 +1,5 @@
+# v1.0.0 — Initial Launch
+
+Released: 2025-06-14
+
+🎉 PySHRED v1.0.0 marks the first official release!

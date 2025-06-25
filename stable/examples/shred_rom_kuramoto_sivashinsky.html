@@ -1,0 +1,917 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SHRED-ROM Tutorial on Kuramoto Sivashinsky &#8212; PySHRED</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=957c0bd3"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/shred_rom_kuramoto_sivashinsky';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API Reference" href="../pyshred/modules.html" />
+    <link rel="prev" title="SHRED-ROM Tutorial on Double Gyre Flow" href="shred_rom_double_gyre_flow.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="v1.0.21" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">PySHRED</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Example Gallery
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pyshred/modules.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../release_notes/index.html">
+    Release Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Example Gallery
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pyshred/modules.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../release_notes/index.html">
+    Release Notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="tutorial_bunny_hill.html">Tutorial: Bunny Hill</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_shred_sst.html">Basic SHRED Tutorial on Sea Surface Temperature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sindy_shred_sst.html">SINDy-SHRED Tutorial on Sea Surface Temperature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shred_rom_double_gyre_flow.html">SHRED-ROM Tutorial on Double Gyre Flow</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">SHRED-ROM Tutorial on Kuramoto Sivashinsky</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Example Gallery</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">SHRED-ROM Tutorial on Kuramoto Sivashinsky</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="shred-rom-tutorial-on-kuramoto-sivashinsky">
+<h1>SHRED-ROM Tutorial on Kuramoto Sivashinsky<a class="headerlink" href="#shred-rom-tutorial-on-kuramoto-sivashinsky" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://colab.research.google.com/drive/1eFR-3l6qFgo3360V2LrJqBPSLheI4Mfd"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<section id="import-libraries">
+<h2>Import Libraries<a class="headerlink" href="#import-libraries" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># PYSHRED</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyshred</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyshred</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParametricDataManager</span><span class="p">,</span> <span class="n">SHRED</span><span class="p">,</span> <span class="n">ParametricSHREDEngine</span>
+
+<span class="c1"># Other helper libraries</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">loadmat</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>The autoreload extension is already loaded. To reload it, use:
+  %reload_ext autoreload
+</pre></div>
+</div>
+</section>
+<section id="load-kuramoto-sivashinsky-dataset">
+<h2>Load Kuramoto Sivashinsky dataset<a class="headerlink" href="#load-kuramoto-sivashinsky-dataset" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">urllib.request</span>
+<span class="c1"># URL of the NPZ file</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://zenodo.org/records/14524524/files/KuramotoSivashinsky_data.npz?download=1&#39;</span>
+<span class="c1"># Local filename to save the downloaded file</span>
+<span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;KuramotoSivashinsky_data.npz&#39;</span>
+<span class="c1"># Download the file from the URL</span>
+<span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+<span class="c1"># Load the data from the NPZ file</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="device-info">
+<h2>Device Info<a class="headerlink" href="#device-info" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="n">pyshred</span><span class="o">.</span><span class="n">set_device</span><span class="p">(</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+<span class="c1"># device = pyshred.set_device(&quot;cpu&quot;) # force CPU</span>
+<span class="c1"># device = pyshred.set_device(&quot;cuda&quot;) # force CUDA</span>
+<span class="c1"># device = pyshred.set_device(&quot;mps&quot;) # force MPS</span>
+<span class="c1"># device = pyshred.set_device(&quot;cuda&quot;, device_id=0) # force specific GPU</span>
+<span class="n">pyshred</span><span class="o">.</span><span class="n">device_info</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>=== PyShred Device Information ===
+Current device: cpu
+Device config: DeviceConfig(device_type=&lt;DeviceType.AUTO: &#39;auto&#39;&gt;, device_id=None, force_cpu=False, warn_on_fallback=True)
+
+Device Availability:
+  CUDA available: False
+  MPS available: False
+  CPU: Always available
+</pre></div>
+</div>
+</section>
+<section id="initialize-data-manager">
+<h2>Initialize Data Manager<a class="headerlink" href="#initialize-data-manager" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize ParametricSHREDDataManager</span>
+<span class="n">manager</span> <span class="o">=</span> <span class="n">ParametricDataManager</span><span class="p">(</span>
+    <span class="n">lags</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="n">train_size</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">val_size</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="add-datasets-and-sensors">
+<h2>Add datasets and sensors<a class="headerlink" href="#add-datasets-and-sensors" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;u&#39;</span><span class="p">]</span> <span class="c1"># shape (500, 201, 100)</span>
+<span class="n">params</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;mu&#39;</span><span class="p">]</span> <span class="c1"># shape (500, 201, 2)</span>
+
+
+<span class="n">manager</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+    <span class="n">random</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="c1"># stationary=[(15,),(30,),(45,)],</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;KS&#39;</span><span class="p">,</span>
+    <span class="n">compress</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span>
+
+<span class="c1"># add params</span>
+<span class="n">manager</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+    <span class="c1"># stationary=[(15,),(30,),(45,)],</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;MU&#39;</span><span class="p">,</span>
+    <span class="n">compress</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span>
+
+</pre></div>
+</div>
+</section>
+<section id="analyze-sensor-summary">
+<h2>Analyze sensor summary<a class="headerlink" href="#analyze-sensor-summary" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">manager</span><span class="o">.</span><span class="n">sensor_measurements_df</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</pre></div>
+</div>
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>KS-0</th>
+      <th>KS-1</th>
+      <th>KS-2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-0.434038</td>
+      <td>-1.148071</td>
+      <td>0.154032</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-0.457136</td>
+      <td>-0.961066</td>
+      <td>0.332515</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-0.459894</td>
+      <td>-0.912785</td>
+      <td>0.361393</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-0.446475</td>
+      <td>-0.873385</td>
+      <td>0.404951</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>-0.389743</td>
+      <td>-0.829674</td>
+      <td>0.485893</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>100495</th>
+      <td>-0.846195</td>
+      <td>-1.008426</td>
+      <td>0.261712</td>
+    </tr>
+    <tr>
+      <th>100496</th>
+      <td>-1.671882</td>
+      <td>-0.458563</td>
+      <td>-0.622521</td>
+    </tr>
+    <tr>
+      <th>100497</th>
+      <td>-2.103602</td>
+      <td>0.638096</td>
+      <td>-1.591052</td>
+    </tr>
+    <tr>
+      <th>100498</th>
+      <td>-1.971333</td>
+      <td>1.887684</td>
+      <td>-2.129965</td>
+    </tr>
+    <tr>
+      <th>100499</th>
+      <td>-1.450100</td>
+      <td>2.538589</td>
+      <td>-2.005693</td>
+    </tr>
+  </tbody>
+</table>
+<p>100500 rows × 3 columns</p>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">manager</span><span class="o">.</span><span class="n">sensor_summary_df</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</pre></div>
+</div>
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>data id</th>
+      <th>sensor_number</th>
+      <th>type</th>
+      <th>loc/traj</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>KS</td>
+      <td>0</td>
+      <td>stationary (random)</td>
+      <td>(18,)</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>KS</td>
+      <td>1</td>
+      <td>stationary (random)</td>
+      <td>(93,)</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>KS</td>
+      <td>2</td>
+      <td>stationary (random)</td>
+      <td>(15,)</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</section>
+<section id="get-train-validation-and-test-set">
+<h2>Get train, validation, and test set<a class="headerlink" href="#get-train-validation-and-test-set" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">val_dataset</span><span class="p">,</span> <span class="n">test_dataset</span><span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">prepare</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="initialize-shred">
+<h2>Initialize SHRED<a class="headerlink" href="#initialize-shred" title="Link to this heading">#</a></h2>
+<p>When using a <code class="docutils literal notranslate"><span class="pre">ParametricDataManager</span></code>, ensure <code class="docutils literal notranslate"><span class="pre">latent_forecaster</span></code> is set to None.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">shred</span> <span class="o">=</span> <span class="n">SHRED</span><span class="p">(</span><span class="n">sequence_model</span><span class="o">=</span><span class="s2">&quot;LSTM&quot;</span><span class="p">,</span> <span class="n">decoder_model</span><span class="o">=</span><span class="s2">&quot;MLP&quot;</span><span class="p">,</span> <span class="n">latent_forecaster</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="fit-shred">
+<h2>Fit SHRED<a class="headerlink" href="#fit-shred" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">val_errors</span> <span class="o">=</span> <span class="n">shred</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_dataset</span><span class="o">=</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">val_dataset</span><span class="o">=</span><span class="n">val_dataset</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">sindy_regularization</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;val_errors:&#39;</span><span class="p">,</span> <span class="n">val_errors</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting SHRED...
+Epoch 1: Average training loss = 0.031690
+Validation MSE (epoch 1): 0.026569
+Epoch 2: Average training loss = 0.016993
+Validation MSE (epoch 2): 0.015352
+Epoch 3: Average training loss = 0.011736
+Validation MSE (epoch 3): 0.012691
+Epoch 4: Average training loss = 0.009915
+Validation MSE (epoch 4): 0.011286
+Epoch 5: Average training loss = 0.008901
+Validation MSE (epoch 5): 0.010464
+Epoch 6: Average training loss = 0.008259
+Validation MSE (epoch 6): 0.009664
+Epoch 7: Average training loss = 0.007670
+Validation MSE (epoch 7): 0.008933
+Epoch 8: Average training loss = 0.007126
+Validation MSE (epoch 8): 0.008480
+Epoch 9: Average training loss = 0.006610
+Validation MSE (epoch 9): 0.008143
+Epoch 10: Average training loss = 0.006278
+Validation MSE (epoch 10): 0.008485
+Epoch 11: Average training loss = 0.005930
+Validation MSE (epoch 11): 0.007433
+Epoch 12: Average training loss = 0.005582
+Validation MSE (epoch 12): 0.006999
+Epoch 13: Average training loss = 0.005281
+Validation MSE (epoch 13): 0.006656
+Epoch 14: Average training loss = 0.005139
+Validation MSE (epoch 14): 0.006386
+Epoch 15: Average training loss = 0.004810
+Validation MSE (epoch 15): 0.005950
+Epoch 16: Average training loss = 0.004614
+Validation MSE (epoch 16): 0.005578
+Epoch 17: Average training loss = 0.004570
+Validation MSE (epoch 17): 0.005578
+Epoch 18: Average training loss = 0.004257
+Validation MSE (epoch 18): 0.005292
+Epoch 19: Average training loss = 0.004113
+Validation MSE (epoch 19): 0.005244
+Epoch 20: Average training loss = 0.004088
+Validation MSE (epoch 20): 0.005059
+val_errors: [0.02656859 0.0153518  0.01269077 0.01128609 0.01046397 0.00966403
+ 0.00893335 0.00848005 0.00814289 0.00848533 0.00743333 0.00699905
+ 0.00665622 0.00638625 0.00594996 0.00557757 0.00557818 0.00529238
+ 0.00524372 0.00505928]
+</pre></div>
+</div>
+</section>
+<section id="evaluate-shred">
+<h2>Evaluate SHRED<a class="headerlink" href="#evaluate-shred" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_mse</span> <span class="o">=</span> <span class="n">shred</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">train_dataset</span><span class="p">)</span>
+<span class="n">val_mse</span> <span class="o">=</span> <span class="n">shred</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">val_dataset</span><span class="p">)</span>
+<span class="n">test_mse</span> <span class="o">=</span> <span class="n">shred</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">test_dataset</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Train MSE: </span><span class="si">{</span><span class="n">train_mse</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Val   MSE: </span><span class="si">{</span><span class="n">val_mse</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test  MSE: </span><span class="si">{</span><span class="n">test_mse</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Train MSE: 0.003
+Val   MSE: 0.005
+Test  MSE: 0.004
+</pre></div>
+</div>
+</section>
+<section id="initialize-parametric-shred-engine-for-downstream-tasks">
+<h2>Initialize Parametric SHRED Engine for Downstream Tasks<a class="headerlink" href="#initialize-parametric-shred-engine-for-downstream-tasks" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">engine</span> <span class="o">=</span> <span class="n">ParametricSHREDEngine</span><span class="p">(</span><span class="n">manager</span><span class="p">,</span> <span class="n">shred</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="sensor-measurements-to-latent-space">
+<h2>Sensor Measurements to Latent Space<a class="headerlink" href="#sensor-measurements-to-latent-space" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">test_latent_from_sensors</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">sensor_to_latent</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">test_sensor_measurements</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="decode-latent-space-to-full-state-space">
+<h2>Decode Latent Space to Full-State Space<a class="headerlink" href="#decode-latent-space-to-full-state-space" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">test_prediction</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">test_latent_from_sensors</span><span class="p">)</span> <span class="c1"># latent space generated from sensor data</span>
+</pre></div>
+</div>
+</section>
+<section id="compare-prediction-against-the-truth">
+<h2>Compare prediction against the truth<a class="headerlink" href="#compare-prediction-against-the-truth" title="Link to this heading">#</a></h2>
+<p>Since both number of trajectories (<code class="docutils literal notranslate"><span class="pre">data.shape[0]</span></code>) and number of timesteps (<code class="docutils literal notranslate"><span class="pre">data.shape[1]</span></code>) are both variable, we will leave them combined on the first axis. The remaining axes are all spatial dimensions.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">spatial_shape</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">manager</span><span class="o">.</span><span class="n">test_indices</span><span class="p">]</span>
+<span class="n">truth</span>      <span class="o">=</span> <span class="n">test_data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">spatial_shape</span><span class="p">)</span>
+<span class="n">prediction</span> <span class="o">=</span> <span class="n">test_prediction</span><span class="p">[</span><span class="s1">&#39;KS&#39;</span><span class="p">]</span>
+
+<span class="n">compare_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">truth</span><span class="p">,</span> <span class="n">prediction</span><span class="p">]</span>
+<span class="n">titles</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Test Truth Ground Truth&quot;</span><span class="p">,</span> <span class="s2">&quot;Test Prediction&quot;</span><span class="p">]</span>
+
+<span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="n">d</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">compare_data</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">d</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">compare_data</span><span class="p">])</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">compare_data</span><span class="p">,</span> <span class="n">titles</span><span class="p">):</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Value&quot;</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.colorbar.Colorbar at 0x2a69c042da0&gt;
+</pre></div>
+</div>
+<p><img alt="png" src="../_images/shred_rom_kuramoto_sivashinsky_29_1.png" /></p>
+</section>
+<section id="predicted-params">
+<h2>Predicted params<a class="headerlink" href="#predicted-params" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">params_prediction</span> <span class="o">=</span> <span class="n">test_prediction</span><span class="p">[</span><span class="s1">&#39;MU&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">params_prediction</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">params_prediction</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(10050, 2)
+
+
+
+
+
+array([[1.502923 , 2.701217 ],
+       [1.5866294, 4.104658 ],
+       [1.6049353, 4.049966 ],
+       ...,
+       [1.0774401, 2.5793262],
+       [0.9692009, 2.925611 ],
+       [1.0723687, 2.6876066]], dtype=float32)
+</pre></div>
+</div>
+</section>
+<section id="evaluate-mse-on-ground-truth-data">
+<h2>Evaluate MSE on Ground Truth Data<a class="headerlink" href="#evaluate-mse-on-ground-truth-data" title="Link to this heading">#</a></h2>
+<p>Since both number of trajectories (<code class="docutils literal notranslate"><span class="pre">data.shape[0]</span></code>) and number of timesteps (<code class="docutils literal notranslate"><span class="pre">data.shape[1]</span></code>) are both variable, we will leave them combined on the first axis. The remaining axes are all spatial dimensions.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Train</span>
+<span class="n">t_train</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">train_sensor_measurements</span><span class="p">)</span>
+<span class="n">train_Y</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;KS&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">t_train</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">spatial_shape</span><span class="p">)}</span> <span class="c1"># unpack the spatial dimensions</span>
+<span class="n">train_error</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">train_sensor_measurements</span><span class="p">,</span> <span class="n">train_Y</span><span class="p">)</span>
+
+<span class="c1"># Val</span>
+<span class="n">t_val</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">test_sensor_measurements</span><span class="p">)</span>
+<span class="n">val_Y</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;KS&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="n">t_train</span><span class="p">:</span><span class="n">t_train</span><span class="o">+</span><span class="n">t_val</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">spatial_shape</span><span class="p">)}</span>
+<span class="n">val_error</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">val_sensor_measurements</span><span class="p">,</span> <span class="n">val_Y</span><span class="p">)</span>
+
+<span class="c1"># Test</span>
+<span class="n">t_test</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">test_sensor_measurements</span><span class="p">)</span>
+<span class="n">test_Y</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;KS&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="n">t_test</span><span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">spatial_shape</span><span class="p">)}</span>
+<span class="n">test_error</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">test_sensor_measurements</span><span class="p">,</span> <span class="n">test_Y</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;---------- TRAIN ----------&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">train_error</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">---------- VAL   ----------&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">val_error</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">---------- TEST  ----------&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">test_error</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>---------- TRAIN ----------
+              MSE      RMSE       MAE        R2
+dataset                                        
+KS       0.085787  0.292894  0.189655  0.934717
+
+---------- VAL   ----------
+            MSE      RMSE       MAE        R2
+dataset                                      
+KS       0.1452  0.381051  0.237308  0.887799
+
+---------- TEST  ----------
+             MSE     RMSE       MAE        R2
+dataset                                      
+KS       0.08774  0.29621  0.185969  0.933305
+</pre></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="shred_rom_double_gyre_flow.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">SHRED-ROM Tutorial on Double Gyre Flow</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../pyshred/modules.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">API Reference</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-libraries">Import Libraries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-kuramoto-sivashinsky-dataset">Load Kuramoto Sivashinsky dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#device-info">Device Info</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initialize-data-manager">Initialize Data Manager</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-datasets-and-sensors">Add datasets and sensors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-sensor-summary">Analyze sensor summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#get-train-validation-and-test-set">Get train, validation, and test set</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initialize-shred">Initialize SHRED</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fit-shred">Fit SHRED</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-shred">Evaluate SHRED</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initialize-parametric-shred-engine-for-downstream-tasks">Initialize Parametric SHRED Engine for Downstream Tasks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sensor-measurements-to-latent-space">Sensor Measurements to Latent Space</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decode-latent-space-to-full-state-space">Decode Latent Space to Full-State Space</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-prediction-against-the-truth">Compare prediction against the truth</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predicted-params">Predicted params</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-mse-on-ground-truth-data">Evaluate MSE on Ground Truth Data</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Kutz Research Group.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
