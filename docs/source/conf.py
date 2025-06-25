@@ -11,7 +11,7 @@ project = 'PySHRED'
 copyright = '2025, Kutz Research Group'
 author = 'Kutz Research Group'
 
-version = release = "v1.0.0"
+version = release = "v1.0.21"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
