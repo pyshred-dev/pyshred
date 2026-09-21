@@ -67,8 +67,18 @@ The docs include:
   ```
 
 ## Citing
-
-_Citation instructions coming soon._
+If you use this code for your work, please cite
+```bibtex
+@misc{pyshred,
+      title={PySHRED: A Python package for SHallow REcurrent Decoding for sparse sensing, model reduction and scientific discovery}, 
+      author={David Ye and Jan Williams and Mars Gao and Stefano Riva and Matteo Tomasetto and David Zoro and J. Nathan Kutz},
+      year={2025},
+      eprint={2507.20954},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2507.20954}, 
+}
+```
 
 ## Resources
 
