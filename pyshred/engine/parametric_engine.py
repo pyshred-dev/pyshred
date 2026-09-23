@@ -81,7 +81,7 @@ class ParametricSHREDEngine:
         scaled_measurements = scaled_flattened.reshape(sensor_measurements.shape)
 
         # 4) Generate lagged sequences for each trajectory
-        lagged = generate_lagged_sensor_measurements_rom(scaled_measurements, self.dm.lags)
+        lagged = generate_lagged_sensor_measurements_rom(scaled_measurements, self.dm.lags, self.dm.mode)
         
         # 5) To torch on same device as model:
         device = next(self.model.parameters()).device

@@ -8,7 +8,7 @@ The `DataManager` object is in charge of handling data preparation and splitting
 
 
 ## Initialize Data Manager
-The `DataManager` object takes in `lags` (int), `train_size` (float), `val_size` (float), and `test_size` (float). `Lags` represents the length of each sensor sequence being fed into the sequence model. `train_size`, `val_size`, and `test_size` are the proportions used to split the data into train, validation, and test datasets. These fields three arguments must sum up to 1.0.
+The `DataManager` object takes in `lags` (int), `train_size` (float), `val_size` (float), `test_size` (float), and `mode` (str). `Lags` represents the length of each sensor sequence being fed into the sequence model. `train_size`, `val_size`, and `test_size` are the proportions used to split the data into train, validation, and test datasets. These fields three arguments must sum up to 1.0. `mode` selects how each sensor sequence is aligned to the timestep it maps to (see below).
 
 Example:
 Each input will be a sequence of 52 sensor measurement timesteps. 
@@ -17,10 +17,26 @@ manager = DataManager(
     lags=52, # build lagged sequences of 52 sensor measurement
     train_size=0.8, # use 80% of the data for training
     val_size=0.1, # use 10% of the data for validation
-    test_size=0.1 # use 10% of the data for testing
+    test_size=0.1, # use 10% of the data for testing
+    mode="reconstruct" # sequences include the timestep being reconstructed
 )
 ```
 
+## Reconstruction vs. Forecasting
+`mode` determines whether the sensor sequence used to produce the full state at timestep `t` includes the measurement taken at `t`:
+
+| mode | sensor sequence for target `u(t)` |
+| --- | --- |
+| `"reconstruct"` (default) | `s(t-lags+1) ... s(t)` |
+| `"forecast"` | `s(t-lags) ... s(t-1)` |
+
+Use `"reconstruct"` to recover the full state from sensor measurements up to and including the present. Use `"forecast"` to predict one step beyond the most recent measurement.
+
+**Notes:** 
+
+- Before v1.1.0, PySHRED always built sequences the way `mode="forecast"` does. If you are upgrading and want to reproduce earlier results, pass `mode="forecast"` explicitly.
+
+- `mode` is independent of the SHRED model's ``latent_forecaster``, which performs multi-step forecasting in the latent space.
 
 ## Add Data
 The `add_data` method takes in:

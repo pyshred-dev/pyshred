@@ -23,16 +23,28 @@ class ParametricDataManager:
     Notes:
     ParametricDataManager is passed into the initialization of SHREDEngine for performing downstream tasks.
     """
-    def __init__(self, lags: int = 20, train_size: float = 0.8, val_size: float = 0.1, test_size: float = 0.1):
+    def __init__(self, lags: int = 20, train_size: float = 0.8, val_size: float = 0.1, test_size: float = 0.1,
+                 mode: Optional[str] = None):
         """
         lags : int
-            The number of past time steps (lags) included in each sensor input sequence
+            The number of time steps (lags) included in each sensor input sequence.
         train_size : float
             The fraction of the dataset to allocate for training.
         val_size : float
             The fraction of the dataset to allocate for validation.
         test_size : float
             The fraction of the dataset to allocate for testing reconstruction performance.
+        mode : str, optional
+            How each sensor sequence is aligned to the full-state timestep t it maps to:
+
+            - ``"reconstruct"`` (default): the sequence spans ``s(t-lags+1) ... s(t)``,
+              so SHRED reconstructs the state from sensors up to and including the
+              current timestep.
+            - ``"forecast"``: the sequence spans ``s(t-lags) ... s(t-1)``, so SHRED
+              predicts the state one step beyond the most recent measurement.
+
+            This is independent of the SHRED model's ``latent_forecaster``, which
+            performs multi-step forecasting in the latent space.
         """
         if not abs(train_size + val_size + test_size - 1.0) < 1e-8:
             raise ValueError("train_size, val_size, and test_size must sum to 1.0")
@@ -40,6 +52,8 @@ class ParametricDataManager:
         self.val_size = val_size
         self.test_size = test_size
         self.lags = lags
+        self._mode_set_explicitly = mode is not None
+        self.mode = parse_mode(mode) if mode is not None else "reconstruct"
 
         self.sensor_summary_df = None
         self.sensor_measurements_df = None
@@ -236,6 +250,8 @@ class ParametricDataManager:
         ValueError
             If no sensor measurements are available.
         """
+        if not self._mode_set_explicitly:
+            warn_implicit_mode()
         sc = MinMaxScaler()
         sc.fit(self.train_data)
         self.data_scaler = sc
@@ -270,9 +286,9 @@ class ParametricDataManager:
         scaled_val_sensor_measurements = scaled_val_sensor_measurements.reshape(val_sensor_measurements.shape)
         scaled_test_sensor_measurements = scaled_test_sensor_measurements.reshape(test_sensor_measurements.shape)
 
-        lagged_train_sensor_measurements = generate_lagged_sensor_measurements_rom(scaled_train_sensor_measurements, self.lags)
-        lagged_val_sensor_measurements = generate_lagged_sensor_measurements_rom(scaled_val_sensor_measurements, self.lags)
-        lagged_test_sensor_measurements = generate_lagged_sensor_measurements_rom(scaled_test_sensor_measurements, self.lags)
+        lagged_train_sensor_measurements = generate_lagged_sensor_measurements_rom(scaled_train_sensor_measurements, self.lags, self.mode)
+        lagged_val_sensor_measurements = generate_lagged_sensor_measurements_rom(scaled_val_sensor_measurements, self.lags, self.mode)
+        lagged_test_sensor_measurements = generate_lagged_sensor_measurements_rom(scaled_test_sensor_measurements, self.lags, self.mode)
 
         device = get_device()
 

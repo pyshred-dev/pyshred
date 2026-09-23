@@ -1,9 +1,12 @@
 from typing import Union, List, Tuple, Optional
+import warnings
 import numpy as np
 import torch
 import pandas as pd
 
 DEFAULT_MODES = 50
+
+VALID_MODES = ("reconstruct", "forecast")
 
 DataInput = Union[
     str,                # .npy/.npz file path
@@ -231,7 +234,7 @@ def generate_random_sensor_locations(data, num_sensors, seed):
         sensor_locations.append(sensor_location)
     return sensor_locations
 
-def generate_lagged_sensor_measurements(sensor_measurements, lags):
+def generate_lagged_sensor_measurements(sensor_measurements, lags, mode = "reconstruct"):
     """
     Generate lagged sequences from sensor measurements.
 
@@ -241,28 +244,84 @@ def generate_lagged_sensor_measurements(sensor_measurements, lags):
         2D array with time on axis 0 and sensors on axis 1.
     lags : int
         Number of time lags to include in each sequence.
+    mode : str, optional
+        Alignment between each sensor window and its target timestep t:
+
+        - ``"reconstruct"`` (default): the window spans ``s(t-lags+1) ... s(t)``
+          and includes the measurement at the target timestep.
+        - ``"forecast"``: the window spans ``s(t-lags) ... s(t-1)`` and stops one
+          timestep before the target.
 
     Returns
     -------
     np.ndarray
         3D array of lagged sequences with shape (timesteps, lags, sensors).
+
+    Raises
+    ------
+    ValueError
+        If `lags` is not a positive integer, or `mode` is not a valid mode.
     """
+    mode = parse_mode(mode)
+    if lags < 1:
+        raise ValueError(f"`lags` must be a positive integer, got {lags!r}.")
     num_timesteps = sensor_measurements.shape[0]
     num_sensors = sensor_measurements.shape[1]
+    # reconstruct keeps the target timestep in the window, so it pads one less
+    num_padded_timesteps = lags - 1 if mode == "reconstruct" else lags
     # concatenate zeros padding at beginning of sensor data along axis 0
-    sensor_measurements = np.concatenate((np.zeros((lags, num_sensors)), sensor_measurements), axis = 0)
+    sensor_measurements = np.concatenate((np.zeros((num_padded_timesteps, num_sensors)), sensor_measurements), axis = 0)
     lagged_sequences = np.empty((num_timesteps, lags, num_sensors))
     for i in range(lagged_sequences.shape[0]):
         lagged_sequences[i] = sensor_measurements[i:i+lags, :]
     return lagged_sequences
 
-def generate_lagged_sensor_measurements_rom(dataset, lags):
+def generate_lagged_sensor_measurements_rom(dataset, lags, mode = "reconstruct"):
     # dataset is expected to be of shape (n_trajectories, ntimes, nsensors)
     sequences = [
-        generate_lagged_sensor_measurements(traj_sensor_measurements, lags)
+        generate_lagged_sensor_measurements(traj_sensor_measurements, lags, mode)
         for traj_sensor_measurements in dataset
     ]
     return np.concatenate(sequences, axis=0)
+
+
+def parse_mode(mode: str) -> str:
+    """Normalize and validate the sensor window alignment mode.
+
+    Parameters
+    ----------
+    mode : str
+        Either ``"reconstruct"`` or ``"forecast"`` (case-insensitive).
+
+    Returns
+    -------
+    str
+        The lowercased mode.
+
+    Raises
+    ------
+    TypeError
+        If `mode` is not a string.
+    ValueError
+        If `mode` is not one of the valid modes.
+    """
+    if not isinstance(mode, str):
+        raise TypeError(f"`mode` must be a str, got {type(mode).__name__!r}")
+    normalized_mode = mode.lower()
+    if normalized_mode not in VALID_MODES:
+        raise ValueError(f"Invalid mode: {mode!r}. Choose from: {list(VALID_MODES)}")
+    return normalized_mode
+
+
+def warn_implicit_mode():
+    """Warn that `mode` was left unset, and that its default changed in v1.1.0."""
+    warnings.warn(
+        'No `mode` was given, so `mode="reconstruct"` is used: each sensor sequence includes the '
+        'measurement at the timestep being reconstructed. Releases before v1.1.0 behaved like '
+        '`mode="forecast"`. Pass `mode` explicitly to silence this warning.',
+        UserWarning,
+        stacklevel=3,
+    )
 
 
 def parse_compress(compress: Union[None, bool, int]) -> int:

@@ -70,7 +70,7 @@ class SHREDEngine:
         scaled_sensor_measurements = self.dm.sensor_scaler.transform(sensor_measurements)  
         # 3) Build lagged windows (shape -> (T, lags, n_sensors))
         lags = self.dm.lags
-        lagged = generate_lagged_sensor_measurements(scaled_sensor_measurements, lags)
+        lagged = generate_lagged_sensor_measurements(scaled_sensor_measurements, lags, self.dm.mode)
         # 4) To torch on same device as model:
         device = next(self.model.parameters()).device
         X = torch.tensor(lagged, dtype=torch.float32, device=device)

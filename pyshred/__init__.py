@@ -1,4 +1,4 @@
-__version__ = "v1.0.21"
+__version__ = "v1.1.0"
 
 from .engine.engine import SHREDEngine
 from .models.latent_forecaster_models.sindy import SINDy_Forecaster
