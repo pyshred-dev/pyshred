@@ -8,7 +8,7 @@ The `DataManager` object is in charge of handling data preparation and splitting
 
 
 ## Initialize Data Manager
-The `DataManager` object takes in `lags` (int), `train_size` (float), `val_size` (float), and `test_size` (float). `Lags` represents the length of each sensor sequence being fed into the sequence model. `train_size`, `val_size`, and `test_size` are the proportions used to split the data into train, validation, and test datasets. These fields three arguments must sum up to 1.0.
+The `DataManager` object takes in `lags` (int), `train_size` (float), `val_size` (float), and `test_size` (float). `Lags` represents the length of each sensor sequence being fed into the sequence model. Each sequence covers the timesteps `s(t-lags+1) ... s(t)`, ending at timestep `t`. The model uses this sequence to reconstruct the full state at `t`. `train_size`, `val_size`, and `test_size` are the proportions used to split the data into train, validation, and test datasets. These fields three arguments must sum up to 1.0.
 
 Example:
 Each input will be a sequence of 52 sensor measurement timesteps. 

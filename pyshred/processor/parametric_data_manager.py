@@ -26,7 +26,10 @@ class ParametricDataManager:
     def __init__(self, lags: int = 20, train_size: float = 0.8, val_size: float = 0.1, test_size: float = 0.1):
         """
         lags : int
-            The number of past time steps (lags) included in each sensor input sequence
+            The number of timesteps included in each sensor input sequence.
+            Each sequence covers the timesteps `s(t-lags+1) ... s(t)`, 
+            ending at timestep `t`. The model uses this sequence to reconstruct the
+            full state at `t`.
         train_size : float
             The fraction of the dataset to allocate for training.
         val_size : float
