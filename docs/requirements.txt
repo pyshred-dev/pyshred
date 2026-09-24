@@ -1,4 +1,6 @@
-sphinx>=8.0
+# Sphinx 9 made Config.read()'s overrides/tags keyword-only; sphinx-multiversion
+# still passes them positionally. Remove the cap only once that is fixed upstream.
+sphinx>=8.0,<9
 pydata-sphinx-theme
 myst-parser
 sphinx-design
