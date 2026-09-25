@@ -1,0 +1,61 @@
+# v1.1.0 — Fix Sensor Sequence Misalignment
+
+Released: 2026-09-24
+
+PySHRED v1.1.0 fixes a misalignment between sensor sequences and the full-state timestep they map to. **Results will change for all existing code.** If you have published results produced with v1.0.x, please read this note in full.
+
+This release also makes the `params` argument of `ParametricDataManager.add_data` take effect: known parameters are now fed to SHRED as inputs (see "Known parameters as SHRED inputs" below).
+
+## The bug
+
+SHRED reconstructs the full state `u(t)` from a sequence of sensor measurements ending at `t`:
+
+$$\mathcal{H}\left(\{s_i\}_{i=t-k}^{t}\right) = \mathcal{F}\left(\mathcal{G}(\{s_i\}_{i=t-k}^{t})\right)$$
+
+From v1.0.0 through v1.0.21, `generate_lagged_sensor_measurements` built sequences that stopped one timestep short:
+
+| version | sensor sequence for target `u(t)` | includes `s(t)`? |
+| --- | --- | --- |
+| v1.0.0 – v1.0.21 | `s(t-lags) ... s(t-1)` | no |
+| v1.1.0 | `s(t-lags+1) ... s(t)` | yes |
+
+The measurement taken at the timestep being reconstructed never reached the model. At the sensor locations `s(t)` contains exact values of `u(t)`, so the network was denied its most informative input and forced to extrapolate one step instead of reconstructing.
+
+## Impact on existing results
+
+How much v1.0.x results were degraded depends on how much the field changes between snapshots. Impacts will be larger on rapidly changing dynamics compared to slow changing dynamics.
+
+To reproduce v1.0.x numbers exactly, install the old version:
+
+```
+pip install pyshred==1.0.21
+```
+
+Anyone comparing v1.1.0 against previously published PySHRED results should expect reconstruction error to drop, and should re-run rather than mix numbers from the two versions.
+
+## Known parameters as SHRED inputs
+
+`ParametricDataManager.add_data` has always accepted a `params` argument, but it was ignored. Parameters now reach the model: they are scaled (with their own `MinMaxScaler`, fit on the training trajectories) and appended to the sensor measurements before lagging, so each input sequence has shape `(lags, nsensors + nparams)`.
+
+```
+manager.add_data(data=U, id="U", random=3, compress=4, params=MU)
+train_dataset, val_dataset, test_dataset = manager.prepare()
+...
+engine.evaluate(manager.test_sensor_measurements, test_Y, params=manager.test_params)
+```
+
+- `params` accepts shape `(ntrajectories, ntimes, nparams)`, or `(ntrajectories, nparams)` for parameters that are constant in time.
+- Parameters are shared by every dataset in the manager, so they can be provided on only one `add_data` call.
+- The raw parameters of each split are available as `train_params`, `val_params`, and `test_params`.
+- `ParametricSHREDEngine.sensor_to_latent` and `ParametricSHREDEngine.evaluate` take a matching `params` argument, which is required if and only if the manager was given `params`.
+
+**If you previously passed `params`, the model input changes**: it now includes the parameters that were silently dropped. Adding parameters as a dataset with `add_data(data=params, id=..., compress=False)` is unchanged: SHRED still estimates them as outputs.
+
+## Also in this release
+
+- `lags` is now validated: a non-positive value raises `ValueError` instead of failing later inside NumPy.
+- Added `tests/test_lagged_windows.py`, covering the sequence-to-target alignment and the per-trajectory sequence boundaries in `ParametricDataManager`, and `tests/test_parametric_params.py`, covering parameter inputs.
+
+## Not affected
+
+The `latent_forecaster` models (`LSTM_Forecaster`, `SINDy_Forecaster`) are unchanged. They forecast future latent states when no new sensor measurements are available, and are independent of how sensor sequences are aligned. Note that forecast horizons are now measured from the last real measurement as intended. Previously `forecast_latent(h=...)` effectively landed one step further ahead than requested, because the seeding latents were themselves shifted.
