@@ -43,20 +43,30 @@ class ParametricSHREDEngine:
         # ensure model is in eval mode
         self.model.eval()
 
-    def sensor_to_latent(self, sensor_measurements: Union[np.ndarray, torch.Tensor, pd.DataFrame]) -> np.ndarray:
+    def sensor_to_latent(self, sensor_measurements: Union[np.ndarray, torch.Tensor, pd.DataFrame],
+                         params: Union[np.ndarray, torch.Tensor, None] = None) -> np.ndarray:
         """
         Convert raw sensor measurements into latent-space embeddings.
         
         Parameters
         ----------
-        sensor_measurements : array-like of shape (T, n_sensors)
+        sensor_measurements : array-like of shape (T, n_sensors) or (n_trajectories, T, n_sensors)
             Raw sensor time series.
+        params : array-like, optional
+            Raw parameters of each trajectory, of shape (T, n_params) or (n_trajectories, T, n_params),
+            matching `sensor_measurements`. Leave out the T axis for parameters that are constant in time.
+            Required if and only if the data manager was given `params`, e.g. `manager.test_params`.
 
         Returns
         -------
         latents : np.ndarray of shape (T, latent_dim)
             The GRU/LSTM final-hidden-state at each time index.
         """
+        if self.dm.params is not None and params is None:
+            raise ValueError("The data manager was given `params`, so `params` must be passed as well "
+                             "(e.g. `params=manager.test_params`).")
+        if self.dm.params is None and params is not None:
+            raise ValueError("`params` were passed, but the data manager was not given `params`.")
         # 1) Pull out raw numpy array
         if isinstance(sensor_measurements, pd.DataFrame):
             sensor_measurements = sensor_measurements.values
@@ -66,10 +76,14 @@ class ParametricSHREDEngine:
             sensor_measurements = sensor_measurements
         else:
             raise TypeError(f"Unsupported type {type(sensor_measurements)} for sensor_measurements")
+        if params is not None:
+            params = get_data(params)
         # 2) Handle different input shapes
         if len(sensor_measurements.shape) == 2:
             # Single trajectory (T, n_sensors) - add trajectory dimension
             sensor_measurements = sensor_measurements[np.newaxis, :]
+            if params is not None:
+                params = params[np.newaxis, :]
         # Expected shape: (n_trajectories, T, n_sensors)
         if len(sensor_measurements.shape) != 3:
             raise ValueError(f"Expected input shape (T, n_sensors) or (n_trajectories, T, n_sensors), "
@@ -79,6 +93,9 @@ class ParametricSHREDEngine:
         flattened_measurements = sensor_measurements.reshape(-1, sensor_measurements.shape[-1])
         scaled_flattened = self.dm.sensor_scaler.transform(flattened_measurements)
         scaled_measurements = scaled_flattened.reshape(sensor_measurements.shape)
+        if params is not None:
+            # scale params and append them to the sensor measurements, as in ParametricDataManager.prepare
+            scaled_measurements = self.dm._append_params(scaled_measurements, params)
 
         # 4) Generate lagged sequences for each trajectory
         lagged = generate_lagged_sensor_measurements_rom(scaled_measurements, self.dm.lags)
@@ -142,7 +159,8 @@ class ParametricSHREDEngine:
     def evaluate(
         self,
         sensor_measurements: np.ndarray,
-        Y: Dict[str, np.ndarray]  # raw full‐state, exactly like decode() returns
+        Y: Dict[str, np.ndarray],  # raw full‐state, exactly like decode() returns
+        params: Union[np.ndarray, torch.Tensor, None] = None
     ) -> pd.DataFrame:
         """
         Performs end‐to‐end reconstruction error in the *physical* space.
@@ -153,13 +171,16 @@ class ParametricSHREDEngine:
             The test sensor time series.
         Y : dict[id] -> array (T, *spatial_shape)
             The *raw* full‐state ground truth for each dataset id.
+        params : array-like, optional
+            Raw parameters matching `sensor_measurements`, e.g. `manager.test_params`.
+            Required if and only if the data manager was given `params`. See `sensor_to_latent`.
         
         Returns
         -------
         DataFrame indexed by dataset id with columns [MSE, RMSE, MAE, R2].
         """
         # 1) Get the model's reconstruction in raw space
-        latents = self.sensor_to_latent(sensor_measurements)
+        latents = self.sensor_to_latent(sensor_measurements, params=params)
         recon_dict = self.decode(latents)   # dict[id] -> (ntrajectories*T, *spatial_shape)
         
         # 2) Compute stats

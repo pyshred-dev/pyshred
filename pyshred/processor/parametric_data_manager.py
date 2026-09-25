@@ -15,18 +15,22 @@ class ParametricDataManager:
     ParametricDataManager performs all processing needed to prepare the data for SHRED:
     - Gets sensor measurements from inputed sensor locations
     - Scales sensor measurements
+    - Scales parameters and appends them to the sensor measurements (if provided)
     - Generates lagged sensor measurements
     - Scales full-state data
     - Compresses full-state data
     - Splits data into train, validation, and test
 
     Notes:
-    ParametricDataManager is passed into the initialization of SHREDEngine for performing downstream tasks.
+    ParametricDataManager is passed into the initialization of ParametricSHREDEngine for performing downstream tasks.
     """
     def __init__(self, lags: int = 20, train_size: float = 0.8, val_size: float = 0.1, test_size: float = 0.1):
         """
         lags : int
-            The number of past time steps (lags) included in each sensor input sequence
+            The number of timesteps included in each sensor input sequence.
+            Each sequence covers the timesteps `s(t-lags+1) ... s(t)`, 
+            ending at timestep `t`. The model uses this sequence to reconstruct the
+            full state at `t`.
         train_size : float
             The fraction of the dataset to allocate for training.
         val_size : float
@@ -63,6 +67,13 @@ class ParametricDataManager:
         self.val_sensor_measurements = None
         self.test_sensor_measurements = None
 
+        self.params = None
+        self.params_scaler = None
+        self.train_params = None
+        self.val_params = None
+        self.test_params = None
+        self._params_dataset_id = None # id of the dataset the params were provided with
+
     def add_data(self, data: DataInput, id: str, random: Optional[int] = None,
                  stationary: Optional[Union[Tuple, List[Tuple]]] = None,
                  mobile: Optional[Union[List[Tuple], List[List[Tuple]]]] = None,
@@ -87,8 +98,13 @@ class ParametricDataManager:
             Pre-computed sensor measurements with time on axis 0.
         compress : None, bool, or int, optional
             Data compression settings. True uses default modes, int specifies number of modes.
-        params: np.ndarray, optional
-            Parameters for the dataset of shape (ntrajectories, ntimes, nparams)
+        params: np.ndarray or torch.Tensor, optional
+            Known parameters of each trajectory, of shape (ntrajectories, ntimes, nparams), or
+            (ntrajectories, nparams) for parameters that are constant in time. The parameters are
+            scaled and appended to the sensor measurements as additional inputs to SHRED.
+            Parameters are shared by every dataset in the manager, so provide them on only one
+            `add_data` call. To estimate unknown parameters instead, add them as a dataset
+            with `add_data(data=params, id=..., compress=False)`.
         seed: int, optional
             Seed for selecting random sensor locations.
         """
@@ -100,6 +116,12 @@ class ParametricDataManager:
         dataset_spatial_shape = data.shape[2:]
         ntimes = data.shape[1]
         ntrajectories = data.shape[0]
+
+        if params is not None:
+            if self._params_dataset_id is not None:
+                raise ValueError(f"`params` were already provided with dataset {self._params_dataset_id!r}. "
+                                 "Parameters are shared by every dataset, so provide them on only one `add_data` call.")
+            params = broadcast_params(params, (ntrajectories, ntimes))
 
         train_indices = self.train_indices if self.train_indices is not None else np.arange(0, int(ntrajectories*self.train_size))
         val_indices = self.val_indices if self.val_indices is not None else np.arange(int(ntrajectories*self.train_size),
@@ -202,6 +224,12 @@ class ParametricDataManager:
             self.train_sensor_measurements = self.sensor_measurements[train_indices]
             self.val_sensor_measurements = self.sensor_measurements[val_indices]
             self.test_sensor_measurements = self.sensor_measurements[test_indices]
+        if params is not None:
+            self.params = params
+            self._params_dataset_id = id
+            self.train_params = self.params[train_indices]
+            self.val_params = self.params[val_indices]
+            self.test_params = self.params[test_indices]
         if modes > 0:
             self._preSVD_scaler_registry[self._dataset_ids[-1]] = sc
             self._Vt_registry[self._dataset_ids[-1]] = Vt
@@ -225,6 +253,9 @@ class ParametricDataManager:
     def prepare(self):
         """
         Prepare the data for training by scaling and creating lagged sequences.
+
+        If `params` were provided, they are scaled and appended to the sensor measurements
+        before lagging, so each input sequence has shape (lags, nsensors + nparams).
 
         Returns
         -------
@@ -270,6 +301,17 @@ class ParametricDataManager:
         scaled_val_sensor_measurements = scaled_val_sensor_measurements.reshape(val_sensor_measurements.shape)
         scaled_test_sensor_measurements = scaled_test_sensor_measurements.reshape(test_sensor_measurements.shape)
 
+        if self.params is not None:
+            train_params = self.params[self.train_indices]
+            sc = MinMaxScaler()
+            sc.fit(train_params.reshape(-1, train_params.shape[-1]))
+            self.params_scaler = sc
+
+            # append params to the sensor measurements, shape (ntrajectories, ntimes, nsensors + nparams)
+            scaled_train_sensor_measurements = self._append_params(scaled_train_sensor_measurements, train_params)
+            scaled_val_sensor_measurements = self._append_params(scaled_val_sensor_measurements, self.params[self.val_indices])
+            scaled_test_sensor_measurements = self._append_params(scaled_test_sensor_measurements, self.params[self.test_indices])
+
         lagged_train_sensor_measurements = generate_lagged_sensor_measurements_rom(scaled_train_sensor_measurements, self.lags)
         lagged_val_sensor_measurements = generate_lagged_sensor_measurements_rom(scaled_val_sensor_measurements, self.lags)
         lagged_test_sensor_measurements = generate_lagged_sensor_measurements_rom(scaled_test_sensor_measurements, self.lags)
@@ -290,3 +332,25 @@ class ParametricDataManager:
         val_dataset     = TimeSeriesDataset(X_val, Y_val)
         test_dataset    = TimeSeriesDataset(X_test, Y_test)
         return train_dataset, val_dataset, test_dataset
+
+    def _append_params(self, scaled_sensor_measurements, params):
+        """
+        Scale parameters and append them to scaled sensor measurements.
+
+        Parameters
+        ----------
+        scaled_sensor_measurements : np.ndarray
+            Scaled sensor measurements of shape (ntrajectories, ntimes, nsensors).
+        params : DataInput
+            Raw parameters of shape (ntrajectories, ntimes, nparams), or (ntrajectories, nparams)
+            for parameters that are constant in time.
+
+        Returns
+        -------
+        np.ndarray
+            Scaled sensor measurements followed by scaled parameters, of shape
+            (ntrajectories, ntimes, nsensors + nparams).
+        """
+        params = broadcast_params(params, scaled_sensor_measurements.shape[:-1])
+        scaled_params = self.params_scaler.transform(params.reshape(-1, params.shape[-1])).reshape(params.shape)
+        return np.concatenate((scaled_sensor_measurements, scaled_params), axis=-1)

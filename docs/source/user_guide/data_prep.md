@@ -8,7 +8,7 @@ The `DataManager` object is in charge of handling data preparation and splitting
 
 
 ## Initialize Data Manager
-The `DataManager` object takes in `lags` (int), `train_size` (float), `val_size` (float), and `test_size` (float). `Lags` represents the length of each sensor sequence being fed into the sequence model. `train_size`, `val_size`, and `test_size` are the proportions used to split the data into train, validation, and test datasets. These fields three arguments must sum up to 1.0.
+The `DataManager` object takes in `lags` (int), `train_size` (float), `val_size` (float), and `test_size` (float). `Lags` represents the length of each sensor sequence being fed into the sequence model. Each sequence covers the timesteps `s(t-lags+1) ... s(t)`, ending at timestep `t`. The model uses this sequence to reconstruct the full state at `t`. `train_size`, `val_size`, and `test_size` are the proportions used to split the data into train, validation, and test datasets. These fields three arguments must sum up to 1.0.
 
 Example:
 Each input will be a sequence of 52 sensor measurement timesteps. 
@@ -60,3 +60,38 @@ train_dataset, val_dataset, test_dataset= manager.prepare()
 - `train_sensor_measurements`: an array of sensor measurements (T,s) used for training
 - `val_sensor_measurements`: an array of sensor measurements (T,s) used for validation
 - `test_sensor_measurements`: an array of sensor measurements (T,s) used for testing
+
+
+## Parametric Data
+Use `ParametricDataManager` when the data holds many trajectories, e.g. simulations run with different parameter values or initial conditions. The data should have **trajectories on the first axis (axis 0), time on the second axis (axis 1)**, followed by the spatial axes. The data is split into train, validation, and test sets by trajectory, and each sensor sequence stays within a single trajectory.
+
+### Known parameters
+If the parameters of each trajectory are known, pass them to `add_data` with `params`. They are scaled and appended to the sensor measurements, so SHRED receives both as input.
+- `params`: an array of shape (ntrajectories, ntimes, nparams), or (ntrajectories, nparams) for parameters that are constant in time.
+
+Parameters are shared by every dataset in the manager, so provide them on only one `add_data` call.
+
+Example:
+```
+manager = ParametricDataManager(lags=20, train_size=0.8, val_size=0.1, test_size=0.1)
+manager.add_data(
+    data=U, # shape (ntrajectories, ntimes, nx, ny)
+    id="U",
+    random=3,
+    compress=4,
+    params=MU, # shape (ntrajectories, ntimes, nparams)
+)
+manager.add_data(data=V, id="V", compress=4) # V shares the params provided with U
+```
+
+The raw parameters of each split are available as `train_params`, `val_params`, and `test_params`. Pass them to the `ParametricSHREDEngine` together with the sensor measurements:
+```
+engine.sensor_to_latent(manager.test_sensor_measurements, params=manager.test_params)
+engine.evaluate(manager.test_sensor_measurements, test_Y, params=manager.test_params)
+```
+
+### Unknown parameters
+To estimate parameters that are not known, add them as a dataset instead. SHRED then reconstructs them from the sensor measurements like any other field:
+```
+manager.add_data(data=MU, id="MU", compress=False)
+```

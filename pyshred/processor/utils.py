@@ -235,22 +235,33 @@ def generate_lagged_sensor_measurements(sensor_measurements, lags):
     """
     Generate lagged sequences from sensor measurements.
 
+    Each sequence covers the timesteps `s(t-lags+1) ... s(t)`, 
+    ending at timestep `t`. The model uses this sequence to reconstruct the
+    full state at `t`.
+
     Parameters
     ----------
     sensor_measurements : np.ndarray
         2D array with time on axis 0 and sensors on axis 1.
     lags : int
-        Number of time lags to include in each sequence.
+        Number of timesteps in each sequence.
 
     Returns
     -------
     np.ndarray
         3D array of lagged sequences with shape (timesteps, lags, sensors).
+
+    Raises
+    ------
+    ValueError
+        If `lags` is not a positive integer.
     """
+    if lags < 1:
+        raise ValueError(f"`lags` must be a positive integer, got {lags!r}.")
     num_timesteps = sensor_measurements.shape[0]
     num_sensors = sensor_measurements.shape[1]
-    # concatenate zeros padding at beginning of sensor data along axis 0
-    sensor_measurements = np.concatenate((np.zeros((lags, num_sensors)), sensor_measurements), axis = 0)
+    # pad lags-1, so each sequence ends at the timestep it reconstructs
+    sensor_measurements = np.concatenate((np.zeros((lags - 1, num_sensors)), sensor_measurements), axis = 0)
     lagged_sequences = np.empty((num_timesteps, lags, num_sensors))
     for i in range(lagged_sequences.shape[0]):
         lagged_sequences[i] = sensor_measurements[i:i+lags, :]
@@ -263,6 +274,44 @@ def generate_lagged_sensor_measurements_rom(dataset, lags):
         for traj_sensor_measurements in dataset
     ]
     return np.concatenate(sequences, axis=0)
+
+
+def broadcast_params(params, leading_shape):
+    """
+    Validate parameters and broadcast them along the time axis if they are constant in time.
+
+    Parameters
+    ----------
+    params : DataInput
+        Parameters of shape `leading_shape + (nparams,)`, e.g. (ntrajectories, ntimes, nparams),
+        or with the time axis left out, e.g. (ntrajectories, nparams), for parameters that
+        are constant in time.
+    leading_shape : tuple
+        Shape the parameters must line up with, excluding the parameter axis, with time
+        on the last axis, e.g. (ntrajectories, ntimes).
+
+    Returns
+    -------
+    np.ndarray
+        Parameters of shape `leading_shape + (nparams,)`.
+
+    Raises
+    ------
+    ValueError
+        If `params` does not line up with `leading_shape`.
+    """
+    params = get_data(params)
+    leading_shape = tuple(leading_shape)
+    if params.ndim == len(leading_shape) and params.shape[:-1] == leading_shape[:-1]:
+        # time axis left out: repeat the parameters at every timestep
+        params = np.repeat(np.expand_dims(params, axis=-2), leading_shape[-1], axis=-2)
+    if params.shape[:-1] != leading_shape:
+        shape = lambda dims: "(" + ", ".join([str(dim) for dim in dims] + ["nparams"]) + ")"
+        raise ValueError(
+            f"`params` must have shape {shape(leading_shape)}, or {shape(leading_shape[:-1])} "
+            f"for parameters that are constant in time, got {params.shape}."
+        )
+    return params
 
 
 def parse_compress(compress: Union[None, bool, int]) -> int:

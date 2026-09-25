@@ -31,10 +31,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 ```
 
-    c:\Tools\MiniConda\envs\datasci\lib\site-packages\pysindy\__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
-      from pkg_resources import DistributionNotFound
-    
-
 A function to compute the velocity components $u$ and $v$ is provided below.
 
 
@@ -316,21 +312,21 @@ manager_pod.sensor_summary_df
       <td>U</td>
       <td>0</td>
       <td>stationary (random)</td>
-      <td>(475,)</td>
+      <td>(450,)</td>
     </tr>
     <tr>
       <th>1</th>
       <td>U</td>
       <td>1</td>
       <td>stationary (random)</td>
-      <td>(944,)</td>
+      <td>(696,)</td>
     </tr>
     <tr>
       <th>2</th>
       <td>U</td>
       <td>2</td>
       <td>stationary (random)</td>
-      <td>(1163,)</td>
+      <td>(1119,)</td>
     </tr>
   </tbody>
 </table>
@@ -378,206 +374,206 @@ val_errors_shredpod = shred_pod.fit(
 ```
 
     Fitting SHRED...
-    Epoch 1: Average training loss = 0.053392
-    Validation MSE (epoch 1): 0.043212
-    Epoch 2: Average training loss = 0.032544
-    Validation MSE (epoch 2): 0.024448
-    Epoch 3: Average training loss = 0.023836
-    Validation MSE (epoch 3): 0.020105
-    Epoch 4: Average training loss = 0.020569
-    Validation MSE (epoch 4): 0.017764
-    Epoch 5: Average training loss = 0.020235
-    Validation MSE (epoch 5): 0.016091
-    Epoch 6: Average training loss = 0.017805
-    Validation MSE (epoch 6): 0.015052
-    Epoch 7: Average training loss = 0.016603
-    Validation MSE (epoch 7): 0.014485
-    Epoch 8: Average training loss = 0.015684
-    Validation MSE (epoch 8): 0.013516
-    Epoch 9: Average training loss = 0.014828
-    Validation MSE (epoch 9): 0.012803
-    Epoch 10: Average training loss = 0.014153
-    Validation MSE (epoch 10): 0.012308
-    Epoch 11: Average training loss = 0.012916
-    Validation MSE (epoch 11): 0.011462
-    Epoch 12: Average training loss = 0.012554
-    Validation MSE (epoch 12): 0.011643
-    Epoch 13: Average training loss = 0.012317
-    Validation MSE (epoch 13): 0.011317
-    Epoch 14: Average training loss = 0.011726
-    Validation MSE (epoch 14): 0.010781
-    Epoch 15: Average training loss = 0.011202
-    Validation MSE (epoch 15): 0.010718
-    Epoch 16: Average training loss = 0.011886
-    Validation MSE (epoch 16): 0.010599
-    Epoch 17: Average training loss = 0.010680
-    Validation MSE (epoch 17): 0.010494
-    Epoch 18: Average training loss = 0.010582
-    Validation MSE (epoch 18): 0.010536
-    Epoch 19: Average training loss = 0.010798
-    Validation MSE (epoch 19): 0.010416
-    Epoch 20: Average training loss = 0.012638
-    Validation MSE (epoch 20): 0.010685
-    Epoch 21: Average training loss = 0.011090
-    Validation MSE (epoch 21): 0.010882
-    Epoch 22: Average training loss = 0.010860
-    Validation MSE (epoch 22): 0.010139
-    Epoch 23: Average training loss = 0.009818
-    Validation MSE (epoch 23): 0.010109
-    Epoch 24: Average training loss = 0.009808
-    Validation MSE (epoch 24): 0.010227
-    Epoch 25: Average training loss = 0.010899
-    Validation MSE (epoch 25): 0.010099
-    Epoch 26: Average training loss = 0.009603
-    Validation MSE (epoch 26): 0.009711
-    Epoch 27: Average training loss = 0.009637
-    Validation MSE (epoch 27): 0.011148
-    Epoch 28: Average training loss = 0.010233
-    Validation MSE (epoch 28): 0.010103
-    Epoch 29: Average training loss = 0.009630
-    Validation MSE (epoch 29): 0.010315
-    Epoch 30: Average training loss = 0.009985
-    Validation MSE (epoch 30): 0.011453
-    Epoch 31: Average training loss = 0.009584
-    Validation MSE (epoch 31): 0.010798
-    Epoch 32: Average training loss = 0.010244
-    Validation MSE (epoch 32): 0.009911
-    Epoch 33: Average training loss = 0.009551
-    Validation MSE (epoch 33): 0.009187
-    Epoch 34: Average training loss = 0.009350
-    Validation MSE (epoch 34): 0.009849
-    Epoch 35: Average training loss = 0.009357
-    Validation MSE (epoch 35): 0.010362
-    Epoch 36: Average training loss = 0.009954
-    Validation MSE (epoch 36): 0.009548
-    Epoch 37: Average training loss = 0.008973
-    Validation MSE (epoch 37): 0.008852
-    Epoch 38: Average training loss = 0.008628
-    Validation MSE (epoch 38): 0.008646
-    Epoch 39: Average training loss = 0.009700
-    Validation MSE (epoch 39): 0.008757
-    Epoch 40: Average training loss = 0.008890
-    Validation MSE (epoch 40): 0.009087
-    Epoch 41: Average training loss = 0.009133
-    Validation MSE (epoch 41): 0.009129
-    Epoch 42: Average training loss = 0.009283
-    Validation MSE (epoch 42): 0.009379
-    Epoch 43: Average training loss = 0.009310
-    Validation MSE (epoch 43): 0.008910
-    Epoch 44: Average training loss = 0.008548
-    Validation MSE (epoch 44): 0.008397
-    Epoch 45: Average training loss = 0.009379
-    Validation MSE (epoch 45): 0.008696
-    Epoch 46: Average training loss = 0.008745
-    Validation MSE (epoch 46): 0.008912
-    Epoch 47: Average training loss = 0.008402
-    Validation MSE (epoch 47): 0.008942
-    Epoch 48: Average training loss = 0.009491
-    Validation MSE (epoch 48): 0.008642
-    Epoch 49: Average training loss = 0.009496
-    Validation MSE (epoch 49): 0.009101
-    Epoch 50: Average training loss = 0.008552
-    Validation MSE (epoch 50): 0.008392
-    Epoch 51: Average training loss = 0.008369
-    Validation MSE (epoch 51): 0.008288
-    Epoch 52: Average training loss = 0.008182
-    Validation MSE (epoch 52): 0.008690
-    Epoch 53: Average training loss = 0.009040
-    Validation MSE (epoch 53): 0.008894
-    Epoch 54: Average training loss = 0.009361
-    Validation MSE (epoch 54): 0.008774
-    Epoch 55: Average training loss = 0.008573
-    Validation MSE (epoch 55): 0.008599
-    Epoch 56: Average training loss = 0.008240
-    Validation MSE (epoch 56): 0.008375
-    Epoch 57: Average training loss = 0.009257
-    Validation MSE (epoch 57): 0.008748
-    Epoch 58: Average training loss = 0.008524
-    Validation MSE (epoch 58): 0.008730
-    Epoch 59: Average training loss = 0.008825
-    Validation MSE (epoch 59): 0.008662
-    Epoch 60: Average training loss = 0.008659
-    Validation MSE (epoch 60): 0.009045
-    Epoch 61: Average training loss = 0.008629
-    Validation MSE (epoch 61): 0.008477
-    Epoch 62: Average training loss = 0.008819
-    Validation MSE (epoch 62): 0.009109
-    Epoch 63: Average training loss = 0.009125
-    Validation MSE (epoch 63): 0.009190
-    Epoch 64: Average training loss = 0.008607
-    Validation MSE (epoch 64): 0.008255
-    Epoch 65: Average training loss = 0.008780
-    Validation MSE (epoch 65): 0.008314
-    Epoch 66: Average training loss = 0.008238
-    Validation MSE (epoch 66): 0.008542
-    Epoch 67: Average training loss = 0.008058
-    Validation MSE (epoch 67): 0.008330
-    Epoch 68: Average training loss = 0.008453
-    Validation MSE (epoch 68): 0.008142
-    Epoch 69: Average training loss = 0.008290
-    Validation MSE (epoch 69): 0.008686
-    Epoch 70: Average training loss = 0.008986
-    Validation MSE (epoch 70): 0.008616
-    Epoch 71: Average training loss = 0.008293
-    Validation MSE (epoch 71): 0.008285
-    Epoch 72: Average training loss = 0.007972
-    Validation MSE (epoch 72): 0.008500
-    Epoch 73: Average training loss = 0.008440
-    Validation MSE (epoch 73): 0.008502
-    Epoch 74: Average training loss = 0.008352
-    Validation MSE (epoch 74): 0.008844
-    Epoch 75: Average training loss = 0.008634
-    Validation MSE (epoch 75): 0.008645
-    Epoch 76: Average training loss = 0.008283
-    Validation MSE (epoch 76): 0.008440
-    Epoch 77: Average training loss = 0.008036
-    Validation MSE (epoch 77): 0.008269
-    Epoch 78: Average training loss = 0.007970
-    Validation MSE (epoch 78): 0.008736
-    Epoch 79: Average training loss = 0.007901
-    Validation MSE (epoch 79): 0.008116
-    Epoch 80: Average training loss = 0.008635
-    Validation MSE (epoch 80): 0.008874
-    Epoch 81: Average training loss = 0.008524
-    Validation MSE (epoch 81): 0.009008
-    Epoch 82: Average training loss = 0.008374
-    Validation MSE (epoch 82): 0.009022
-    Epoch 83: Average training loss = 0.008425
-    Validation MSE (epoch 83): 0.008268
-    Epoch 84: Average training loss = 0.008225
-    Validation MSE (epoch 84): 0.008397
-    Epoch 85: Average training loss = 0.007887
-    Validation MSE (epoch 85): 0.008727
-    Epoch 86: Average training loss = 0.008008
-    Validation MSE (epoch 86): 0.008191
-    Epoch 87: Average training loss = 0.008014
-    Validation MSE (epoch 87): 0.008919
-    Epoch 88: Average training loss = 0.008429
-    Validation MSE (epoch 88): 0.009004
-    Epoch 89: Average training loss = 0.008337
-    Validation MSE (epoch 89): 0.009056
-    Epoch 90: Average training loss = 0.008528
-    Validation MSE (epoch 90): 0.009185
-    Epoch 91: Average training loss = 0.008492
-    Validation MSE (epoch 91): 0.008710
-    Epoch 92: Average training loss = 0.008400
-    Validation MSE (epoch 92): 0.008518
-    Epoch 93: Average training loss = 0.008053
-    Validation MSE (epoch 93): 0.009015
-    Epoch 94: Average training loss = 0.007976
-    Validation MSE (epoch 94): 0.008710
-    Epoch 95: Average training loss = 0.008299
-    Validation MSE (epoch 95): 0.008247
-    Epoch 96: Average training loss = 0.007863
-    Validation MSE (epoch 96): 0.009222
-    Epoch 97: Average training loss = 0.007938
-    Validation MSE (epoch 97): 0.008448
-    Epoch 98: Average training loss = 0.007993
-    Validation MSE (epoch 98): 0.008244
-    Epoch 99: Average training loss = 0.008099
-    Validation MSE (epoch 99): 0.008777
-    Epoch 100: Average training loss = 0.008017
-    Validation MSE (epoch 100): 0.008872
+    Epoch 1: Average training loss = 0.048769
+    Validation MSE (epoch 1): 0.033769
+    Epoch 2: Average training loss = 0.024560
+    Validation MSE (epoch 2): 0.023983
+    Epoch 3: Average training loss = 0.020259
+    Validation MSE (epoch 3): 0.020888
+    Epoch 4: Average training loss = 0.018009
+    Validation MSE (epoch 4): 0.021217
+    Epoch 5: Average training loss = 0.018030
+    Validation MSE (epoch 5): 0.018037
+    Epoch 6: Average training loss = 0.015617
+    Validation MSE (epoch 6): 0.016645
+    Epoch 7: Average training loss = 0.015672
+    Validation MSE (epoch 7): 0.018195
+    Epoch 8: Average training loss = 0.015270
+    Validation MSE (epoch 8): 0.016599
+    Epoch 9: Average training loss = 0.014198
+    Validation MSE (epoch 9): 0.015475
+    Epoch 10: Average training loss = 0.013217
+    Validation MSE (epoch 10): 0.015304
+    Epoch 11: Average training loss = 0.014081
+    Validation MSE (epoch 11): 0.014519
+    Epoch 12: Average training loss = 0.013127
+    Validation MSE (epoch 12): 0.013332
+    Epoch 13: Average training loss = 0.012611
+    Validation MSE (epoch 13): 0.013455
+    Epoch 14: Average training loss = 0.011910
+    Validation MSE (epoch 14): 0.014167
+    Epoch 15: Average training loss = 0.011451
+    Validation MSE (epoch 15): 0.012931
+    Epoch 16: Average training loss = 0.011435
+    Validation MSE (epoch 16): 0.011200
+    Epoch 17: Average training loss = 0.011174
+    Validation MSE (epoch 17): 0.011342
+    Epoch 18: Average training loss = 0.010193
+    Validation MSE (epoch 18): 0.012082
+    Epoch 19: Average training loss = 0.010594
+    Validation MSE (epoch 19): 0.010255
+    Epoch 20: Average training loss = 0.010028
+    Validation MSE (epoch 20): 0.009681
+    Epoch 21: Average training loss = 0.010194
+    Validation MSE (epoch 21): 0.010145
+    Epoch 22: Average training loss = 0.010055
+    Validation MSE (epoch 22): 0.010590
+    Epoch 23: Average training loss = 0.009914
+    Validation MSE (epoch 23): 0.009824
+    Epoch 24: Average training loss = 0.009833
+    Validation MSE (epoch 24): 0.011903
+    Epoch 25: Average training loss = 0.009926
+    Validation MSE (epoch 25): 0.009502
+    Epoch 26: Average training loss = 0.009452
+    Validation MSE (epoch 26): 0.010169
+    Epoch 27: Average training loss = 0.009565
+    Validation MSE (epoch 27): 0.009790
+    Epoch 28: Average training loss = 0.009618
+    Validation MSE (epoch 28): 0.009341
+    Epoch 29: Average training loss = 0.009510
+    Validation MSE (epoch 29): 0.010851
+    Epoch 30: Average training loss = 0.010536
+    Validation MSE (epoch 30): 0.009865
+    Epoch 31: Average training loss = 0.010857
+    Validation MSE (epoch 31): 0.010132
+    Epoch 32: Average training loss = 0.010034
+    Validation MSE (epoch 32): 0.010550
+    Epoch 33: Average training loss = 0.009805
+    Validation MSE (epoch 33): 0.011249
+    Epoch 34: Average training loss = 0.009578
+    Validation MSE (epoch 34): 0.009207
+    Epoch 35: Average training loss = 0.009322
+    Validation MSE (epoch 35): 0.008932
+    Epoch 36: Average training loss = 0.009408
+    Validation MSE (epoch 36): 0.009249
+    Epoch 37: Average training loss = 0.009532
+    Validation MSE (epoch 37): 0.008605
+    Epoch 38: Average training loss = 0.009032
+    Validation MSE (epoch 38): 0.009340
+    Epoch 39: Average training loss = 0.009478
+    Validation MSE (epoch 39): 0.008643
+    Epoch 40: Average training loss = 0.009637
+    Validation MSE (epoch 40): 0.009194
+    Epoch 41: Average training loss = 0.008968
+    Validation MSE (epoch 41): 0.009029
+    Epoch 42: Average training loss = 0.009313
+    Validation MSE (epoch 42): 0.008953
+    Epoch 43: Average training loss = 0.008661
+    Validation MSE (epoch 43): 0.009417
+    Epoch 44: Average training loss = 0.008871
+    Validation MSE (epoch 44): 0.009143
+    Epoch 45: Average training loss = 0.008713
+    Validation MSE (epoch 45): 0.008243
+    Epoch 46: Average training loss = 0.008516
+    Validation MSE (epoch 46): 0.008760
+    Epoch 47: Average training loss = 0.008852
+    Validation MSE (epoch 47): 0.008106
+    Epoch 48: Average training loss = 0.008991
+    Validation MSE (epoch 48): 0.008523
+    Epoch 49: Average training loss = 0.009202
+    Validation MSE (epoch 49): 0.008260
+    Epoch 50: Average training loss = 0.008984
+    Validation MSE (epoch 50): 0.008638
+    Epoch 51: Average training loss = 0.008913
+    Validation MSE (epoch 51): 0.008798
+    Epoch 52: Average training loss = 0.008750
+    Validation MSE (epoch 52): 0.007973
+    Epoch 53: Average training loss = 0.008583
+    Validation MSE (epoch 53): 0.008755
+    Epoch 54: Average training loss = 0.008643
+    Validation MSE (epoch 54): 0.008356
+    Epoch 55: Average training loss = 0.008989
+    Validation MSE (epoch 55): 0.009911
+    Epoch 56: Average training loss = 0.008911
+    Validation MSE (epoch 56): 0.009242
+    Epoch 57: Average training loss = 0.009598
+    Validation MSE (epoch 57): 0.007947
+    Epoch 58: Average training loss = 0.008771
+    Validation MSE (epoch 58): 0.008283
+    Epoch 59: Average training loss = 0.008395
+    Validation MSE (epoch 59): 0.008188
+    Epoch 60: Average training loss = 0.008311
+    Validation MSE (epoch 60): 0.008512
+    Epoch 61: Average training loss = 0.008956
+    Validation MSE (epoch 61): 0.008251
+    Epoch 62: Average training loss = 0.008933
+    Validation MSE (epoch 62): 0.008402
+    Epoch 63: Average training loss = 0.008697
+    Validation MSE (epoch 63): 0.009362
+    Epoch 64: Average training loss = 0.009346
+    Validation MSE (epoch 64): 0.008823
+    Epoch 65: Average training loss = 0.008487
+    Validation MSE (epoch 65): 0.008223
+    Epoch 66: Average training loss = 0.008970
+    Validation MSE (epoch 66): 0.007755
+    Epoch 67: Average training loss = 0.008109
+    Validation MSE (epoch 67): 0.007536
+    Epoch 68: Average training loss = 0.008115
+    Validation MSE (epoch 68): 0.007968
+    Epoch 69: Average training loss = 0.008414
+    Validation MSE (epoch 69): 0.007755
+    Epoch 70: Average training loss = 0.008343
+    Validation MSE (epoch 70): 0.007679
+    Epoch 71: Average training loss = 0.008369
+    Validation MSE (epoch 71): 0.008491
+    Epoch 72: Average training loss = 0.008931
+    Validation MSE (epoch 72): 0.007601
+    Epoch 73: Average training loss = 0.008175
+    Validation MSE (epoch 73): 0.008197
+    Epoch 74: Average training loss = 0.008743
+    Validation MSE (epoch 74): 0.009242
+    Epoch 75: Average training loss = 0.008629
+    Validation MSE (epoch 75): 0.007614
+    Epoch 76: Average training loss = 0.008238
+    Validation MSE (epoch 76): 0.007511
+    Epoch 77: Average training loss = 0.008608
+    Validation MSE (epoch 77): 0.009713
+    Epoch 78: Average training loss = 0.009083
+    Validation MSE (epoch 78): 0.007302
+    Epoch 79: Average training loss = 0.008555
+    Validation MSE (epoch 79): 0.009131
+    Epoch 80: Average training loss = 0.008692
+    Validation MSE (epoch 80): 0.008350
+    Epoch 81: Average training loss = 0.008351
+    Validation MSE (epoch 81): 0.007651
+    Epoch 82: Average training loss = 0.008126
+    Validation MSE (epoch 82): 0.008180
+    Epoch 83: Average training loss = 0.008174
+    Validation MSE (epoch 83): 0.007459
+    Epoch 84: Average training loss = 0.008057
+    Validation MSE (epoch 84): 0.007481
+    Epoch 85: Average training loss = 0.008541
+    Validation MSE (epoch 85): 0.007852
+    Epoch 86: Average training loss = 0.008556
+    Validation MSE (epoch 86): 0.008122
+    Epoch 87: Average training loss = 0.008124
+    Validation MSE (epoch 87): 0.007018
+    Epoch 88: Average training loss = 0.007865
+    Validation MSE (epoch 88): 0.008479
+    Epoch 89: Average training loss = 0.008558
+    Validation MSE (epoch 89): 0.007316
+    Epoch 90: Average training loss = 0.007718
+    Validation MSE (epoch 90): 0.007830
+    Epoch 91: Average training loss = 0.008219
+    Validation MSE (epoch 91): 0.007448
+    Epoch 92: Average training loss = 0.008254
+    Validation MSE (epoch 92): 0.007891
+    Epoch 93: Average training loss = 0.008132
+    Validation MSE (epoch 93): 0.007479
+    Epoch 94: Average training loss = 0.007933
+    Validation MSE (epoch 94): 0.007772
+    Epoch 95: Average training loss = 0.008519
+    Validation MSE (epoch 95): 0.009434
+    Epoch 96: Average training loss = 0.008763
+    Validation MSE (epoch 96): 0.007659
+    Epoch 97: Average training loss = 0.008736
+    Validation MSE (epoch 97): 0.008347
+    Epoch 98: Average training loss = 0.009099
+    Validation MSE (epoch 98): 0.007656
+    Epoch 99: Average training loss = 0.008044
+    Validation MSE (epoch 99): 0.007515
+    Epoch 100: Average training loss = 0.007707
+    Validation MSE (epoch 100): 0.007233
     
 
 Here the validation loss is plotted
@@ -607,8 +603,8 @@ print(f"Val   MSE: {shred_pod.evaluate(dataset=val_dataset):.3f}")
 print(f"Test  MSE: {shred_pod.evaluate(dataset=test_dataset):.3f}")
 ```
 
-    Train MSE: 0.008
-    Val   MSE: 0.009
+    Train MSE: 0.007
+    Val   MSE: 0.007
     Test  MSE: 0.007
     
 
@@ -810,206 +806,206 @@ val_errors_shredfourier = shred_fourier.fit(
 ```
 
     Fitting SHRED...
-    Epoch 1: Average training loss = 0.053214
-    Validation MSE (epoch 1): 0.014368
-    Epoch 2: Average training loss = 0.009338
-    Validation MSE (epoch 2): 0.002854
-    Epoch 3: Average training loss = 0.003565
-    Validation MSE (epoch 3): 0.002174
-    Epoch 4: Average training loss = 0.002810
-    Validation MSE (epoch 4): 0.002424
-    Epoch 5: Average training loss = 0.002591
-    Validation MSE (epoch 5): 0.002467
-    Epoch 6: Average training loss = 0.002366
-    Validation MSE (epoch 6): 0.002638
-    Epoch 7: Average training loss = 0.002098
-    Validation MSE (epoch 7): 0.002637
-    Epoch 8: Average training loss = 0.002073
-    Validation MSE (epoch 8): 0.002461
-    Epoch 9: Average training loss = 0.001950
-    Validation MSE (epoch 9): 0.002186
-    Epoch 10: Average training loss = 0.001827
-    Validation MSE (epoch 10): 0.001497
-    Epoch 11: Average training loss = 0.001761
-    Validation MSE (epoch 11): 0.002201
-    Epoch 12: Average training loss = 0.001868
-    Validation MSE (epoch 12): 0.001741
-    Epoch 13: Average training loss = 0.001829
-    Validation MSE (epoch 13): 0.001406
-    Epoch 14: Average training loss = 0.001564
-    Validation MSE (epoch 14): 0.000949
-    Epoch 15: Average training loss = 0.001443
-    Validation MSE (epoch 15): 0.001649
-    Epoch 16: Average training loss = 0.001596
-    Validation MSE (epoch 16): 0.001515
-    Epoch 17: Average training loss = 0.001473
-    Validation MSE (epoch 17): 0.001312
-    Epoch 18: Average training loss = 0.001542
-    Validation MSE (epoch 18): 0.001377
-    Epoch 19: Average training loss = 0.001395
-    Validation MSE (epoch 19): 0.000952
-    Epoch 20: Average training loss = 0.001472
-    Validation MSE (epoch 20): 0.001084
-    Epoch 21: Average training loss = 0.001362
-    Validation MSE (epoch 21): 0.000774
-    Epoch 22: Average training loss = 0.001382
-    Validation MSE (epoch 22): 0.000952
-    Epoch 23: Average training loss = 0.001441
-    Validation MSE (epoch 23): 0.000849
-    Epoch 24: Average training loss = 0.001232
-    Validation MSE (epoch 24): 0.000727
-    Epoch 25: Average training loss = 0.001298
-    Validation MSE (epoch 25): 0.000755
-    Epoch 26: Average training loss = 0.001199
-    Validation MSE (epoch 26): 0.000796
-    Epoch 27: Average training loss = 0.001209
-    Validation MSE (epoch 27): 0.000661
-    Epoch 28: Average training loss = 0.001163
-    Validation MSE (epoch 28): 0.000740
-    Epoch 29: Average training loss = 0.001612
-    Validation MSE (epoch 29): 0.001174
-    Epoch 30: Average training loss = 0.001284
-    Validation MSE (epoch 30): 0.001166
-    Epoch 31: Average training loss = 0.001203
-    Validation MSE (epoch 31): 0.000725
-    Epoch 32: Average training loss = 0.001064
-    Validation MSE (epoch 32): 0.000688
-    Epoch 33: Average training loss = 0.001235
-    Validation MSE (epoch 33): 0.000697
-    Epoch 34: Average training loss = 0.001176
-    Validation MSE (epoch 34): 0.000649
-    Epoch 35: Average training loss = 0.001130
-    Validation MSE (epoch 35): 0.000714
-    Epoch 36: Average training loss = 0.001193
-    Validation MSE (epoch 36): 0.000629
-    Epoch 37: Average training loss = 0.001058
-    Validation MSE (epoch 37): 0.000981
-    Epoch 38: Average training loss = 0.001134
-    Validation MSE (epoch 38): 0.000861
-    Epoch 39: Average training loss = 0.001018
-    Validation MSE (epoch 39): 0.000646
-    Epoch 40: Average training loss = 0.001256
-    Validation MSE (epoch 40): 0.000579
-    Epoch 41: Average training loss = 0.001010
-    Validation MSE (epoch 41): 0.000648
-    Epoch 42: Average training loss = 0.001218
-    Validation MSE (epoch 42): 0.000690
-    Epoch 43: Average training loss = 0.001235
-    Validation MSE (epoch 43): 0.000734
-    Epoch 44: Average training loss = 0.000943
-    Validation MSE (epoch 44): 0.000873
-    Epoch 45: Average training loss = 0.001144
-    Validation MSE (epoch 45): 0.000890
-    Epoch 46: Average training loss = 0.001066
-    Validation MSE (epoch 46): 0.000592
-    Epoch 47: Average training loss = 0.001009
-    Validation MSE (epoch 47): 0.000591
-    Epoch 48: Average training loss = 0.001000
-    Validation MSE (epoch 48): 0.000613
-    Epoch 49: Average training loss = 0.000923
-    Validation MSE (epoch 49): 0.000506
-    Epoch 50: Average training loss = 0.000933
-    Validation MSE (epoch 50): 0.000656
-    Epoch 51: Average training loss = 0.001386
-    Validation MSE (epoch 51): 0.000699
-    Epoch 52: Average training loss = 0.001073
-    Validation MSE (epoch 52): 0.000702
-    Epoch 53: Average training loss = 0.000911
-    Validation MSE (epoch 53): 0.000505
-    Epoch 54: Average training loss = 0.000926
-    Validation MSE (epoch 54): 0.000537
-    Epoch 55: Average training loss = 0.000932
-    Validation MSE (epoch 55): 0.000949
-    Epoch 56: Average training loss = 0.001036
-    Validation MSE (epoch 56): 0.000506
-    Epoch 57: Average training loss = 0.000810
-    Validation MSE (epoch 57): 0.000494
-    Epoch 58: Average training loss = 0.000988
-    Validation MSE (epoch 58): 0.001143
-    Epoch 59: Average training loss = 0.001064
-    Validation MSE (epoch 59): 0.000634
-    Epoch 60: Average training loss = 0.000976
-    Validation MSE (epoch 60): 0.000669
-    Epoch 61: Average training loss = 0.001232
-    Validation MSE (epoch 61): 0.001047
-    Epoch 62: Average training loss = 0.001322
-    Validation MSE (epoch 62): 0.000439
-    Epoch 63: Average training loss = 0.000888
-    Validation MSE (epoch 63): 0.000468
-    Epoch 64: Average training loss = 0.000788
-    Validation MSE (epoch 64): 0.000383
-    Epoch 65: Average training loss = 0.000991
-    Validation MSE (epoch 65): 0.001318
-    Epoch 66: Average training loss = 0.001477
-    Validation MSE (epoch 66): 0.000416
-    Epoch 67: Average training loss = 0.000773
-    Validation MSE (epoch 67): 0.000427
-    Epoch 68: Average training loss = 0.000764
-    Validation MSE (epoch 68): 0.000449
-    Epoch 69: Average training loss = 0.000971
-    Validation MSE (epoch 69): 0.000827
-    Epoch 70: Average training loss = 0.001155
-    Validation MSE (epoch 70): 0.000603
-    Epoch 71: Average training loss = 0.000876
-    Validation MSE (epoch 71): 0.000527
-    Epoch 72: Average training loss = 0.000976
-    Validation MSE (epoch 72): 0.000741
-    Epoch 73: Average training loss = 0.000947
-    Validation MSE (epoch 73): 0.000429
-    Epoch 74: Average training loss = 0.000782
-    Validation MSE (epoch 74): 0.000468
-    Epoch 75: Average training loss = 0.000982
-    Validation MSE (epoch 75): 0.000553
-    Epoch 76: Average training loss = 0.000833
-    Validation MSE (epoch 76): 0.000803
-    Epoch 77: Average training loss = 0.001219
-    Validation MSE (epoch 77): 0.000414
-    Epoch 78: Average training loss = 0.000833
-    Validation MSE (epoch 78): 0.000634
-    Epoch 79: Average training loss = 0.001068
-    Validation MSE (epoch 79): 0.000565
-    Epoch 80: Average training loss = 0.000867
-    Validation MSE (epoch 80): 0.000467
-    Epoch 81: Average training loss = 0.000816
-    Validation MSE (epoch 81): 0.000801
-    Epoch 82: Average training loss = 0.001068
-    Validation MSE (epoch 82): 0.000459
-    Epoch 83: Average training loss = 0.000783
-    Validation MSE (epoch 83): 0.000701
-    Epoch 84: Average training loss = 0.001152
-    Validation MSE (epoch 84): 0.000449
-    Epoch 85: Average training loss = 0.000783
-    Validation MSE (epoch 85): 0.000539
-    Epoch 86: Average training loss = 0.000833
-    Validation MSE (epoch 86): 0.000465
-    Epoch 87: Average training loss = 0.000915
-    Validation MSE (epoch 87): 0.000623
-    Epoch 88: Average training loss = 0.001241
-    Validation MSE (epoch 88): 0.000599
-    Epoch 89: Average training loss = 0.000789
-    Validation MSE (epoch 89): 0.000390
-    Epoch 90: Average training loss = 0.000811
-    Validation MSE (epoch 90): 0.000701
-    Epoch 91: Average training loss = 0.001071
-    Validation MSE (epoch 91): 0.000406
-    Epoch 92: Average training loss = 0.000641
-    Validation MSE (epoch 92): 0.000391
-    Epoch 93: Average training loss = 0.000959
-    Validation MSE (epoch 93): 0.000939
-    Epoch 94: Average training loss = 0.001173
-    Validation MSE (epoch 94): 0.000604
-    Epoch 95: Average training loss = 0.000865
-    Validation MSE (epoch 95): 0.000566
-    Epoch 96: Average training loss = 0.000913
-    Validation MSE (epoch 96): 0.000532
-    Epoch 97: Average training loss = 0.000797
-    Validation MSE (epoch 97): 0.000440
-    Epoch 98: Average training loss = 0.001028
-    Validation MSE (epoch 98): 0.000908
-    Epoch 99: Average training loss = 0.001091
-    Validation MSE (epoch 99): 0.000527
-    Epoch 100: Average training loss = 0.000909
-    Validation MSE (epoch 100): 0.000503
+    Epoch 1: Average training loss = 0.044613
+    Validation MSE (epoch 1): 0.002973
+    Epoch 2: Average training loss = 0.003913
+    Validation MSE (epoch 2): 0.001174
+    Epoch 3: Average training loss = 0.002434
+    Validation MSE (epoch 3): 0.000945
+    Epoch 4: Average training loss = 0.001967
+    Validation MSE (epoch 4): 0.000924
+    Epoch 5: Average training loss = 0.001585
+    Validation MSE (epoch 5): 0.000644
+    Epoch 6: Average training loss = 0.001420
+    Validation MSE (epoch 6): 0.000782
+    Epoch 7: Average training loss = 0.001382
+    Validation MSE (epoch 7): 0.000603
+    Epoch 8: Average training loss = 0.001323
+    Validation MSE (epoch 8): 0.000653
+    Epoch 9: Average training loss = 0.001344
+    Validation MSE (epoch 9): 0.000743
+    Epoch 10: Average training loss = 0.001090
+    Validation MSE (epoch 10): 0.000981
+    Epoch 11: Average training loss = 0.001128
+    Validation MSE (epoch 11): 0.000609
+    Epoch 12: Average training loss = 0.000906
+    Validation MSE (epoch 12): 0.000638
+    Epoch 13: Average training loss = 0.000987
+    Validation MSE (epoch 13): 0.000729
+    Epoch 14: Average training loss = 0.000925
+    Validation MSE (epoch 14): 0.000749
+    Epoch 15: Average training loss = 0.000925
+    Validation MSE (epoch 15): 0.000648
+    Epoch 16: Average training loss = 0.000901
+    Validation MSE (epoch 16): 0.000660
+    Epoch 17: Average training loss = 0.000935
+    Validation MSE (epoch 17): 0.000823
+    Epoch 18: Average training loss = 0.000879
+    Validation MSE (epoch 18): 0.000584
+    Epoch 19: Average training loss = 0.001090
+    Validation MSE (epoch 19): 0.000677
+    Epoch 20: Average training loss = 0.000895
+    Validation MSE (epoch 20): 0.000908
+    Epoch 21: Average training loss = 0.000846
+    Validation MSE (epoch 21): 0.000937
+    Epoch 22: Average training loss = 0.000871
+    Validation MSE (epoch 22): 0.000502
+    Epoch 23: Average training loss = 0.000842
+    Validation MSE (epoch 23): 0.000937
+    Epoch 24: Average training loss = 0.000933
+    Validation MSE (epoch 24): 0.000779
+    Epoch 25: Average training loss = 0.000731
+    Validation MSE (epoch 25): 0.000699
+    Epoch 26: Average training loss = 0.000782
+    Validation MSE (epoch 26): 0.000766
+    Epoch 27: Average training loss = 0.000845
+    Validation MSE (epoch 27): 0.000724
+    Epoch 28: Average training loss = 0.000795
+    Validation MSE (epoch 28): 0.000821
+    Epoch 29: Average training loss = 0.000805
+    Validation MSE (epoch 29): 0.000830
+    Epoch 30: Average training loss = 0.000775
+    Validation MSE (epoch 30): 0.000672
+    Epoch 31: Average training loss = 0.000700
+    Validation MSE (epoch 31): 0.000811
+    Epoch 32: Average training loss = 0.000781
+    Validation MSE (epoch 32): 0.000604
+    Epoch 33: Average training loss = 0.000729
+    Validation MSE (epoch 33): 0.000592
+    Epoch 34: Average training loss = 0.000724
+    Validation MSE (epoch 34): 0.000726
+    Epoch 35: Average training loss = 0.000898
+    Validation MSE (epoch 35): 0.000556
+    Epoch 36: Average training loss = 0.000732
+    Validation MSE (epoch 36): 0.000621
+    Epoch 37: Average training loss = 0.000834
+    Validation MSE (epoch 37): 0.000797
+    Epoch 38: Average training loss = 0.000686
+    Validation MSE (epoch 38): 0.000553
+    Epoch 39: Average training loss = 0.000686
+    Validation MSE (epoch 39): 0.000593
+    Epoch 40: Average training loss = 0.000749
+    Validation MSE (epoch 40): 0.000664
+    Epoch 41: Average training loss = 0.000767
+    Validation MSE (epoch 41): 0.000783
+    Epoch 42: Average training loss = 0.000819
+    Validation MSE (epoch 42): 0.000565
+    Epoch 43: Average training loss = 0.000788
+    Validation MSE (epoch 43): 0.000619
+    Epoch 44: Average training loss = 0.000685
+    Validation MSE (epoch 44): 0.000508
+    Epoch 45: Average training loss = 0.000792
+    Validation MSE (epoch 45): 0.000659
+    Epoch 46: Average training loss = 0.000610
+    Validation MSE (epoch 46): 0.000580
+    Epoch 47: Average training loss = 0.000692
+    Validation MSE (epoch 47): 0.000499
+    Epoch 48: Average training loss = 0.000657
+    Validation MSE (epoch 48): 0.000539
+    Epoch 49: Average training loss = 0.000655
+    Validation MSE (epoch 49): 0.000600
+    Epoch 50: Average training loss = 0.000813
+    Validation MSE (epoch 50): 0.000774
+    Epoch 51: Average training loss = 0.000659
+    Validation MSE (epoch 51): 0.000626
+    Epoch 52: Average training loss = 0.000694
+    Validation MSE (epoch 52): 0.000799
+    Epoch 53: Average training loss = 0.000672
+    Validation MSE (epoch 53): 0.000598
+    Epoch 54: Average training loss = 0.000642
+    Validation MSE (epoch 54): 0.000460
+    Epoch 55: Average training loss = 0.000656
+    Validation MSE (epoch 55): 0.000814
+    Epoch 56: Average training loss = 0.000635
+    Validation MSE (epoch 56): 0.000597
+    Epoch 57: Average training loss = 0.000647
+    Validation MSE (epoch 57): 0.000585
+    Epoch 58: Average training loss = 0.000701
+    Validation MSE (epoch 58): 0.000568
+    Epoch 59: Average training loss = 0.000583
+    Validation MSE (epoch 59): 0.000599
+    Epoch 60: Average training loss = 0.000724
+    Validation MSE (epoch 60): 0.000699
+    Epoch 61: Average training loss = 0.000813
+    Validation MSE (epoch 61): 0.000594
+    Epoch 62: Average training loss = 0.000617
+    Validation MSE (epoch 62): 0.000660
+    Epoch 63: Average training loss = 0.000710
+    Validation MSE (epoch 63): 0.000484
+    Epoch 64: Average training loss = 0.000600
+    Validation MSE (epoch 64): 0.000666
+    Epoch 65: Average training loss = 0.000634
+    Validation MSE (epoch 65): 0.000559
+    Epoch 66: Average training loss = 0.000702
+    Validation MSE (epoch 66): 0.000705
+    Epoch 67: Average training loss = 0.000643
+    Validation MSE (epoch 67): 0.000604
+    Epoch 68: Average training loss = 0.000633
+    Validation MSE (epoch 68): 0.000616
+    Epoch 69: Average training loss = 0.000706
+    Validation MSE (epoch 69): 0.000635
+    Epoch 70: Average training loss = 0.000687
+    Validation MSE (epoch 70): 0.000589
+    Epoch 71: Average training loss = 0.000599
+    Validation MSE (epoch 71): 0.000522
+    Epoch 72: Average training loss = 0.000560
+    Validation MSE (epoch 72): 0.000459
+    Epoch 73: Average training loss = 0.000608
+    Validation MSE (epoch 73): 0.000640
+    Epoch 74: Average training loss = 0.000704
+    Validation MSE (epoch 74): 0.000759
+    Epoch 75: Average training loss = 0.000736
+    Validation MSE (epoch 75): 0.000497
+    Epoch 76: Average training loss = 0.000740
+    Validation MSE (epoch 76): 0.000525
+    Epoch 77: Average training loss = 0.000518
+    Validation MSE (epoch 77): 0.000658
+    Epoch 78: Average training loss = 0.000582
+    Validation MSE (epoch 78): 0.000561
+    Epoch 79: Average training loss = 0.000732
+    Validation MSE (epoch 79): 0.000538
+    Epoch 80: Average training loss = 0.000575
+    Validation MSE (epoch 80): 0.000785
+    Epoch 81: Average training loss = 0.000730
+    Validation MSE (epoch 81): 0.000537
+    Epoch 82: Average training loss = 0.000629
+    Validation MSE (epoch 82): 0.000830
+    Epoch 83: Average training loss = 0.000953
+    Validation MSE (epoch 83): 0.000578
+    Epoch 84: Average training loss = 0.000577
+    Validation MSE (epoch 84): 0.000460
+    Epoch 85: Average training loss = 0.000554
+    Validation MSE (epoch 85): 0.000450
+    Epoch 86: Average training loss = 0.000480
+    Validation MSE (epoch 86): 0.000451
+    Epoch 87: Average training loss = 0.000559
+    Validation MSE (epoch 87): 0.000470
+    Epoch 88: Average training loss = 0.000524
+    Validation MSE (epoch 88): 0.000534
+    Epoch 89: Average training loss = 0.000720
+    Validation MSE (epoch 89): 0.000509
+    Epoch 90: Average training loss = 0.000691
+    Validation MSE (epoch 90): 0.000490
+    Epoch 91: Average training loss = 0.000882
+    Validation MSE (epoch 91): 0.000547
+    Epoch 92: Average training loss = 0.000548
+    Validation MSE (epoch 92): 0.001040
+    Epoch 93: Average training loss = 0.000475
+    Validation MSE (epoch 93): 0.000539
+    Epoch 94: Average training loss = 0.000855
+    Validation MSE (epoch 94): 0.000687
+    Epoch 95: Average training loss = 0.000781
+    Validation MSE (epoch 95): 0.000499
+    Epoch 96: Average training loss = 0.000515
+    Validation MSE (epoch 96): 0.000477
+    Epoch 97: Average training loss = 0.000489
+    Validation MSE (epoch 97): 0.000504
+    Epoch 98: Average training loss = 0.000588
+    Validation MSE (epoch 98): 0.000896
+    Epoch 99: Average training loss = 0.000825
+    Validation MSE (epoch 99): 0.000954
+    Epoch 100: Average training loss = 0.000549
+    Validation MSE (epoch 100): 0.000533
     
 
 Here the validation loss is plotted
@@ -1039,9 +1035,9 @@ print(f"Val   MSE: {shred_fourier.evaluate(dataset=val_dataset):.5f}")
 print(f"Test  MSE: {shred_fourier.evaluate(dataset=test_dataset):.5f}")
 ```
 
-    Train MSE: 0.00050
-    Val   MSE: 0.00050
-    Test  MSE: 0.00054
+    Train MSE: 0.00040
+    Val   MSE: 0.00053
+    Test  MSE: 0.00039
     
 
 Let us check the reconstruction of the Fourier coefficients

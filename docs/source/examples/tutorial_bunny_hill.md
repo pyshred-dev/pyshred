@@ -142,21 +142,21 @@ manager.sensor_summary_df
       <td>SST</td>
       <td>0</td>
       <td>stationary (random)</td>
-      <td>(102, 22)</td>
+      <td>(35, 23)</td>
     </tr>
     <tr>
       <th>1</th>
       <td>SST</td>
       <td>1</td>
       <td>stationary (random)</td>
-      <td>(129, 78)</td>
+      <td>(166, 104)</td>
     </tr>
     <tr>
       <th>2</th>
       <td>SST</td>
       <td>2</td>
       <td>stationary (random)</td>
-      <td>(99, 281)</td>
+      <td>(71, 112)</td>
     </tr>
   </tbody>
 </table>
@@ -199,32 +199,32 @@ manager.sensor_measurements_df
     <tr>
       <th>0</th>
       <td>0.0</td>
-      <td>14.700000</td>
-      <td>20.650000</td>
+      <td>0.0</td>
+      <td>23.799999</td>
     </tr>
     <tr>
       <th>1</th>
       <td>0.0</td>
-      <td>14.809999</td>
-      <td>21.049999</td>
+      <td>0.0</td>
+      <td>23.320000</td>
     </tr>
     <tr>
       <th>2</th>
       <td>0.0</td>
-      <td>14.469999</td>
-      <td>21.410000</td>
+      <td>0.0</td>
+      <td>23.230000</td>
     </tr>
     <tr>
       <th>3</th>
       <td>0.0</td>
-      <td>15.750000</td>
-      <td>20.820000</td>
+      <td>0.0</td>
+      <td>22.840000</td>
     </tr>
     <tr>
       <th>4</th>
       <td>0.0</td>
-      <td>16.299999</td>
-      <td>20.859999</td>
+      <td>0.0</td>
+      <td>22.920000</td>
     </tr>
     <tr>
       <th>...</th>
@@ -235,32 +235,32 @@ manager.sensor_measurements_df
     <tr>
       <th>1722</th>
       <td>0.0</td>
-      <td>15.549999</td>
-      <td>20.480000</td>
+      <td>0.0</td>
+      <td>23.939999</td>
     </tr>
     <tr>
       <th>1723</th>
       <td>0.0</td>
-      <td>15.950000</td>
-      <td>20.559999</td>
+      <td>0.0</td>
+      <td>24.799999</td>
     </tr>
     <tr>
       <th>1724</th>
       <td>0.0</td>
-      <td>17.170000</td>
-      <td>21.139999</td>
+      <td>0.0</td>
+      <td>24.490000</td>
     </tr>
     <tr>
       <th>1725</th>
       <td>0.0</td>
-      <td>17.379999</td>
-      <td>21.590000</td>
+      <td>0.0</td>
+      <td>23.900000</td>
     </tr>
     <tr>
       <th>1726</th>
       <td>0.0</td>
-      <td>18.879999</td>
-      <td>21.900000</td>
+      <td>0.0</td>
+      <td>23.769999</td>
     </tr>
   </tbody>
 </table>
@@ -317,7 +317,7 @@ print('val_errors:', val_errors)
 ```
 
     Fitting SHRED...
-    val_errors: [0.04347949 0.03559002]
+    val_errors: [0.0422416  0.03567241]
     
 
 ### Evaluate SHRED
@@ -441,17 +441,17 @@ print(test_error)
     ---------- TRAIN ----------
                   MSE      RMSE       MAE        R2
     dataset                                        
-    SST      2.571972  1.603737  0.940529 -0.010622
+    SST      2.561827  1.600571  0.940187 -0.011979
     
     ---------- VALIDATION ----------
                   MSE      RMSE       MAE            R2
     dataset                                            
-    SST      2.856155  1.690016  0.978884 -5.246062e+06
+    SST      2.846216  1.687073  0.978591 -5.293340e+06
     
     ---------- TEST ----------
                   MSE      RMSE       MAE            R2
     dataset                                            
-    SST      2.696861  1.642212  0.948656 -3.597258e+07
+    SST      2.687214  1.639272  0.948298 -3.634066e+07
     
 
 ### Visualize Results

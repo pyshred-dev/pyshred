@@ -5,7 +5,8 @@
 
 ```python
 # PYSHRED
-from pyshred import DataManager, SHRED, SHREDEngine, LSTM_Forecaster
+import pyshred
+from pyshred import DataManager, SHRED, SHREDEngine
 
 # Other helper libraries
 import matplotlib.pyplot as plt
@@ -36,6 +37,28 @@ plt.show()
     
 
 
+#### Device Info
+
+
+```python
+device = pyshred.set_device("auto")
+# device = pyshred.set_device("cpu") # force CPU
+# device = pyshred.set_device("cuda") # force CUDA
+# device = pyshred.set_device("mps") # force MPS
+# device = pyshred.set_device("cuda", device_id=0) # force specific GPU
+pyshred.device_info()
+```
+
+    === PyShred Device Information ===
+    Current device: cpu
+    Device config: DeviceConfig(device_type=<DeviceType.AUTO: 'auto'>, device_id=None, force_cpu=False, warn_on_fallback=True)
+    
+    Device Availability:
+      CUDA available: False
+      MPS available: False
+      CPU: Always available
+    
+
 #### Initialize Data Manager
 
 
@@ -60,6 +83,7 @@ manager.add_data(
     # stationary=,
     # measurements=,
     compress=False,
+    seed = 0, # fix the random sensor locations, for reproducible results
 )
 ```
 
@@ -103,21 +127,21 @@ manager.sensor_summary_df
       <td>SST</td>
       <td>0</td>
       <td>stationary (random)</td>
-      <td>(81, 131)</td>
+      <td>(71, 109)</td>
     </tr>
     <tr>
       <th>1</th>
       <td>SST</td>
       <td>1</td>
       <td>stationary (random)</td>
-      <td>(155, 263)</td>
+      <td>(74, 178)</td>
     </tr>
     <tr>
       <th>2</th>
       <td>SST</td>
       <td>2</td>
       <td>stationary (random)</td>
-      <td>(153, 169)</td>
+      <td>(94, 289)</td>
     </tr>
   </tbody>
 </table>
@@ -159,33 +183,33 @@ manager.sensor_measurements_df
   <tbody>
     <tr>
       <th>0</th>
-      <td>28.449999</td>
-      <td>2.93</td>
-      <td>0.94</td>
+      <td>23.659999</td>
+      <td>27.459999</td>
+      <td>0.0</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>28.619999</td>
-      <td>3.35</td>
-      <td>1.09</td>
+      <td>23.259999</td>
+      <td>26.889999</td>
+      <td>0.0</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>28.279999</td>
-      <td>3.03</td>
-      <td>1.53</td>
+      <td>23.199999</td>
+      <td>26.849999</td>
+      <td>0.0</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>28.169999</td>
-      <td>2.95</td>
-      <td>1.60</td>
+      <td>22.829999</td>
+      <td>26.619999</td>
+      <td>0.0</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>28.179999</td>
-      <td>3.01</td>
-      <td>1.95</td>
+      <td>22.539999</td>
+      <td>26.679999</td>
+      <td>0.0</td>
     </tr>
     <tr>
       <th>...</th>
@@ -195,33 +219,33 @@ manager.sensor_measurements_df
     </tr>
     <tr>
       <th>1395</th>
-      <td>29.999999</td>
-      <td>-0.57</td>
-      <td>-1.06</td>
+      <td>28.929999</td>
+      <td>29.249999</td>
+      <td>0.0</td>
     </tr>
     <tr>
       <th>1396</th>
-      <td>29.769999</td>
-      <td>-0.32</td>
-      <td>-1.21</td>
+      <td>28.849999</td>
+      <td>28.919999</td>
+      <td>0.0</td>
     </tr>
     <tr>
       <th>1397</th>
-      <td>29.809999</td>
-      <td>-0.14</td>
-      <td>-0.92</td>
+      <td>28.989999</td>
+      <td>28.889999</td>
+      <td>0.0</td>
     </tr>
     <tr>
       <th>1398</th>
-      <td>29.889999</td>
-      <td>0.00</td>
-      <td>-0.66</td>
+      <td>28.049999</td>
+      <td>28.699999</td>
+      <td>0.0</td>
     </tr>
     <tr>
       <th>1399</th>
-      <td>29.969999</td>
-      <td>0.00</td>
-      <td>-0.50</td>
+      <td>28.459999</td>
+      <td>28.589999</td>
+      <td>0.0</td>
     </tr>
   </tbody>
 </table>
@@ -241,6 +265,7 @@ train_dataset, val_dataset, test_dataset= manager.prepare()
 
 
 ```python
+torch.manual_seed(0) # fix the weight initialization, for reproducible results
 shred = SHRED(sequence_model="LSTM", decoder_model="MLP", latent_forecaster="LSTM_Forecaster")
 ```
 
@@ -253,28 +278,28 @@ print('val_errors:', val_errors)
 ```
 
     Fitting SHRED...
-    Epoch 1: Average training loss = 0.079502
-    Validation MSE (epoch 1): 0.036644
-    Epoch 2: Average training loss = 0.036274
-    Validation MSE (epoch 2): 0.034130
-    Epoch 3: Average training loss = 0.033781
-    Validation MSE (epoch 3): 0.034199
-    Epoch 4: Average training loss = 0.033450
-    Validation MSE (epoch 4): 0.033875
-    Epoch 5: Average training loss = 0.033123
-    Validation MSE (epoch 5): 0.033502
-    Epoch 6: Average training loss = 0.032411
-    Validation MSE (epoch 6): 0.032883
-    Epoch 7: Average training loss = 0.028727
-    Validation MSE (epoch 7): 0.022372
-    Epoch 8: Average training loss = 0.018934
-    Validation MSE (epoch 8): 0.016510
-    Epoch 9: Average training loss = 0.016190
-    Validation MSE (epoch 9): 0.014858
-    Epoch 10: Average training loss = 0.015114
-    Validation MSE (epoch 10): 0.015208
-    val_errors: [0.0366443  0.03413025 0.0341986  0.03387529 0.03350158 0.03288335
-     0.0223723  0.01651014 0.01485774 0.01520807]
+    Epoch 1: Average training loss = 0.078330
+    Validation MSE (epoch 1): 0.037093
+    Epoch 2: Average training loss = 0.036325
+    Validation MSE (epoch 2): 0.034117
+    Epoch 3: Average training loss = 0.033967
+    Validation MSE (epoch 3): 0.034335
+    Epoch 4: Average training loss = 0.033617
+    Validation MSE (epoch 4): 0.034011
+    Epoch 5: Average training loss = 0.033234
+    Validation MSE (epoch 5): 0.033349
+    Epoch 6: Average training loss = 0.031395
+    Validation MSE (epoch 6): 0.027927
+    Epoch 7: Average training loss = 0.018353
+    Validation MSE (epoch 7): 0.014860
+    Epoch 8: Average training loss = 0.012866
+    Validation MSE (epoch 8): 0.012220
+    Epoch 9: Average training loss = 0.011531
+    Validation MSE (epoch 9): 0.011749
+    Epoch 10: Average training loss = 0.011430
+    Validation MSE (epoch 10): 0.011924
+    val_errors: [0.03709267 0.03411689 0.03433465 0.03401148 0.03334907 0.02792729
+     0.01485961 0.01222015 0.01174884 0.01192393]
     
 
 #### Evaluate SHRED
@@ -289,9 +314,9 @@ print(f"Val   MSE: {val_mse:.3f}")
 print(f"Test  MSE: {test_mse:.3f}")
 ```
 
-    Train MSE: 0.012
-    Val   MSE: 0.015
-    Test  MSE: 0.017
+    Train MSE: 0.010
+    Val   MSE: 0.012
+    Test  MSE: 0.014
     
 
 #### Initialize SHRED Engine for Downstream Tasks
@@ -352,13 +377,13 @@ fig.colorbar(im, ax=axes, label="Value", shrink=0.8)
 
 
 
-    <matplotlib.colorbar.Colorbar at 0x1c2521a0ee0>
+    <matplotlib.colorbar.Colorbar at 0x20accb6d3a0>
 
 
 
 
     
-![png](basic_shred_sst_files/basic_shred_sst_30_1.png)
+![png](basic_shred_sst_files/basic_shred_sst_32_1.png)
     
 
 
@@ -372,7 +397,7 @@ train_Y = {'SST': sst_data[0:t_train]}
 train_error = engine.evaluate(manager.train_sensor_measurements, train_Y)
 
 # Val
-t_val = len(manager.test_sensor_measurements)
+t_val = len(manager.val_sensor_measurements)
 val_Y = {'SST': sst_data[t_train:t_train+t_val]}
 val_error = engine.evaluate(manager.val_sensor_measurements, val_Y)
 
@@ -390,17 +415,17 @@ print(test_error)
 ```
 
     ---------- TRAIN ----------
-                  MSE      RMSE       MAE        R2
-    dataset                                        
-    SST      0.806486  0.898045  0.490421  0.365509
+                  MSE      RMSE      MAE        R2
+    dataset                                       
+    SST      0.543765  0.737404  0.41998  0.406113
     
     ---------- VAL   ----------
-                  MSE      RMSE       MAE        R2
-    dataset                                        
-    SST      1.038167  1.018905  0.550346 -0.301883
-    
-    ---------- TEST  ----------
                   MSE     RMSE       MAE        R2
     dataset                                       
-    SST      1.196159  1.09369  0.597865 -0.431854
+    SST      0.908324  0.95306  0.496027 -0.398883
+    
+    ---------- TEST  ----------
+                  MSE      RMSE       MAE        R2
+    dataset                                        
+    SST      0.780126  0.883248  0.507533 -0.444451
     
