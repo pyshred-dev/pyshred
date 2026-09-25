@@ -276,6 +276,44 @@ def generate_lagged_sensor_measurements_rom(dataset, lags):
     return np.concatenate(sequences, axis=0)
 
 
+def broadcast_params(params, leading_shape):
+    """
+    Validate parameters and broadcast them along the time axis if they are constant in time.
+
+    Parameters
+    ----------
+    params : DataInput
+        Parameters of shape `leading_shape + (nparams,)`, e.g. (ntrajectories, ntimes, nparams),
+        or with the time axis left out, e.g. (ntrajectories, nparams), for parameters that
+        are constant in time.
+    leading_shape : tuple
+        Shape the parameters must line up with, excluding the parameter axis, with time
+        on the last axis, e.g. (ntrajectories, ntimes).
+
+    Returns
+    -------
+    np.ndarray
+        Parameters of shape `leading_shape + (nparams,)`.
+
+    Raises
+    ------
+    ValueError
+        If `params` does not line up with `leading_shape`.
+    """
+    params = get_data(params)
+    leading_shape = tuple(leading_shape)
+    if params.ndim == len(leading_shape) and params.shape[:-1] == leading_shape[:-1]:
+        # time axis left out: repeat the parameters at every timestep
+        params = np.repeat(np.expand_dims(params, axis=-2), leading_shape[-1], axis=-2)
+    if params.shape[:-1] != leading_shape:
+        shape = lambda dims: "(" + ", ".join([str(dim) for dim in dims] + ["nparams"]) + ")"
+        raise ValueError(
+            f"`params` must have shape {shape(leading_shape)}, or {shape(leading_shape[:-1])} "
+            f"for parameters that are constant in time, got {params.shape}."
+        )
+    return params
+
+
 def parse_compress(compress: Union[None, bool, int]) -> int:
     """Normalize the compress argument into an integer number of modes.
 
